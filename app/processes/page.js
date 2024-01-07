@@ -11,7 +11,12 @@ import AddConcretePump from "../Componenets/addConcretePump";
 import AddDriver from "../Componenets/addDriver";
 import { TbTruckDelivery } from "react-icons/tb";
 import AddTruck from "../Componenets/addTruck";
-import PasueInvoice from "../Componenets/pasueinvoice";
+import { GiConcreteBag } from "react-icons/gi";
+import AddKindConcrete from "../Componenets/addKindConcrete";
+import AddKindRocks from "../Componenets/addKindRocks";
+import rep6 from "../../images/rep6.png";
+import Image from "next/image";
+
 
 
 export default function Processes (){
@@ -19,10 +24,7 @@ export default function Processes (){
 
     const getProcess = () => {
         if(process == 1){
-            return <div>
-                <div className="text-4xl flex justify-center border-b-2 border-black mb-10 pb-3">انشاء فاتورة</div>
-                <AddInvoice/>
-            </div>
+            return <AddInvoice/>
         }
         else if(process == 2){
             return <div>
@@ -32,7 +34,7 @@ export default function Processes (){
         }
         else if(process == 3){
             return <div>
-                <div className="text-4xl flex justify-center border-b-2 border-black mb-10 pb-3">اضافة شاحنة</div>
+                <div className="text-4xl flex justify-center border-b-2 border-black mb-10 pb-3">اضافة خلاطه</div>
                 <AddTruck/>
             </div>
         }
@@ -44,19 +46,25 @@ export default function Processes (){
         }
         else if(process == 6){
             return <div>
-                <div className="text-4xl flex justify-center border-b-2 border-black mb-10 pb-3">اضافة سائق</div>
-                <PasueInvoice/>
+                <div className="text-4xl flex justify-center border-b-2 border-black mb-10 pb-3">اضافة نوع البطون</div>
+                <AddKindConcrete/>
+            </div>
+        }
+        else if(process == 7){
+            return <div>
+                <div className="text-4xl flex justify-center border-b-2 border-black mb-10 pb-3">اضافة نوع الصرار</div>
+                <AddKindRocks/>
             </div>
         }
         else{
             return <div>
                 <div className="text-4xl flex justify-center border-b-2 border-black mb-10 pb-3">اضافة زبون</div>
-                <AddCustomer/>
+                <AddCustomer />
             </div>
         }
     }
 
-    return(
+    return (
         <div>
             <div className="flex justify-around mb-20 test-fontt">
                 <div className="items-center w-2/4 ">
@@ -66,16 +74,26 @@ export default function Processes (){
                         }
                     </div>
                 </div>
-                <div className="w-1/4 bg-[#f5f5f5] rounded-3xl border-2 border-[#334155]">  
+                <div className="w-1/4 bg-[#f5f5f5] rounded-3xl border-2 border-[#334155]">
                     <div className="flex flex-col m-auto">
-                        <button onClick={() => setProcess(1)} className="focus:border-black m-5 flex justify-between border-b-4 border-black-0 hoverButoon"><FaFileInvoiceDollar className="text-3xl mt-auto mb-auto"/><p className="m-2 text-2xl">انشاء فاتورة</p></button>
-                        <button onClick={() => setProcess(6)} className="focus:border-black m-5 flex justify-between border-b-4 border-black-0 hoverButoon"><FaFileInvoiceDollar className="text-3xl mt-auto mb-auto"/><p className="m-2 text-2xl">اكمال فاتورة</p></button>
-                        <button onClick={() => setProcess(2)} className="focus:border-black m-5 flex justify-between border-b-4 border-black-0 hoverButoon"><TbTruckDelivery className="text-3xl mt-auto mb-auto"/><p className="m-2 text-2xl">اضافة مضخة خرسانة</p></button>
-                        <button onClick={() => setProcess(5)} className="focus:border-black m-5 flex justify-between border-b-4 border-black-0 hoverButoon"><RiSteering2Line className="text-3xl mt-auto mb-auto"/><p className="m-2 text-2xl">اضافة سائق</p></button>
-                        <button onClick={() => setProcess(3)} className="focus:border-black m-5 flex justify-between border-b-4 border-black-0 hoverButoon"><FaTruck  className="text-3xl mt-auto mb-auto"/><p className="m-2 text-2xl">اضافة شاحنة</p></button>
-                        <button onClick={() => setProcess(4)} className="focus:border-black m-5 flex justify-between border-b-4 border-black-0 hoverButoon"><BsPersonFillAdd className="text-3xl mt-auto mb-auto"/><p className="m-2 text-2xl">اضافة زبون</p></button>
+                        <button onClick={() => setProcess(1)} className="focus:border-black m-5 flex justify-between border-b-4 border-black-0 hoverButoon"><FaFileInvoiceDollar className="text-3xl mt-auto mb-auto" /><div className="m-2 text-2xl">انشاء فاتورة</div></button>
+                        <button onClick={() => setProcess(2)} className="focus:border-black m-5 flex justify-between border-b-4 border-black-0 hoverButoon"><TbTruckDelivery className="text-3xl mt-auto mb-auto" /><div className="m-2 text-2xl">اضافة مضخة خرسانة</div></button>
+                        <button onClick={() => setProcess(5)} className="focus:border-black m-5 flex justify-between border-b-4 border-black-0 hoverButoon"><RiSteering2Line className="text-3xl mt-auto mb-auto" /><div className="m-2 text-2xl">اضافة سائق</div></button>
+                        <button onClick={() => setProcess(3)} className="focus:border-black m-5 flex justify-between border-b-4 border-black-0 hoverButoon"><FaTruck className="text-3xl mt-auto mb-auto" /><div className="m-2 text-2xl">اضافة خلاطه</div></button>
+                        <button onClick={() => setProcess(4)} className="focus:border-black m-5 flex justify-between border-b-4 border-black-0 hoverButoon"><BsPersonFillAdd className="text-3xl mt-auto mb-auto" /><div className="m-2 text-2xl">اضافة زبون</div></button>
+                        <button onClick={() => setProcess(6)} className="focus:border-black m-5 flex justify-between border-b-4 border-black-0 hoverButoon"><GiConcreteBag className="text-3xl mt-auto mb-auto" /><div className="m-2 text-2xl">اضافة نوع البطون</div></button>
+                        <button onClick={() => setProcess(7)} className="focus:border-black m-5 flex justify-between border-b-4 border-black-0 hoverButoon"><GiConcreteBag className="text-3xl mt-auto mb-auto" /><div className="m-2 text-2xl">اضافة نوع الصرار</div></button>
+
+                    </div>
+                    <div className="flex justify-center ">
+                        <Image
+                            className="opacity-30"
+                            src={rep6}
+                            width={500}
+                        />
                     </div>
                 </div>
+
             </div>
         </div>
     )

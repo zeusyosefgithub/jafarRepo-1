@@ -7,27 +7,27 @@ export default function FormBox(props) {
     let count = 1;
 
     return (
-        <div className="w-full md:w-1/2 mx-auto fixed z-10 top-28 right-0 left-0 border-2 border-[#334155] rounded-xl">
+        <div className="w-full md:w-1/2 mx-auto fixed z-10 top-32 right-0 left-0 border-2 border-[#334155] rounded-xl">
             <div className="flex flex-col p-5 rounded-lg shadow bg-[#f5f5f5]">
                 <div className="flex flex-col items-center text-center">
-                    <h2 className="mt-2 font-semibold text-black text-xl">قائمة الشاحنات</h2>
-                    <p className="mt-2 text-sm text-black leading-relaxed w-full text-right text-xl">اختر شاحنة من القائمة لديك</p>
+                    <h2 className="mt-2 font-semibold text-black text-xl">قائمة الخلاطات</h2>
+                    <div className="mt-2 text-sm text-black leading-relaxed w-full text-right text-xl">اختر خلاطه من القائمة لديك</div>
                 </div>
-                <div className="m-1 p-5 bg-white rounded-xl overflow-scroll h-72">
+                <div className="m-1 pr-5 pl-5 pb-5 bg-white rounded-xl overflow-scroll h-72">
                     <table className="w-full text-center">
                         <tbody>
-                            <tr className="border-4 border-[#334155]">
-                                <th><p className="text-xl">ملاحظات</p></th>
-                                <th><p className="text-xl">سائق الشاحنة</p></th>
-                                <th><p className="text-xl">رقم الشاحنة</p></th>
+                            <tr className="border-4 border-[#334155] sticky top-0 z-10 bg-[#334155] text-white">
+                                <th><div className="text-xl">ملاحظات</div></th>
+                                <th><div className="text-xl">سائق الخلاطه</div></th>
+                                <th><div className="text-xl">رقم الخلاطه</div></th>
                             </tr>
                             {
                                 trucks.map(doc => {
                                     return <tr onClick={() => {props.getTruck(doc.truck_id);props.showDisable(false, 'truck')}} className="border-b-2 border-black text-lg margining_table">
-                                        <td>{doc.truck_disc}</td>
-                                        <td>{doc.truck_driver}</td>
-                                        <td>{doc.truck_id}</td>
-                                        <td>({count++}</td>
+                                        <th className="text-lg">{doc.truck_disc}</th>
+                                        <th className="text-lg">{doc.truck_driver}</th>
+                                        <th className="text-lg">{doc.truck_id}</th>
+                                        <th className="text-lg">{count++}</th>
                                     </tr>
                                 })
                             }
