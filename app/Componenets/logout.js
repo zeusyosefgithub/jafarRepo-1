@@ -1,5 +1,6 @@
 'use client';
 import { UserAuth } from "../FireBase/authContext";
+import { CiLogout } from "react-icons/ci";
 
 export default function LogOut() {
 
@@ -14,11 +15,10 @@ export default function LogOut() {
         }
     }
 
-
     return (
         <div>
             {
-                user && <button onClick={logout} className="p-6 bg-black text-white mr-5">logOut</button> 
+                user && <button onClick={logout} className="text-2xl bg-gray-400 p-3 rounded-3xl hover:bg-black hover:text-white flex items-center"><CiLogout className="mr-3 text-3xl"/> تسجيل خروج</button> 
             }
         </div>
     )

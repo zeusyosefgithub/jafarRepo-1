@@ -400,3 +400,8 @@ body {
   width: fit-content;
   height: fit-content;
 }
+
+
+.LogIn_Page{
+  top: 30vh;
+}
