@@ -18,7 +18,7 @@ export default function LogIn() {
       }
 
     return (
-        <div className="absolute LogIn_Page w-full">
+        <div className="absolute LogIn_Page w-full test-fontt">
 
             <div className="flex justify-center z-10">
 

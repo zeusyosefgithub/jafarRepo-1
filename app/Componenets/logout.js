@@ -18,7 +18,7 @@ export default function LogOut() {
     return (
         <div>
             {
-                user && <button onClick={logout} className="text-2xl bg-gray-400 p-3 rounded-3xl hover:bg-black hover:text-white flex items-center"><CiLogout className="mr-3 text-3xl"/> تسجيل خروج</button> 
+                user && <button onClick={logout} className="test-fontt text-2xl bg-gray-400 p-3 rounded-3xl hover:bg-black hover:text-white flex items-center"><CiLogout className="mr-3 text-3xl"/> تسجيل خروج</button> 
             }
         </div>
     )

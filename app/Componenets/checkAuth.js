@@ -3,11 +3,24 @@ import NavBar from "./navBar";
 import { useEffect, useState } from "react";
 import { UserAuth } from "../FireBase/authContext";
 import LogIn from "./logIn";
+import GetTrucks from "./getDocs";
+import NotAdmin from "./notAdmin";
 
 export default function CheckAuth(props) {
 
     const [loading, setLoading] = useState(true);
     const { user, googleSignIn, logOut } = UserAuth();
+
+    const Admins = GetTrucks("admins");
+    const NotAnAdmin = () => {
+        for (let index = 0; index < Admins.length; index++) {
+            console.log(user.uid)
+            if(user.uid === Admins[index].id){
+                return true;
+            }
+        }
+        return false;
+    }
 
     useEffect(() => {
         const checkAuth = async () => {
@@ -20,6 +33,11 @@ export default function CheckAuth(props) {
     return (
         <div>
             {
+                // user && !loading && !NotAnAdmin() ?
+                // <>
+                //     <NotAdmin/>
+                // </>
+                // :
                 !loading && !user ?
                 <>
                     <LogIn/>

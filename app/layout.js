@@ -24,7 +24,9 @@ export default function RootLayout({ children }) {
 
 
         <AuthContextProvider>
-          <CheckAuth children={children}/>
+          <div className='test-fontt'>
+            <CheckAuth children={children}/>
+          </div>
         </AuthContextProvider>
 
 

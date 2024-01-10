@@ -6,6 +6,8 @@ import { RiSteering2Line } from "react-icons/ri";
 import { FaTruck } from "react-icons/fa";
 import { BsPersonFillAdd } from "react-icons/bs";
 import AllLists from "../Componenets/allLists";
+import rep6 from "../../images/rep6.png";
+import Image from "next/image";
 
 export default function Lists() {
     const [list,setList] = useState(1);
@@ -80,6 +82,13 @@ export default function Lists() {
                         <button onClick={() => setList(5)} className="focus:border-black m-5 flex justify-between border-b-4 border-black-0 hoverButoon"><BsPersonFillAdd className="text-3xl mt-auto mb-auto"/><div className="m-2 text-2xl">قائمة الزبائن</div></button>
                         <button onClick={() => setList(6)} className="focus:border-black m-5 flex justify-between border-b-4 border-black-0 hoverButoon"><BsPersonFillAdd className="text-3xl mt-auto mb-auto"/><div className="m-2 text-2xl">قائمة انواع البطون</div></button>
                         <button onClick={() => setList(7)} className="focus:border-black m-5 flex justify-between border-b-4 border-black-0 hoverButoon"><BsPersonFillAdd className="text-3xl mt-auto mb-auto"/><div className="m-2 text-2xl">قائمة انواع الصرار</div></button>
+                    </div>
+                    <div className="flex justify-center ">
+                        <Image
+                            className="opacity-30"
+                            src={rep6}
+                            width={500}
+                        />
                     </div>
                 </div>
             </div>
