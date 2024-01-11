@@ -130,8 +130,17 @@ export default function AddInvoice() {
     let currenttime = `${time}/${day}/${month}/${year}`;
 
 
+    const currectInvoiceId = () => {
+        let maxValue = 0;
+        for (let index = 0; index < AllInvoices.length; index++) {
+            maxValue = Math.max(maxValue,AllInvoices[index]?.invoices_id)
+        }
+        return maxValue + 1;
+    }
+
+
     const handelAddInfo = async () => {
-        let counterInvoices = AllInvoices.length + 1;
+        let counterInvoices = currectInvoiceId();
         let newData = {};
         if (isNewCus) {
             setErrorNewCus("");

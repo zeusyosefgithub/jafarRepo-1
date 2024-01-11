@@ -4,6 +4,7 @@ import { FaHome } from "react-icons/fa";
 import { IoListSharp } from "react-icons/io5";
 import { GrUserAdmin } from "react-icons/gr";
 import { LuPlusSquare } from "react-icons/lu";
+import { GrUpdate } from "react-icons/gr";
 import rep6 from "../../images/rep6.png";
 import Image from 'next/image';
 import LogOut from './logout';
@@ -36,6 +37,13 @@ export default function NavBar() {
                     <FaHome />
                     <button className='ml-2'>
                         الصفحة الرئيسية
+                    </button>
+                </Link>
+
+                <Link href="/updates" className='flex items-center bg-gray-300 hover:bg-gray-400 text-gray-800 text-xl font-bold py-2 px-4 rounded-xl'>
+                    <GrUpdate/>
+                    <button className='ml-2'>
+                        تحديثات البرنامج
                     </button>
                 </Link>
             </div>
