@@ -30,6 +30,7 @@ export default function Updates() {
                 </div>
                 <div dir="rtl" className="bg-white w-full rounded p-8">
                     <div className="text-xl">بناء خاصية الحذف لطلبيات الفاتورة ...</div>
+                    <div className="text-xl">انشاء تصنيف وطباعة للفواتير الفلتر والترتيب قيد التطوير...</div>
                 </div>
                 <div className="mt-20">
                     <div dir="rtl" className="text-xl mb-5">
