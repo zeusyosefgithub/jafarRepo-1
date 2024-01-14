@@ -6,6 +6,7 @@ import CheckAuth from './Componenets/checkAuth';
 
 
 
+
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
@@ -22,7 +23,7 @@ export default function RootLayout({ children }) {
         <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@700&display=swap" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@700&family=Noto+Sans+Hebrew:wght@700&display=swap" rel="stylesheet"></link>
 
-
+        
         <AuthContextProvider>
           <div className='test-fontt'>
             <CheckAuth children={children}/>

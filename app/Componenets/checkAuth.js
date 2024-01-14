@@ -5,6 +5,7 @@ import { UserAuth } from "../FireBase/authContext";
 import LogIn from "./logIn";
 import GetTrucks from "./getDocs";
 import NotAdmin from "./notAdmin";
+import { NextUIProvider } from "@nextui-org/react";
 
 export default function CheckAuth(props) {
 
@@ -15,7 +16,7 @@ export default function CheckAuth(props) {
     const NotAnAdmin = () => {
         for (let index = 0; index < Admins.length; index++) {
             console.log(user.uid)
-            if(user.uid === Admins[index].id){
+            if (user.uid === Admins[index].id) {
                 return true;
             }
         }
@@ -39,21 +40,23 @@ export default function CheckAuth(props) {
                 // </>
                 // :
                 !loading && !user ?
-                <>
-                    <LogIn/>
-                </>
-                :
-                !loading && user ?
                     <>
-                        <div>
-                            <NavBar />
-                        </div>
-                        <div className='mt-40'>
-                            {props.children}
-                        </div>
+                        <LogIn />
                     </>
-                :
-                null
+                    :
+                    !loading && user ?
+                        <div>
+                            <NextUIProvider>
+                                <div>
+                                    <NavBar />
+                                </div>
+                                <div className='mt-40'>
+                                    {props.children}
+                                </div>
+                            </NextUIProvider>
+                        </div>
+                        :
+                        null
             }
         </div>
     )

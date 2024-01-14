@@ -79,7 +79,7 @@ export default function Home() {
       </div>
       <div className="flex justify-center">
         <div className="w-9/12 mt-20 flex">
-          <div className="w-1/2 bg-white rounded border-r-4 border-r-[#334155]">
+          <div className="w-1/2 bg-gray-300 rounded border-r-4 border-r-[#334155]">
             <div className="text-2xl flex justify-center p-3">تقرير أمس</div>
             <div dir="rtl" className="p-5 text-xl">
               <div>1</div>
@@ -91,7 +91,7 @@ export default function Home() {
             </div>
           </div>
           <div className="mr-4 ml-5"></div>
-          <div className="w-1/2 bg-white rounded border-r-4 border-r-[#334155]">
+          <div className="w-1/2 bg-gray-300 rounded border-r-4 border-r-[#334155]">
             <div className="text-2xl flex justify-center p-3">التقرير اليومي</div>
             <div dir="rtl" className="p-5 text-xl">
               <div>عدد الزبائن الذين اشتروا : {}</div>
