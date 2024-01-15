@@ -14,6 +14,8 @@ export default function SortLists(props) {
         props.setkindSortIn(wich, value1, value2);
     }
 
+
+
     return (
         <div>
             <div className="flex mb-5 justify-center">
@@ -28,7 +30,7 @@ export default function SortLists(props) {
                         <NewDropdown setKindSortIn={setKindSortIn} KindDrop={"ترتيب"} />
                     </div>
                     <div className="ml-3">
-                        <NewDropdown setKindSortIn={setKindSortIn} KindDrop={"فلتر"} />
+                        <NewDropdown searchInvoice={(val1, val2) => props.searchInvoice(val1, val2)} KindDrop={"فلتر"} />
                     </div>
                 </div>
                 {/* <div>
@@ -48,9 +50,17 @@ export function NewDropdown(props) {
     const [fromDate, setFromDate] = useState();
     const [toDate, setToDate] = useState();
 
-    const ref1 = useRef();
-    const ref2 = useRef();
+    const [typeSearchInvoice, setTypeSearchInvoice] = useState('one');
+    const valueSearchInvoice = useRef(null);
+    const valueSearchInvoice2 = useRef(null);
 
+    const valueSearchName = useRef(null);
+
+    var date = new Date();
+    let year = date.getFullYear();
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+    let currentdate = `${day}/${month}/${year}`;
 
     return (
         <div className="">
@@ -95,7 +105,7 @@ export function NewDropdown(props) {
 
 
                                 <DropdownItem>
-                                    <Button className="w-full">بدون</Button>
+                                    <Button onClick={() => props.searchInvoice("nothing", null)} className="w-full">بدون</Button>
                                 </DropdownItem>
 
 
@@ -110,20 +120,28 @@ export function NewDropdown(props) {
                                                 isReadOnly
                                                 endContent={
                                                     <div dir="rtl">
-                                                        <div className="flex items-end">
-                                                            <label dir="rtl" for="FromDate" className="text-base ml-5">رقم محدد : </label>
-                                                            <input dir="rtl" type="number" name="FromDate" id="FromDate" className="block py-2.5 px-0 text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-black peer" required />
+                                                        <div className="flex mb-4">
+                                                            <Button onClick={() => setTypeSearchInvoice('one')} className="ml-4">فاتورة واحدة</Button>
+                                                            <Button onClick={() => setTypeSearchInvoice('many')}>اكثر من فاتورة</Button>
                                                         </div>
-                                                        <div className="flex" dir="rtl">
-                                                            <div className="flex items-end">
-                                                                <label dir="rtl" for="FromDate" className="text-base ml-5">من : </label>
-                                                                <input dir="rtl" type="number" name="FromDate" id="FromDate" className="block py-2.5 px-0 text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-black peer" required />
-                                                            </div>
-                                                            <div className="flex items-end">
-                                                                <label dir="rtl" for="FromDate" className="text-base ml-5">الى : </label>
-                                                                <input dir="rtl" type="number" name="FromDate" id="FromDate" className="block py-2.5 px-0 text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-black peer" required />
-                                                            </div>
-                                                        </div>
+                                                        {
+                                                            typeSearchInvoice == 'one' ?
+                                                                <div className="flex items-end">
+                                                                    <label dir="rtl" for="FromDate" className="text-base ml-5">رقم محدد : </label>
+                                                                    <input ref={valueSearchInvoice} onChange={() => props.searchInvoice(valueSearchInvoice.current.value, null)} dir="rtl" type="number" name="FromDate" id="FromDate" className="block py-2.5 px-0 text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-black peer" required />
+                                                                </div>
+                                                                :
+                                                                <div className="flex" dir="rtl">
+                                                                    <div className="flex items-end">
+                                                                        <label dir="rtl" for="FromDate" className="text-base ml-5">من : </label>
+                                                                        <input ref={valueSearchInvoice} onChange={() => props.searchInvoice(valueSearchInvoice.current.value, valueSearchInvoice2.current.value)} dir="rtl" type="number" name="FromDate" id="FromDate" className="block py-2.5 px-0 text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-black peer" required />
+                                                                    </div>
+                                                                    <div className="flex items-end">
+                                                                        <label dir="rtl" for="FromDate" className="text-base ml-5">الى : </label>
+                                                                        <input ref={valueSearchInvoice2} onChange={() => props.searchInvoice(valueSearchInvoice.current.value, valueSearchInvoice2.current.value)} dir="rtl" type="number" name="FromDate" id="FromDate" className="block py-2.5 px-0 text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-black peer" required />
+                                                                    </div>
+                                                                </div>
+                                                        }
                                                     </div>
                                                 }
                                             >
@@ -156,24 +174,24 @@ export function NewDropdown(props) {
                                                     <div dir="rtl">
                                                         <div className="flex items-end">
                                                             <label dir="rtl" for="FromDate" className="text-base ml-5">حسب اليوم : </label>
-                                                            <input dir="rtl" type="text" name="FromDate" id="FromDate" className="block py-2.5 px-0 text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-black peer" placeholder="_____/___/__" required />
+                                                            <input dir="rtl" type="text" name="FromDate" id="FromDate" className="block py-2.5 px-0 text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-black peer" placeholder={currentdate} required />
                                                         </div>
                                                         <div className="flex items-end">
                                                             <label dir="rtl" for="FromDate" className="text-base ml-5">حسب الشهر : </label>
-                                                            <input  dir="rtl" type="text" name="FromDate" id="FromDate" className="block py-2.5 px-0 text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-black peer" required />
+                                                            <input dir="rtl" type="text" name="FromDate" id="FromDate" className="block py-2.5 px-0 text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-black peer" placeholder={`${month}/${year}`} required />
                                                         </div>
                                                         <div className="flex items-end">
                                                             <label dir="rtl" for="FromDate" className="text-base ml-5">حسب السنة : </label>
-                                                            <input dir="rtl" type="text" name="FromDate" id="FromDate" className="block py-2.5 px-0 text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-black peer" required />
+                                                            <input dir="rtl" type="text" name="FromDate" id="FromDate" className="block py-2.5 px-0 text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-black peer" placeholder={year} required />
                                                         </div>
                                                         <div className="flex" dir="rtl">
                                                             <div className="flex items-end">
                                                                 <label dir="rtl" for="FromDate" className="text-base ml-5">من : </label>
-                                                                <input dir="rtl" type="text" name="FromDate" id="FromDate" className="block py-2.5 px-0 text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-black peer" required />
+                                                                <input dir="rtl" type="text" name="FromDate" id="FromDate" className="block py-2.5 px-0 text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-black peer"  placeholder="1/1/2024" required />
                                                             </div>
                                                             <div className="flex items-end">
                                                                 <label dir="rtl" for="FromDate" className="text-base ml-5">الى : </label>
-                                                                <input dir="rtl" type="text" name="FromDate" id="FromDate" className="block py-2.5 px-0 text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-black peer" required />
+                                                                <input dir="rtl" type="text" name="FromDate" id="FromDate" className="block py-2.5 px-0 text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-black peer"  placeholder="31/12/2024" required />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -205,7 +223,7 @@ export function NewDropdown(props) {
                                                     <div dir="rtl">
                                                         <div className="flex items-end">
                                                             <label dir="rtl" for="FromDate" className="text-base ml-5">الاسم : </label>
-                                                            <input  dir="rtl" type="text" name="FromDate" id="FromDate" className="block py-2.5 px-0 text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-black peer" required />
+                                                            <input ref={valueSearchName} onChange={() => props.searchInvoice(valueSearchName.current.value,"name")} dir="rtl" type="text" name="FromDate" id="FromDate" className="block py-2.5 px-0 text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-black peer" required />
                                                         </div>
                                                     </div>
                                                 }

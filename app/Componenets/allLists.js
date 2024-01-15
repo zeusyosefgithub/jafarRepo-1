@@ -381,156 +381,221 @@ export default function AllLists(props) {
     const getInvoices = () => {
         let listinvo = [];
 
-        if (kindSort == 'day') {
+        if (valSearchInvoice === 'nothing' || kindSort == 'nothing') {
             let currentDate = theList[0]?.invoices_data;
-            listinvo.push(
-                <tr>
-                    <th colSpan={10}>
-                        <div className="p-3 rounded text-2xl flex justify-around m-4 bg-gray-300 border-r-4 border-[#334155]">
-                            <div>التاريخ : {currentDate}</div>
-                            <div>الشهر : {getMonthInArbic(currentDate)}</div>
-                            <div>اليوم : {getDayInArbic(currentDate)}</div>
-                        </div>
-                    </th>
-                </tr>
-            )
-            for (let index = 0; index < theList.length; index++) {
-                if (theList[index]?.invoices_data == currentDate) {
-                    listinvo.push(
-                        getTheInvoRowList(theList,index)
-                    )
+                listinvo.push(
+                    <tr>
+                        <th colSpan={10}>
+                            <div className="p-3 rounded text-2xl flex justify-around m-4 bg-gray-300 border-r-4 border-[#334155]">
+                                <div>التاريخ : {currentDate}</div>
+                                <div>الشهر : {getMonthInArbic(currentDate)}</div>
+                                <div>اليوم : {getDayInArbic(currentDate)}</div>
+                            </div>
+                        </th>
+                    </tr>
+                )
+                for (let index = 0; index < theList.length; index++) {
+                    if (theList[index]?.invoices_data == currentDate) {
+                        listinvo.push(
+                            getTheInvoRowList(theList,index)
+                        )
+                    }
+                    else {
+                        currentDate = theList[index]?.invoices_data;
+                        listinvo.push(
+                            <tr>
+                                <th colSpan={10}>
+                                    <div className="p-3 rounded text-2xl flex justify-around m-4 bg-gray-300 border-r-4 border-[#334155]">
+                                        <div>التاريخ : {currentDate}</div>
+                                        <div>الشهر : {getMonthInArbic(currentDate)}</div>
+                                        <div>اليوم : {getDayInArbic(currentDate)}</div>
+                                    </div>
+                                </th>
+                            </tr>
+                        )
+                        listinvo.push(
+                            getTheInvoRowList(theList,index)
+                        )
+                    }
+    
                 }
-                else {
-                    currentDate = theList[index]?.invoices_data;
-                    listinvo.push(
-                        <tr>
-                            <th colSpan={10}>
-                                <div className="p-3 rounded text-2xl flex justify-around m-4 bg-gray-300 border-r-4 border-[#334155]">
-                                    <div>التاريخ : {currentDate}</div>
-                                    <div>الشهر : {getMonthInArbic(currentDate)}</div>
-                                    <div>اليوم : {getDayInArbic(currentDate)}</div>
-                                </div>
-                            </th>
-                        </tr>
-                    )
-                    listinvo.push(
-                        getTheInvoRowList(theList,index)
-                    )
-                }
-
+        }
+        else if(valSearchInvoice2 === 'name'){
+            for (let index = 0; index < theList?.length; index++) {
+                var StringName = theList[index]?.invoices_customer_name.toString();
+                var StringInput = valSearchInvoice?.toString();
+                StringName.startsWith(StringInput) && listinvo.push(getTheInvoRowList(theList,index));
             }
         }
-        else if (kindSort == 'month') {
-
-            let currentDate = getJustMonth(theList[0]?.invoices_data);
-            listinvo.push(
-                <tr>
-                    <th colSpan={10}>
-                        <div className="p-3 rounded text-2xl flex justify-around m-4 bg-gray-300 border-r-4 border-[#334155]">
-                            <div>التاريخ : {currentDate}</div>
-                            <div>الشهر : {getJustMonthInArbic(currentDate)}</div>
-                        </div>
-                    </th>
-                </tr>
-            )
-            for (let index = 0; index < theList.length; index++) {
-                if (getJustMonth(theList[index]?.invoices_data) == currentDate) {
-                    listinvo.push(
-                        getTheInvoRowList(theList,index)
-                    )
+        else if(valSearchInvoice){
+            if(valSearchInvoice2 == null)
+            {
+                for (let index = 0; index < theList?.length; index++) {
+                    if(theList[index]?.invoices_id == valSearchInvoice){
+                        return getTheInvoRowList(theList,index);
+                    }
                 }
-                else {
-                    currentDate = getJustMonth(theList[index]?.invoices_data);
-                    listinvo.push(
-                        <tr>
-                            <th colSpan={10}>
-                                <div className="p-3 rounded text-2xl flex justify-around m-4 bg-gray-300 border-r-4 border-[#334155]">
-                                    <div>التاريخ : {currentDate}</div>
-                                    <div>الشهر : {getJustMonthInArbic(currentDate)}</div>
-                                </div>
-                            </th>
-                        </tr>
-                    )
-                    listinvo.push(
-                        getTheInvoRowList(theList,index)
-                    )
-                }
-
             }
-
-        }
-        else if (kindSort == 'year') {
-            let currentDate = getJustYear(theList[0]?.invoices_data);
-            listinvo.push(
-                <tr>
-                    <th colSpan={10}>
-                        <div className="p-3 rounded text-2xl flex justify-around m-4 bg-gray-300 border-r-4 border-[#334155]">
-                            <div>السنة : {currentDate}</div>
-                        </div>
-                    </th>
-                </tr>
-            )
-            for (let index = 0; index < theList.length; index++) {
-                if (getJustYear(theList[index]?.invoices_data) == currentDate) {
-                    listinvo.push(
-                        getTheInvoRowList(theList,index)
-                    )
+            else{
+                for (let index = 0; index < theList?.length; index++) {
+                    if(theList[index]?.invoices_id >= valSearchInvoice && theList[index]?.invoices_id <= valSearchInvoice2){
+                        listinvo.push(getTheInvoRowList(theList,index));
+                    }    
                 }
-                else {
-                    currentDate = getJustYear(theList[index]?.invoices_data);
-                    listinvo.push(
-                        <tr>
-                            <th colSpan={10}>
-                                <div className="p-3 rounded text-2xl flex justify-around m-4 bg-gray-300 border-r-4 border-[#334155]">
-                                    <div>السنة : {currentDate}</div>
-                                </div>
-                            </th>
-                        </tr>
-                    )
-                    listinvo.push(
-                        getTheInvoRowList(theList,index)
-                    )
-                }
-
             }
         }
-        else if (kindSort == 'nothing') {
-            let currentDate = theList[0]?.invoices_data;
-            for (let index = 0; index < theList.length; index++) {
-                if (theList[index]?.invoices_data == currentDate) {
-                    listinvo.push(
-                        getTheInvoRowList(theList,index)
-                    )
+        else{
+            if (kindSort == 'day') {
+                let currentDate = theList[0]?.invoices_data;
+                listinvo.push(
+                    <tr>
+                        <th colSpan={10}>
+                            <div className="p-3 rounded text-2xl flex justify-around m-4 bg-gray-300 border-r-4 border-[#334155]">
+                                <div>التاريخ : {currentDate}</div>
+                                <div>الشهر : {getMonthInArbic(currentDate)}</div>
+                                <div>اليوم : {getDayInArbic(currentDate)}</div>
+                            </div>
+                        </th>
+                    </tr>
+                )
+                for (let index = 0; index < theList.length; index++) {
+                    if (theList[index]?.invoices_data == currentDate) {
+                        listinvo.push(
+                            getTheInvoRowList(theList,index)
+                        )
+                    }
+                    else {
+                        currentDate = theList[index]?.invoices_data;
+                        listinvo.push(
+                            <tr>
+                                <th colSpan={10}>
+                                    <div className="p-3 rounded text-2xl flex justify-around m-4 bg-gray-300 border-r-4 border-[#334155]">
+                                        <div>التاريخ : {currentDate}</div>
+                                        <div>الشهر : {getMonthInArbic(currentDate)}</div>
+                                        <div>اليوم : {getDayInArbic(currentDate)}</div>
+                                    </div>
+                                </th>
+                            </tr>
+                        )
+                        listinvo.push(
+                            getTheInvoRowList(theList,index)
+                        )
+                    }
+    
                 }
-                else {
-                    listinvo.push(
-                        getTheInvoRowList(theList,index)
-                    )
-                }
-
             }
-        }
-        else {
-            let startDate = getTheTruDateFromInputs(fromDate);
-            let endDate = getTheTruDateFromInputs(ToDate);
-            let count = 0;
-            for (let index = 0; index < theList.length; index++) {
-                if (theList[index]?.invoices_data == endDate && count == 0) {
-                    listinvo.push(
-                        getTheInvoRowList(theList,index)
-                    )
-                    count++;
+            else if (kindSort == 'month') {
+    
+                let currentDate = getJustMonth(theList[0]?.invoices_data);
+                listinvo.push(
+                    <tr>
+                        <th colSpan={10}>
+                            <div className="p-3 rounded text-2xl flex justify-around m-4 bg-gray-300 border-r-4 border-[#334155]">
+                                <div>التاريخ : {currentDate}</div>
+                                <div>الشهر : {getJustMonthInArbic(currentDate)}</div>
+                            </div>
+                        </th>
+                    </tr>
+                )
+                for (let index = 0; index < theList.length; index++) {
+                    if (getJustMonth(theList[index]?.invoices_data) == currentDate) {
+                        listinvo.push(
+                            getTheInvoRowList(theList,index)
+                        )
+                    }
+                    else {
+                        currentDate = getJustMonth(theList[index]?.invoices_data);
+                        listinvo.push(
+                            <tr>
+                                <th colSpan={10}>
+                                    <div className="p-3 rounded text-2xl flex justify-around m-4 bg-gray-300 border-r-4 border-[#334155]">
+                                        <div>التاريخ : {currentDate}</div>
+                                        <div>الشهر : {getJustMonthInArbic(currentDate)}</div>
+                                    </div>
+                                </th>
+                            </tr>
+                        )
+                        listinvo.push(
+                            getTheInvoRowList(theList,index)
+                        )
+                    }
+    
                 }
-                else if(theList[index]?.invoices_data == startDate){
-                    listinvo.push(
-                        getTheInvoRowList(theList,index)
-                    )
-                    count++;
+    
+            }
+            else if (kindSort == 'year') {
+                let currentDate = getJustYear(theList[0]?.invoices_data);
+                listinvo.push(
+                    <tr>
+                        <th colSpan={10}>
+                            <div className="p-3 rounded text-2xl flex justify-around m-4 bg-gray-300 border-r-4 border-[#334155]">
+                                <div>السنة : {currentDate}</div>
+                            </div>
+                        </th>
+                    </tr>
+                )
+                for (let index = 0; index < theList.length; index++) {
+                    if (getJustYear(theList[index]?.invoices_data) == currentDate) {
+                        listinvo.push(
+                            getTheInvoRowList(theList,index)
+                        )
+                    }
+                    else {
+                        currentDate = getJustYear(theList[index]?.invoices_data);
+                        listinvo.push(
+                            <tr>
+                                <th colSpan={10}>
+                                    <div className="p-3 rounded text-2xl flex justify-around m-4 bg-gray-300 border-r-4 border-[#334155]">
+                                        <div>السنة : {currentDate}</div>
+                                    </div>
+                                </th>
+                            </tr>
+                        )
+                        listinvo.push(
+                            getTheInvoRowList(theList,index)
+                        )
+                    }
+    
                 }
-                else if(count == 1){
-                    listinvo.push(
-                        getTheInvoRowList(theList,index)
-                    )
+            }
+            else if (kindSort == 'nothing') {
+                let currentDate = theList[0]?.invoices_data;
+                for (let index = 0; index < theList.length; index++) {
+                    if (theList[index]?.invoices_data == currentDate) {
+                        listinvo.push(
+                            getTheInvoRowList(theList,index)
+                        )
+                    }
+                    else {
+                        listinvo.push(
+                            getTheInvoRowList(theList,index)
+                        )
+                    }
+    
+                }
+            }
+            else {
+                let startDate = getTheTruDateFromInputs(fromDate);
+                let endDate = getTheTruDateFromInputs(ToDate);
+                let count = 0;
+                for (let index = 0; index < theList.length; index++) {
+                    if (theList[index]?.invoices_data == endDate && count == 0) {
+                        listinvo.push(
+                            getTheInvoRowList(theList,index)
+                        )
+                        count++;
+                    }
+                    else if(theList[index]?.invoices_data == startDate){
+                        listinvo.push(
+                            getTheInvoRowList(theList,index)
+                        )
+                        count++;
+                    }
+                    else if(count == 1){
+                        listinvo.push(
+                            getTheInvoRowList(theList,index)
+                        )
+                    }
                 }
             }
         }
@@ -540,6 +605,9 @@ export default function AllLists(props) {
     const handlePrint = useReactToPrint({
         content: () => componentRef.current,
     });
+
+    const [valSearchInvoice,setValSearchInvoice] = useState(null);
+    const [valSearchInvoice2,setValSearchInvoice2] = useState(null);
 
     return (
         <div className="rounded-3xl bg-[#f5f5f5] border-2 border-[#334155] p-10">
@@ -559,7 +627,7 @@ export default function AllLists(props) {
                             </div>
                         </div> */}
                         <div>
-                            <SortLists handlePrint={handlePrint} setkindSortIn={setkindSortIn} />
+                            <SortLists handlePrint={handlePrint} searchInvoice={(val1,val2) => {setValSearchInvoice(val1);setValSearchInvoice2(val2)}} setkindSortIn={setkindSortIn} />
                         </div>
                         {
                             !isSearch ?

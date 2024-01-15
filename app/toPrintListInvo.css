@@ -1,14 +1,12 @@
-@page{
-    size: A5;
+.ggggg{
+    size: A4 !important;
 }
 
-@media print {
-    body, html {
-        font-size: 7px !important;
-        font-family: 'Noto Sans Hebrew', sans-serif;
-        font-family: 'Almarai', sans-serif !important;
-    }
-    .print-preview {
-        font-size: 8px !important;
-    }
+.ggggg {
+    font-size: 7px !important;
+    font-family: 'Noto Sans Hebrew', sans-serif !important;
+    font-family: 'Almarai', sans-serif !important;
+}
+.ggggg .print-preview {
+    font-size: 8px !important;
 }

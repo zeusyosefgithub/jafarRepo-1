@@ -2,8 +2,9 @@ import React from "react";
 import '../toPrintListInvo.css';
 
 export const ComponentToPrintInvoList = React.forwardRef((props, ref) =>{
+
     return(
-        <div ref={ref}>
+        <div className="ggggg" ref={ref}>
             {
                 props.invo
             }
