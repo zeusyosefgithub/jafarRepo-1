@@ -12,7 +12,8 @@ export default function FormBoxNewCus(props) {
     let count = 1;
 
     const getLineCus = (customers, index) => {
-        return <tr onClick={() => { props.geNewCus(customers[index]?.customer_id, customers[index]); props.showDisableNewCus(false) }} className="border-b-2 border-black text-lg margining_table">
+        console.log(props)
+        return <tr onClick={() => { props.getNewCus(customers[index]?.customer_id, customers[index]); props.showDisableNewCus(false) }} className="border-b-2 border-black text-lg margining_table">
             <th className="text-lg">{customers[index]?.customer_street}</th>
             <th className="text-lg">{customers[index]?.customer_city}</th>
             <th className="text-lg">{customers[index]?.customer_id}</th>
@@ -22,6 +23,7 @@ export default function FormBoxNewCus(props) {
     }
 
     const getDefaultCus = () => {
+        
         let listCus = [];
         for (let index = 0; index < customers?.length; index++) {
             listCus.push(getLineCus(customers,index));

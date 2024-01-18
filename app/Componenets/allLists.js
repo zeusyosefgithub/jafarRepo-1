@@ -99,6 +99,9 @@ export default function AllLists(props) {
 
     var date = new Date();
     let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+    let day = date.getDate();
+    let ReacurrentDate = `${day}/${month}/${year}`;
 
     function compareByAgeTwo(a, b) {
         return b.invoices_id - a.invoices_id;
@@ -166,14 +169,16 @@ export default function AllLists(props) {
         }
     }
 
-    const statusinvoice = (invo) => {
+    const statusinvoice = (invo,stayed) => {
         if ((invo.invoices_quantity - invo.provide) == 0) {
             return <th className="text-base text-[#dc2626]">مغلقة</th>
         }
         else {
-            return <th className="text-base text-green-600">قيد العمل</th>
+            return <th><div className="flex justify-around items-center"><div className="text-sm">الباقي : {stayed}</div><div className="text-base text-green-600">قيد العمل</div></div></th>
         }
     }
+
+    
 
     function getDayInArbic(str) {
         var conStr = str?.toString();
@@ -378,7 +383,21 @@ export default function AllLists(props) {
         return count;
     }
 
-    const getTheInvoRowList = (theList, index) => {
+    const getTheInvoRowList = (theList, index,day,countDays) => {
+        if(day === 'day' && ReacurrentDate === theList[index]?.invoices_data){
+            return <tr onClick={() => { setShowInvoEdit(true); setInvData(theList[index]) }} className="styling_lines_lists bordering_list1">
+            <th className="text-base">{theList[index]?.invoices_concretd_grade}</th>
+            <th className="text-base">{theList[index]?.invoices_kind_egree_of_Exposure}</th>
+            <th className="text-base">{theList[index]?.invoices_kind_material}</th>
+            <th className="text-base">{theList[index]?.invoices_kind_type_of_concrete}</th>
+            <th className="text-base">{theList[index]?.invoices_pump}</th>
+            <th className="text-base">{theList[index]?.invoices_customer_name}</th>
+            <th className="text-base">{theList[index]?.invoices_data}</th>
+            <th className="text-base">{theList[index]?.invoices_quantity}</th>
+            <th className="text-base"><div className="flex justify-around"><div>{theList[index]?.invoices_id} : الفاتورة</div><div>{countDays - index}</div></div></th>
+            {statusinvoice(theList[index],theList[index]?.invoices_quantity - theList[index]?.provide)}
+        </tr>
+        }
         return <tr onClick={() => { setShowInvoEdit(true); setInvData(theList[index]) }} className="styling_lines_lists bordering_list1">
             <th className="text-base">{theList[index]?.invoices_concretd_grade}</th>
             <th className="text-base">{theList[index]?.invoices_kind_egree_of_Exposure}</th>
@@ -389,7 +408,7 @@ export default function AllLists(props) {
             <th className="text-base">{theList[index]?.invoices_data}</th>
             <th className="text-base">{theList[index]?.invoices_quantity}</th>
             <th className="text-base">{theList[index]?.invoices_id}</th>
-            {statusinvoice(theList[index])}
+            {statusinvoice(theList[index],theList[index]?.invoices_quantity - theList[index]?.provide)}
         </tr>
     }
 
@@ -528,6 +547,12 @@ export default function AllLists(props) {
         }
         else{
             if (valSearchInvoice == 'day') {
+                let count = 0;
+                for (let index = 0; index < theList?.length; index++) {
+                    if(theList[index]?.invoices_data == ReacurrentDate){
+                        count++;
+                    }          
+                }
                 let currentDate = theList[0]?.invoices_data;
                 listinvo.push(
                     <tr>
@@ -543,7 +568,7 @@ export default function AllLists(props) {
                 for (let index = 0; index < theList.length; index++) {
                     if (theList[index]?.invoices_data == currentDate) {
                         listinvo.push(
-                            getTheInvoRowList(theList,index)
+                            getTheInvoRowList(theList,index,'day',count)
                             )
                         }
                         else {
@@ -560,7 +585,7 @@ export default function AllLists(props) {
                             </tr>
                         )
                         listinvo.push(
-                            getTheInvoRowList(theList,index)
+                            getTheInvoRowList(theList,index,'day',count)
                             )
                         }
                         
