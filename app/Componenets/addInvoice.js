@@ -1,7 +1,7 @@
 'use client';
 import FormBox from "./formBox";
 import FormBoxDriver from "./formBoxDriver";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useReactToPrint } from "react-to-print";
 import { ComponentToPrint } from "./toPrint";
 import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
@@ -13,6 +13,10 @@ import GetTrucks from "./getDocs";
 import { list } from "postcss";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import EditBoard from "./editBoard";
+import { Button } from "@nextui-org/button";
+import { IoMdArrowForward } from "react-icons/io";
+import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem} from "@nextui-org/react";
+
 
 
 export default function AddInvoice() {
@@ -37,6 +41,7 @@ export default function AddInvoice() {
 
     const customerIdRef = useRef();
     const [errorCusId, setErrorCusId] = useState("");
+    const [errorSameNameCus, setErrorSameNameCus] = useState("");
     const customerNameRef = useRef();
     const [errorCusName, setErrorCusName] = useState("");
     const customerStreetRef = useRef();
@@ -64,6 +69,7 @@ export default function AddInvoice() {
     const collec = collection(firestore, "invoices");
 
     const Allinvoos = GetTrucks("invoices");
+    const AllCustomers = GetTrucks("customers");
     const getAllShippings = GetTrucks("shipping");
 
     const [shwoHidePrint, setShowHidePrint] = useState(false);
@@ -138,6 +144,15 @@ export default function AddInvoice() {
         return maxValue + 1;
     }
 
+    const checkIfIsEqualCustomer = (phone,name) => {
+        for (let index = 0; index < AllCustomers?.length; index++) {
+            if(phone == AllCustomers[index]?.customer_id || name == AllCustomers[index]?.customer_name){
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     const handelAddInfo = async () => {
         let counterInvoices = currectInvoiceId();
@@ -166,10 +181,14 @@ export default function AddInvoice() {
             };
         }
         else {
+            setErrorSameNameCus("");
             setErrorCusId("");
             setErrorCusName("");
             setErrorCusStreet("");
             setErrorCusCity("");
+            if(checkIfIsEqualCustomer(customerIdRef.current?.value,customerNameRef.current?.value)){
+                return setErrorSameNameCus("الزبون الذي تم ادخالة موجود بالفعل !");
+            }
             if (!customerIdRef.current.value || customerIdRef.current.value.length > 10) {
                 return setErrorCusId("!رقم الزبون اكثر من 10 ارقام او ليس لديه قيمة");
             }
@@ -182,6 +201,7 @@ export default function AddInvoice() {
             if (!customerCityRef.current.value || customerCityRef.current.value.length > 10) {
                 return setErrorCusCity("!اسم البلد اكثر من 10 حرف او ليس لديه قيمة");
             }
+            setErrorSameNameCus("");
             setErrorCusId("");
             setErrorCusName("");
             setErrorCusStreet("");
@@ -252,6 +272,8 @@ export default function AddInvoice() {
         setPump(null);
         setNewCus(null);
         setCustomer(null);
+        setIsNewCus(true);
+        setNewshipp(true);
     }
     const handelAddShpping = async () => {
         let counterShipps = getAllShippings.length + 1;
@@ -322,6 +344,7 @@ export default function AddInvoice() {
             }
         }
     }
+
     function checkIfThereOpenedInvo() {
         let listInvoices = Allinvoos;
         if (!listInvoices.length) {
@@ -363,7 +386,7 @@ export default function AddInvoice() {
                 invoices_pump: invData.invoices_pump,
                 provide: sumAllCurrentQuant2,
                 stayed: invData.stayed,
-                invoices_data: currentdate
+                invoices_data: invData.invoices_data
             };
             setInvData(newData);
             try {
@@ -395,7 +418,7 @@ export default function AddInvoice() {
                 invoices_pump: getLastinvoice()?.invoices_pump,
                 provide: sumAllCurrentQuant1,
                 stayed: getLastinvoice()?.stayed,
-                invoices_data: currentdate
+                invoices_data: getLastinvoice()?.invoices_data
             };
             setInvData(newData);
             console.log(inDataRef.current)
@@ -470,14 +493,19 @@ export default function AddInvoice() {
     const [dropValue1, setDropValue1] = useState(getLastinvoice()?.invoices_kind_material);
     const [drop2, setDrop2] = useState(true);
     const [dropValue2, setDropValue2] = useState(getLastinvoice()?.invoices_kind_type_of_concrete);
+    
 
     return (
         <div className="rounded-3xl bg-[#f5f5f5] border-2 border-[#334155] p-10">
             {
+            console.log(getLastinvoice())
+
+            }
+            {
                 showTruck ? <FormBox getTruck={getTruck} showDisable={handelShowDisable} /> :
                     showDriver ? <FormBoxDriver getDriver={getDriver} showDisableDriver={handelShowDisableDriver} /> :
                         showPump ? <FormBoxConcertPump getPump={getPump} showDisableCon={handelShowDisablePump} /> :
-                            showNewCus ? <FormBoxNewCus getNewCus={getNewCus} showDisableNewCus={handelShowDisableNewCus} />
+                            showNewCus ? <FormBoxNewCus newCustomer={() => setIsNewCus(false)} getNewCus={getNewCus} showDisableNewCus={handelShowDisableNewCus} />
                                 : null
             }
             <div className="max-w- mx-auto">
@@ -506,7 +534,14 @@ export default function AddInvoice() {
                         !newShipp &&
                         <div>
                             <div className="flex justify-end text-3xl mb-6 border-r-4 border-[#334155] bg-gray-300 p-3 mt-3 rounded-lg">المشتري</div>
+
                             {
+                                !isNewCus && <div className="mb-5 flex justify-end">
+                                    <Button size="lg" onClick={() => setIsNewCus(true)} className="text-base">الرجوع للاختيار<IoMdArrowForward className="text-xl"/></Button>
+                                    
+                                </div> 
+                            }
+                            {/* {
                                 isNewCus ?
                                     <div className="flex items-center justify-center rounded-xl p-2 mb-4">
                                         <label class="switch">
@@ -523,7 +558,7 @@ export default function AddInvoice() {
                                         </label>
                                         <div className="text-xl ml-4"> مشتري جديد</div>
                                     </div>
-                            }
+                            } */}
                             {
                                 isNewCus ?
                                     newCus
@@ -549,12 +584,12 @@ export default function AddInvoice() {
                                         :
                                         <div>
                                             <div className="flex justify-center mb-7">
-                                                <button onClick={() => { setShowDriver(false); setShowTruck(false); setShowPump(false); setShowNewCus(true); }} class="w-1/4 bg-white border border-black hover:bg-gray-400 text-black font-bold py-2 px-4 rounded flex justify-around items-center">
+                                                <Button size="lg" onClick={() => { setShowDriver(false); setShowTruck(false); setShowPump(false); setShowNewCus(true); }}>
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                                                     </svg>
                                                     <div className="text-xl font-bold">اختر زبون</div>
-                                                </button>
+                                                </Button>
                                             </div>
                                             {
                                                 errorNewCus && <div dir="rtl" className="text-[#dc2626] text-base">{errorNewCus}</div>
@@ -582,6 +617,9 @@ export default function AddInvoice() {
                                                 <label dir="rtl" htmlFor="customerCity" className="peer-focus:font-medium absolute text-2xl text-black dark:text-gray-400 duration-300 transform -translate-y-0 scale-75 top-0 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-black peer-focus:dark:text-black peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-10 text-right w-full" />
                                             </div>
                                         </div>
+                                        {
+                                            errorSameNameCus && <div dir="rtl" className="text-[#dc2626] text-base">{errorSameNameCus}</div>
+                                        }
                                         {
                                             errorCusId && <div dir="rtl" className="text-[#dc2626] text-base">{errorCusId}</div>
                                         }
@@ -656,7 +694,61 @@ export default function AddInvoice() {
                                         }
                                     </div>
                                 </div>
-                                <div className="flex justify-end">
+
+
+
+
+
+                                    <Dropdown dir="rtl" className="test-fontt">
+                                        <DropdownTrigger>
+                                            <Button
+                                                size="lg"
+                                                className="capitalize"
+                                            >
+                                                نوع الصرار : {dropValue1}
+                                            </Button>
+                                        </DropdownTrigger>
+                                        <DropdownMenu
+                                            aria-label="Single selection example"
+                                            variant="flat"
+                                            disallowEmptySelection
+                                            selectionMode="single"
+                                        >
+                                            {
+                                                theList5.map(list => {
+                                                    return <DropdownItem onClick={() => {setDrop1(true);setDropValue1(list.kinds_rocks_name)}} key={list.kinds_rocks_name}>{list.kinds_rocks_name}</DropdownItem>
+                                                })
+                                            }
+                                        </DropdownMenu>
+                                    </Dropdown>
+
+                                    <Dropdown dir="rtl" className="test-fontt">
+                                        <DropdownTrigger>
+                                            <Button
+                                                size="lg"
+                                                className="capitalize"
+                                            >
+                                                نوع البطون : {dropValue2}
+                                            </Button>
+                                        </DropdownTrigger>
+                                        <DropdownMenu
+                                            aria-label="Single selection example"
+                                            variant="flat"
+                                            disallowEmptySelection
+                                            selectionMode="single"
+                                        >
+                                            {
+                                                theList6.map(list => {
+                                                    return <DropdownItem onClick={() => {setDrop2(true);setDropValue2(list.kinds_concrete_name)}} key={list.kinds_concrete_name}>{list.kinds_concrete_name}</DropdownItem>
+                                                })
+                                            }
+                                        </DropdownMenu>
+                                    </Dropdown>
+
+
+
+
+                                {/* <div className="flex justify-end">
                                     <div dir="rtl" class="dropdown">
                                         <button onClick={() => setDrop1(false)} class="w-full bg-white border border-black hover:bg-gray-400 text-black font-bold py-2 px-4 rounded flex justify-around items-center">نوع الصرار {dropValue1} <MdKeyboardArrowDown className="text-2xl" /></button>
                                         <div className={drop1 && "hidden"}>
@@ -687,7 +779,7 @@ export default function AddInvoice() {
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> */}
                             </div>
 
                             {

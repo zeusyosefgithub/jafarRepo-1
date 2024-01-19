@@ -88,7 +88,7 @@ export function NewDropdown(props) {
                                 <DropdownItem>
                                     <Dropdown className="test-fontt">
                                         <DropdownTrigger>
-                                            <Button className="w-full">رقم الفاتورة/التاريخ</Button>
+                                            <Button className="w-full">رقم الفاتورة</Button>
                                         </DropdownTrigger>
                                         <DropdownMenu>
                                             <DropdownItem>
@@ -101,12 +101,47 @@ export function NewDropdown(props) {
                                     </Dropdown>
                                 </DropdownItem>
 
+                                <DropdownItem>
+                                    <Dropdown className="test-fontt">
+                                        <DropdownTrigger>
+                                            <Button className="w-full">التاريخ</Button>
+                                        </DropdownTrigger>
+                                        <DropdownMenu>
+                                            <DropdownItem>
+                                                <Button onClick={() => props.searchInvoice("biggestSmall","date","sort")} className="w-full">من الاكبر الى الاصغر</Button>
+                                            </DropdownItem>
+                                            <DropdownItem>
+                                                <Button onClick={() => props.searchInvoice("SmallBiggest","date","sort")} className="w-full">من الاصغر الى الاكبر</Button>
+                                            </DropdownItem>
+                                        </DropdownMenu>
+                                    </Dropdown>
+                                </DropdownItem>
+
+
+
+
+                                
 
             
                                 <DropdownItem>
-
-                                    <Button className="w-full">الاسم</Button>
+                                    <Dropdown className="test-fontt">
+                                        <DropdownTrigger>
+                                            <Button className="w-full">الاسم</Button>
+                                        </DropdownTrigger>
+                                        <DropdownMenu>
+                                            <DropdownItem>
+                                                <Button onClick={() => props.searchInvoice("biggestSmall", "name", "sort")} className="w-full">من أ الى ي</Button>
+                                            </DropdownItem>
+                                            <DropdownItem>
+                                                <Button onClick={() => props.searchInvoice("SmallBiggest", "name", "sort")} className="w-full">من ي الى أ</Button>
+                                            </DropdownItem>
+                                        </DropdownMenu>
+                                    </Dropdown>
                                 </DropdownItem>
+
+
+
+                                
                             </DropdownMenu>
                             :
                             <DropdownMenu variant="faded" aria-label="Static Actions">

@@ -68,7 +68,8 @@ export default function EditBoard(props) {
             invoices_kind_material: chooise == "نوع الخرسانة2" ? inputRef.current.value : invoValueProp.invoices_kind_material,
             invoices_kind_type_of_concrete: chooise == "نوع الخرسانة1" ? inputRef.current.value : invoValueProp.invoices_kind_type_of_concrete,
             invoices_kind_egree_of_Exposure: chooise == "درجة الضغط" ? inputRef.current.value : invoValueProp.invoices_kind_egree_of_Exposure,
-            invoices_pump: chooise == "المضخة" ? inputRef.current.value : invoValueProp.invoices_pump
+            invoices_pump: chooise == "المضخة" ? inputRef.current.value : invoValueProp.invoices_pump,
+            invoices_data: chooise == "تاريخ الفاتورة" ? inputRef.current.value : invoValueProp.invoices_data
         }
         const invId = doc(firestore, "invoices", props.data.id)
         setLoading(true);
@@ -240,14 +241,14 @@ export default function EditBoard(props) {
                                     <th><div className="text-xl">الشارع</div></th>
                                     <th><div className="text-xl">اسم الزبون</div></th>
                                     <th><div className="text-xl">رقم الزبون</div></th>
-                                    <th><div className="text-xl">رقم الفتورة</div></th>
+                                    <th><div className="text-xl">تاريخ الفتورة</div></th>
                                 </tr>
                                 <tr className="">
                                     <th className="lins_edit_board" onClick={() => { setChooise("المضخة"); setChoVal(invoValueProp.invoices_pump); setType("number") }}><div className="text-lg pt-2 pb-2">{docInvo.invoices_pump}</div><FaEdit className="m-auto text-xl" /></th>
                                     <th className="lins_edit_board" onClick={() => { setChooise("الشارع"); setChoVal(invoValueProp.invoices_customer_street); setType("text") }}><div className="text-lg pt-2 pb-2">{docInvo.invoices_customer_street}</div><FaEdit className="m-auto text-xl" /></th>
                                     <th className="lins_edit_board" onClick={() => { setChooise("اسم الزبون"); setChoVal(invoValueProp.invoices_customer_name); setType("text") }}><div className="text-lg pt-2 pb-2">{docInvo.invoices_customer_name}</div><FaEdit className="m-auto text-xl" /></th>
                                     <th className="lins_edit_board" onClick={() => { setChooise("رقم الزبون"); setChoVal(invoValueProp.invoices_customer_id); setType("number") }}><div className="text-lg pt-2 pb-2">{docInvo.invoices_customer_id}</div><FaEdit className="m-auto text-xl" /></th>
-                                    <th className=""><div className="text-lg pt-2 pb-2">{docInvo.invoices_id}</div></th>
+                                    <th className="lins_edit_board" onClick={() => { setChooise("تاريخ الفاتورة"); setChoVal(invoValueProp.invoices_data); setType("text") }}><div className="text-lg pt-2 pb-2">{docInvo.invoices_data}</div><FaEdit className="m-auto text-xl" /></th>
                                 </tr>
                                 <tr className="border-2 border-[#334155]">
                                     <th><div className="text-xl">كثافة الخرسانة</div></th>

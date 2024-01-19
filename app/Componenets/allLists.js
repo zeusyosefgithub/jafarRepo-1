@@ -77,6 +77,7 @@ export default function AllLists(props) {
 
     const theListRev = GetTrucks("invoices").sort(compareByAgeReverse);
     const theList = GetTrucks("invoices").sort(compareByAgeTwo);
+    
     const theList1 = GetTrucks("concert pumps");
     const theList2 = GetTrucks("drivers");
     const theList3 = GetTrucks("trucks");
@@ -106,6 +107,8 @@ export default function AllLists(props) {
     function compareByAgeTwo(a, b) {
         return b.invoices_id - a.invoices_id;
     }
+
+   
 
     function compareByAge(a, b) {
         return b.invoice_id - a.invoice_id;
@@ -450,14 +453,15 @@ export default function AllLists(props) {
     }
 
     const getInvoices = () => {
-
+        const sortedList = SortListInvoicesByDate(theList);
         let listinvo = [];
 
         if(valSearchInvoice3 === 'sort'){
             if(valSearchInvoice2 === 'invoice'){
                 if(valSearchInvoice === 'biggestSmall'){
-                    setValSearchInvoice3(null);
-                    setValSearchInvoice('nothing');
+                    for (let index = 0; index < theList?.length; index++) {
+                        listinvo.push(getTheInvoRowList(theList,index));
+                    }
                 }
                 else{
                     for (let index = 0; index < theListRev?.length; index++) {
@@ -465,81 +469,111 @@ export default function AllLists(props) {
                     }
                 }
             }
-            else{
+            else if(valSearchInvoice2 === 'date'){
                 if(valSearchInvoice === 'biggestSmall'){
-
+                    setValSearchInvoice3(null);
+                    setValSearchInvoice('nothing');
                 }
                 else{
-
+                    for (let index = sortedList?.length - 1; index > 0; index--) {
+                        listinvo.push(getTheInvoRowList(sortedList,index));
+                    }
+                }
+            }
+            else{
+                if(valSearchInvoice === 'biggestSmall'){
+                    // let arbic = "أبجحخدذرزسشصضطظعغفقكلمنهوي"
+                    // let hebrow = "אבגדהוזחטיכלמנסעפצקרשת"
+                    // for (let index = 0; index < arbic.length; index++) {
+                    //     for (let index1 = 0; index1 < theList?.length; index1++) {
+                    //         let p1 = toString(theList[index1]?.invoices_customer_name);
+                    //         let p2 = toString(arbic[index]);
+                    //         if(!checkIfCurrentInList(listinvo,theList[index1])){
+                    //             p1.startsWith(p2) && listinvo.push(getTheInvoRowList(theList,index1));
+                    //         }
+                            
+                    //     }      
+                    // }
+                    // for (let index = 0; index < hebrow.length; index++) {
+                    //     for (let index1 = 0; index1 < theList?.length; index1++) {
+                    //         let p1 = toString(theList[index1]?.invoices_customer_name);
+                    //         let p2 = toString(hebrow[index]);
+                    //         if(!checkIfCurrentInList(listinvo,theList[index1])){
+                    //             p1.startsWith(p2) && listinvo.push(getTheInvoRowList(theList,index1));
+                    //         }
+                    //     }      
+                    // }
+                }
+                else{
                 }
             }
         }
         else if (valSearchInvoice2 === 'AcoToDay') {
-            for (let index = 0; index < theList?.length; index++) {
-                if (theList[index]?.invoices_data === valSearchInvoice) {
-                    listinvo.push(getTheInvoRowList(theList, index));
+            for (let index = 0; index < sortedList?.length; index++) {
+                if (sortedList[index]?.invoices_data === valSearchInvoice) {
+                    listinvo.push(getTheInvoRowList(sortedList, index));
                 }
             }
         }
         else if (valSearchInvoice2 === 'AcoToMonth') {
-            for (let index = 0; index < theList?.length; index++) {
-                if (getJustMonth(theList[index]?.invoices_data) === valSearchInvoice) {
-                    listinvo.push(getTheInvoRowList(theList, index));
+            for (let index = 0; index < sortedList?.length; index++) {
+                if (getJustMonth(sortedList[index]?.invoices_data) === valSearchInvoice) {
+                    listinvo.push(getTheInvoRowList(sortedList, index));
                 }
             }
         }
         else if (valSearchInvoice2 === 'AcoToYear') {
-            for (let index = 0; index < theList?.length; index++) {
-                if (getJustYear(theList[index]?.invoices_data) === valSearchInvoice) {
-                    listinvo.push(getTheInvoRowList(theList, index));
+            for (let index = 0; index < sortedList?.length; index++) {
+                if (getJustYear(sortedList[index]?.invoices_data) === valSearchInvoice) {
+                    listinvo.push(getTheInvoRowList(sortedList, index));
                 }
             }
         }
         else if (valSearchInvoice && valSearchInvoice2 && valSearchInvoice3 === 'fortodate') {
-            for (let index = 0; index < theList?.length; index++) {
-                if (getAllPropDate(valSearchInvoice).day <= getAllPropDate(theList[index]?.invoices_data).day &&
-                getAllPropDate(valSearchInvoice2).day >= getAllPropDate(theList[index]?.invoices_data).day &&
-                getAllPropDate(valSearchInvoice).month <= getAllPropDate(theList[index]?.invoices_data).month &&
-                getAllPropDate(valSearchInvoice2).month >= getAllPropDate(theList[index]?.invoices_data).month &&
-                getAllPropDate(valSearchInvoice).year <= getAllPropDate(theList[index]?.invoices_data).year &&
-                getAllPropDate(valSearchInvoice2).year >= getAllPropDate(theList[index]?.invoices_data).year) {
-                    listinvo.push(getTheInvoRowList(theList, index));
+            for (let index = 0; index < sortedList?.length; index++) {
+                if (getAllPropDate(valSearchInvoice).day <= getAllPropDate(sortedList[index]?.invoices_data).day &&
+                getAllPropDate(valSearchInvoice2).day >= getAllPropDate(sortedList[index]?.invoices_data).day &&
+                getAllPropDate(valSearchInvoice).month <= getAllPropDate(sortedList[index]?.invoices_data).month &&
+                getAllPropDate(valSearchInvoice2).month >= getAllPropDate(sortedList[index]?.invoices_data).month &&
+                getAllPropDate(valSearchInvoice).year <= getAllPropDate(sortedList[index]?.invoices_data).year &&
+                getAllPropDate(valSearchInvoice2).year >= getAllPropDate(sortedList[index]?.invoices_data).year) {
+                    listinvo.push(getTheInvoRowList(sortedList, index));
                 }
             }
             
         }
         else if(valSearchInvoice2 === 'name'){
-            for (let index = 0; index < theList?.length; index++) {
-                var StringName = theList[index]?.invoices_customer_name.toString();
+            for (let index = 0; index < sortedList?.length; index++) {
+                var StringName = sortedList[index]?.invoices_customer_name.toString();
                 var StringInput = valSearchInvoice?.toString();
-                StringName.startsWith(StringInput) && listinvo.push(getTheInvoRowList(theList,index));
+                StringName.startsWith(StringInput) && listinvo.push(getTheInvoRowList(sortedList,index));
             }
         }
         else if(valSearchInvoice && valSearchInvoice2 === null && valSearchInvoice3 === 'fortoinvoice'){
-            for (let index = 0; index < theList?.length; index++) {
-                if(theList[index]?.invoices_id == valSearchInvoice){
-                    listinvo.push(getTheInvoRowList(theList,index));
+            for (let index = 0; index < sortedList?.length; index++) {
+                if(sortedList[index]?.invoices_id == valSearchInvoice){
+                    listinvo.push(getTheInvoRowList(sortedList,index));
                 }    
             }
         }
         else if(valSearchInvoice && valSearchInvoice2 && valSearchInvoice3 === 'fortoinvoice'){
-            for (let index = 0; index < theList?.length; index++) {
-                if(theList[index]?.invoices_id >= valSearchInvoice && theList[index]?.invoices_id <= valSearchInvoice2){
-                    listinvo.push(getTheInvoRowList(theList,index));
+            for (let index = 0; index < sortedList?.length; index++) {
+                if(sortedList[index]?.invoices_id >= valSearchInvoice && sortedList[index]?.invoices_id <= valSearchInvoice2){
+                    listinvo.push(getTheInvoRowList(sortedList,index));
                 }    
             }
         }
         else if (valSearchInvoice === 'nothing') {
-            let currentDate = theList[0]?.invoices_data;
-            for (let index = 0; index < theList.length; index++) {
-                if (theList[index]?.invoices_data == currentDate) {
+            let currentDate = sortedList[0]?.invoices_data;
+            for (let index = 0; index < sortedList.length; index++) {
+                if (sortedList[index]?.invoices_data == currentDate) {
                     listinvo.push(
-                        getTheInvoRowList(theList, index)
+                        getTheInvoRowList(sortedList, index)
                     )
                 }
                 else {
                     listinvo.push(
-                        getTheInvoRowList(theList, index)
+                        getTheInvoRowList(sortedList, index)
                     )
                 }
 
@@ -548,12 +582,12 @@ export default function AllLists(props) {
         else{
             if (valSearchInvoice == 'day') {
                 let count = 0;
-                for (let index = 0; index < theList?.length; index++) {
-                    if(theList[index]?.invoices_data == ReacurrentDate){
+                for (let index = 0; index < sortedList?.length; index++) {
+                    if(sortedList[index]?.invoices_data == ReacurrentDate){
                         count++;
                     }          
                 }
-                let currentDate = theList[0]?.invoices_data;
+                let currentDate = sortedList[0]?.invoices_data;
                 listinvo.push(
                     <tr>
                         <th colSpan={10}>
@@ -565,14 +599,14 @@ export default function AllLists(props) {
                         </th>
                     </tr>
                 )
-                for (let index = 0; index < theList.length; index++) {
-                    if (theList[index]?.invoices_data == currentDate) {
+                for (let index = 0; index < sortedList.length; index++) {
+                    if (sortedList[index]?.invoices_data == currentDate) {
                         listinvo.push(
-                            getTheInvoRowList(theList,index,'day',count)
+                            getTheInvoRowList(sortedList,index,'day',count)
                             )
                         }
                         else {
-                            currentDate = theList[index]?.invoices_data;
+                            currentDate = sortedList[index]?.invoices_data;
                             listinvo.push(
                                 <tr>
                                 <th colSpan={10}>
@@ -585,7 +619,7 @@ export default function AllLists(props) {
                             </tr>
                         )
                         listinvo.push(
-                            getTheInvoRowList(theList,index,'day',count)
+                            getTheInvoRowList(sortedList,index,'day',count)
                             )
                         }
                         
@@ -593,7 +627,7 @@ export default function AllLists(props) {
             }
             else if (valSearchInvoice == 'month') {
                     
-                    let currentDate = getJustMonth(theList[0]?.invoices_data);
+                    let currentDate = getJustMonth(sortedList[0]?.invoices_data);
                     listinvo.push(
                         <tr>
                         <th colSpan={10}>
@@ -604,14 +638,14 @@ export default function AllLists(props) {
                         </th>
                     </tr>
                 )
-                for (let index = 0; index < theList.length; index++) {
-                    if (getJustMonth(theList[index]?.invoices_data) == currentDate) {
+                for (let index = 0; index < sortedList.length; index++) {
+                    if (getJustMonth(sortedList[index]?.invoices_data) == currentDate) {
                         listinvo.push(
-                            getTheInvoRowList(theList,index)
+                            getTheInvoRowList(sortedList,index)
                             )
                         }
                         else {
-                            currentDate = getJustMonth(theList[index]?.invoices_data);
+                            currentDate = getJustMonth(sortedList[index]?.invoices_data);
                             listinvo.push(
                             <tr>
                                 <th colSpan={10}>
@@ -623,7 +657,7 @@ export default function AllLists(props) {
                             </tr>
                         )
                         listinvo.push(
-                            getTheInvoRowList(theList,index)
+                            getTheInvoRowList(sortedList,index)
                         )
                     }
     
@@ -631,7 +665,7 @@ export default function AllLists(props) {
     
             }
             else if (valSearchInvoice == 'year') {
-                let currentDate = getJustYear(theList[0]?.invoices_data);
+                let currentDate = getJustYear(sortedList[0]?.invoices_data);
                 listinvo.push(
                     <tr>
                         <th colSpan={10}>
@@ -641,14 +675,14 @@ export default function AllLists(props) {
                         </th>
                     </tr>
                 )
-                for (let index = 0; index < theList.length; index++) {
-                    if (getJustYear(theList[index]?.invoices_data) == currentDate) {
+                for (let index = 0; index < sortedList.length; index++) {
+                    if (getJustYear(sortedList[index]?.invoices_data) == currentDate) {
                         listinvo.push(
-                            getTheInvoRowList(theList,index)
+                            getTheInvoRowList(sortedList,index)
                         )
                     }
                     else {
-                        currentDate = getJustYear(theList[index]?.invoices_data);
+                        currentDate = getJustYear(sortedList[index]?.invoices_data);
                         listinvo.push(
                             <tr>
                                 <th colSpan={10}>
@@ -659,7 +693,7 @@ export default function AllLists(props) {
                             </tr>
                         )
                         listinvo.push(
-                            getTheInvoRowList(theList,index)
+                            getTheInvoRowList(sortedList,index)
                         )
                     }
     
@@ -669,22 +703,22 @@ export default function AllLists(props) {
                 let startDate = getTheTruDateFromInputs(fromDate);
                 let endDate = getTheTruDateFromInputs(ToDate);
                 let count = 0;
-                for (let index = 0; index < theList.length; index++) {
-                    if (theList[index]?.invoices_data == endDate && count == 0) {
+                for (let index = 0; index < sortedList.length; index++) {
+                    if (sortedList[index]?.invoices_data == endDate && count == 0) {
                         listinvo.push(
-                            getTheInvoRowList(theList,index)
+                            getTheInvoRowList(sortedList,index)
                         )
                         count++;
                     }
-                    else if(theList[index]?.invoices_data == startDate){
+                    else if(sortedList[index]?.invoices_data == startDate){
                         listinvo.push(
-                            getTheInvoRowList(theList,index)
+                            getTheInvoRowList(sortedList,index)
                         )
                         count++;
                     }
                     else if(count == 1){
                         listinvo.push(
-                            getTheInvoRowList(theList,index)
+                            getTheInvoRowList(sortedList,index)
                         )
                     }
                 }
@@ -700,6 +734,64 @@ export default function AllLists(props) {
     const [valSearchInvoice,setValSearchInvoice] = useState('day');
     const [valSearchInvoice2,setValSearchInvoice2] = useState(null);
     const [valSearchInvoice3,setValSearchInvoice3] = useState(null);
+
+
+
+
+
+    const checkIfCurrentInList = (list,invo) => {
+        for (let index = 0; index < list?.length; index++) {
+            if(list[index]?.invoices_id == invo?.invoices_id){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function SortListInvoicesByDate(list){
+        let listInvo = list;
+        let newKistInvo = [];
+        let maxDay = 0;
+        let maxMonth = 0;
+        let maxYear = 0;
+        for (let index = 0; index < theList?.length; index++) {
+            for (let index1 = 0; index1 < listInvo?.length; index1++) {
+                if(!checkIfCurrentInList(newKistInvo,listInvo[index1])){
+                    maxYear = Math.max(maxYear,getAllPropDate(listInvo[index1]?.invoices_data).year);
+                }
+            }
+            for (let index2 = 0; index2 < listInvo?.length; index2++) {
+                if(getAllPropDate(listInvo[index2]?.invoices_data).year === maxYear){
+                    if(!checkIfCurrentInList(newKistInvo,listInvo[index2])){
+                        maxMonth = Math.max(maxMonth,getAllPropDate(listInvo[index2]?.invoices_data).month);
+                    }
+                }
+            }
+            for (let index3 = 0; index3 < listInvo?.length; index3++) {
+                if(getAllPropDate(listInvo[index3]?.invoices_data).year === maxYear &&
+                getAllPropDate(listInvo[index3]?.invoices_data).month === maxMonth){
+                    if(!checkIfCurrentInList(newKistInvo,listInvo[index3])){
+                        maxDay = Math.max(maxDay,getAllPropDate(listInvo[index3]?.invoices_data).day);
+                    }
+                }
+            }
+            for (let index4 = 0; index4 < listInvo?.length; index4++) {
+                if(getAllPropDate(listInvo[index4]?.invoices_data).year === maxYear &&
+                getAllPropDate(listInvo[index4]?.invoices_data).month === maxMonth &&
+                getAllPropDate(listInvo[index4]?.invoices_data).day === maxDay){
+                    if(!checkIfCurrentInList(newKistInvo,listInvo[index4])){
+                        newKistInvo.push(listInvo[index4]);
+                    }
+                }
+            }
+            maxDay = 0;
+            maxMonth = 0;
+            maxYear = 0;
+        }
+        return newKistInvo;
+    }
+
+    
 
     return (
         <div className="rounded-3xl bg-[#f5f5f5] border-2 border-[#334155] p-10">

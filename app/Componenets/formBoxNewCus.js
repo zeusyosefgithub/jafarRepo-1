@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useRef, useState } from "react";
 import GetTrucks from "./getDocs";
-import {Input} from "@nextui-org/react";
+import {Button, Input} from "@nextui-org/react";
 
 
 export default function FormBoxNewCus(props) {
@@ -33,17 +33,10 @@ export default function FormBoxNewCus(props) {
 
     const GetSearchVal = () => {
         setListCus([]);
-        if (searchCustomer.current?.value) {
-            for (let index = 0; index < customers?.length; index++) {
-                var StringName = customers[index]?.customer_name.toString();
-                var StringInput = searchCustomer.current?.value.toString();
-                StringName.startsWith(StringInput) && setListCus(listCus => [...listCus,getLineCus(customers,index)]);
-            }
-        }
-        else{
-            for (let index = 0; index < customers?.length; index++) {
-                setListCus(listCus => [...listCus,getLineCus(customers,index)]);
-            }
+        for (let index = 0; index < customers?.length; index++) {
+            var StringName = customers[index]?.customer_name.toString();
+            var StringInput = searchCustomer.current?.value.toString();
+            StringName.startsWith(StringInput) && setListCus(listCus => [...listCus,getLineCus(customers,index)]);
         }
     }
 
@@ -57,12 +50,19 @@ export default function FormBoxNewCus(props) {
                 </div>
 
 
-                <div dir="rtl" className="m-7">
-                    <div className="w-1/3">
+                <div dir="rtl" className="m-7 flex">
+                    <div className="w-1/3 flex items-center">
                         <label dir="rtl" for="searchCus" className="text-base ml-5">الاسم : </label>
                         <input ref={searchCustomer} onChange={GetSearchVal} dir="rtl" type="text" name="searchCus" id="searchCus" className="block py-2.5 px-0 text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-black peer" />
                     </div>
+                    {
+                        !listCus?.length && searchCustomer.current?.value && <div className="">
+                            <Button onClick={() => {props.showDisableNewCus(false);props.newCustomer()}}>اضافة زبون جديد</Button>
+                        </div>
+                    }
                 </div>
+
+
 
                 <div className="m-1 pr-5 pl-5 pb-5 bg-white rounded-xl overflow-scroll h-72">
                     <table className="w-full text-center">
@@ -74,9 +74,16 @@ export default function FormBoxNewCus(props) {
                                 <th><div className="text-xl">اسم الزبون</div></th>
                             </tr>
                             {
-                                searchCustomer.current?.value ? listCus
+                                searchCustomer.current?.value 
+                                ? 
+                                listCus
                                 :
                                 getDefaultCus()
+                            }
+                            {
+                                !listCus?.length && searchCustomer.current?.value && <tr>
+                                    <th colSpan={4} className="p-20 text-lg">لا يوجد زبائن مطابقة لبحثك يمكنك الاضافة بالضفط على الاضافة فوق</th>
+                                </tr>
                             }
                         </tbody>
                     </table>
