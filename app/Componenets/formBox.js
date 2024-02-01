@@ -23,7 +23,7 @@ export default function FormBox(props) {
                             </tr>
                             {
                                 trucks.map(doc => {
-                                    return <tr onClick={() => {props.getTruck(doc.truck_id);props.showDisable(false, 'truck')}} className="border-b-2 border-black text-lg margining_table">
+                                    return <tr onClick={() => {props.getTruck(doc.truck_id);props.showDisable();}} className="border-b-2 border-black text-lg margining_table">
                                         <th className="text-lg">{doc.truck_disc}</th>
                                         <th className="text-lg">{doc.truck_driver}</th>
                                         <th className="text-lg">{doc.truck_id}</th>
@@ -36,7 +36,7 @@ export default function FormBox(props) {
                 </div>
 
                 <div className="flex items-center mt-3">
-                    <button onClick={() => props.showDisable(false, 'truck')} className="flex-1 px-4 py-2 bg-[#334155] hover:bg-yellow-600 text-white text-2xl font-medium rounded-md">
+                    <button onClick={() => props.showDisable()} className="flex-1 px-4 py-2 bg-[#334155] hover:bg-yellow-600 text-white text-2xl font-medium rounded-md">
                         الغاء
                     </button>
                 </div>

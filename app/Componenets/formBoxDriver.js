@@ -28,7 +28,7 @@ export default function FormBoxDriver(props) {
                             </tr>
                             {
                                 drivers.map(doc => {
-                                    return <tr onClick={() => {props.getDriver(doc.driver_name);props.showDisableDriver(false)}} className="border-b-2 border-black text-lg margining_table">
+                                    return <tr onClick={() => {props.getDriver(doc.driver_name);props.showDisableDriver();}} className="border-b-2 border-black text-lg margining_table">
                                         <th className="text-lg">{doc.driver_disc}</th>
                                         <th className="text-lg">{doc.driver_name}</th>
                                         <th className="text-lg">{doc.driver_id}</th>
@@ -41,7 +41,7 @@ export default function FormBoxDriver(props) {
                 </div>
 
                 <div className="flex items-center mt-3">
-                    <button onClick={() => props.showDisableDriver(false)} className="flex-1 px-4 py-2 bg-[#334155] hover:bg-yellow-600 text-white text-2xl font-medium rounded-md">
+                    <button onClick={() => props.showDisableDriver()} className="flex-1 px-4 py-2 bg-[#334155] hover:bg-yellow-600 text-white text-2xl font-medium rounded-md">
                         الغاء
                     </button>
                 </div>

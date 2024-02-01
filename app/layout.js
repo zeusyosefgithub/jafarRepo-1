@@ -22,7 +22,6 @@ export default function RootLayout({ children }) {
       <body className={inter.className}>
         <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@700&display=swap" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@700&family=Noto+Sans+Hebrew:wght@700&display=swap" rel="stylesheet"></link>
-
         
         <AuthContextProvider>
           <div className='test-fontt'>

@@ -482,27 +482,31 @@ export default function AllLists(props) {
             }
             else{
                 if(valSearchInvoice === 'biggestSmall'){
-                    // let arbic = "أبجحخدذرزسشصضطظعغفقكلمنهوي"
-                    // let hebrow = "אבגדהוזחטיכלמנסעפצקרשת"
-                    // for (let index = 0; index < arbic.length; index++) {
-                    //     for (let index1 = 0; index1 < theList?.length; index1++) {
-                    //         let p1 = toString(theList[index1]?.invoices_customer_name);
-                    //         let p2 = toString(arbic[index]);
-                    //         if(!checkIfCurrentInList(listinvo,theList[index1])){
-                    //             p1.startsWith(p2) && listinvo.push(getTheInvoRowList(theList,index1));
-                    //         }
-                            
-                    //     }      
-                    // }
-                    // for (let index = 0; index < hebrow.length; index++) {
-                    //     for (let index1 = 0; index1 < theList?.length; index1++) {
-                    //         let p1 = toString(theList[index1]?.invoices_customer_name);
-                    //         let p2 = toString(hebrow[index]);
-                    //         if(!checkIfCurrentInList(listinvo,theList[index1])){
-                    //             p1.startsWith(p2) && listinvo.push(getTheInvoRowList(theList,index1));
-                    //         }
-                    //     }      
-                    // }
+                    let newInvoList = [];
+                    let arbic = "أبجحخدذرزسشصضطظعغفقكلمنهوي"
+                    let hebrow = "אבגדהוזחטיכלמנסעפצקרשת"
+                    for (let index = 0; index < arbic.length; index++) {
+                        for (let index1 = 0; index1 < theList?.length; index1++) {
+                            let p1 = toString(theList[index1]?.invoices_customer_name);
+                            let p2 = toString(arbic[index]);
+                            if(!checkIfCurrentInList(newInvoList,theList[index1])){
+                                p1.startsWith(p2) && listinvo.push(getTheInvoRowList(theList,index1)) && newInvoList.push(theList[index1]);
+                            }
+                            if(index == 0){
+                                console.log(listinvo);
+                            }
+
+                        }
+                    }
+                    for (let index = 0; index < hebrow.length; index++) {
+                        for (let index1 = 0; index1 < theList?.length; index1++) {
+                            let p1 = toString(theList[index1]?.invoices_customer_name);
+                            let p2 = toString(hebrow[index]);
+                            if(!checkIfCurrentInList(newInvoList,theList[index1])){
+                                p1.startsWith(p2) && listinvo.push(getTheInvoRowList(theList,index1)) && newInvoList.push(theList[index1]);
+                            }
+                        }
+                    }
                 }
                 else{
                 }

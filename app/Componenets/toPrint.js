@@ -25,6 +25,8 @@ export const ComponentToPrint = React.forwardRef((props, ref) => {
     let currentdate = `${day}/${month}/${year}`;
 
     const shipps = GetTrucks("shipping");
+    const typesConccert = GetTrucks('kinds concrete');
+    const typesRocks = GetTrucks('kinds rocks');
 
     const getNumberShipp = () => {
         let count = 0;
@@ -34,6 +36,36 @@ export const ComponentToPrint = React.forwardRef((props, ref) => {
             }
         }
         return count;
+    }
+
+    const GetConccertTypeArbic = () => {
+        for (let index = 0; index < typesConccert?.length; index++) {
+            if(typesConccert[index]?.kinds_concrete_name === props?.inewInv?.invoices_kind_type_of_concrete){
+                return typesConccert[index]?.arbic;
+            }   
+        }
+    }
+    const GetConccertTypeHebrow = () => {
+        for (let index = 0; index < typesConccert?.length; index++) {
+            if(typesConccert[index]?.kinds_concrete_name === props?.inewInv?.invoices_kind_type_of_concrete){
+                return typesConccert[index]?.hebrow;
+            }   
+        }
+    }
+
+    const GetRocktTypeArbic = () => {
+        for (let index = 0; index < typesRocks?.length; index++) {
+            if(typesRocks[index]?.kinds_rocks_name === props?.inewInv?.invoices_kind_material){
+                return typesRocks[index]?.arbic;
+            }   
+        }
+    }
+    const GetRockTypeHebrow = () => {
+        for (let index = 0; index < typesRocks?.length; index++) {
+            if(typesRocks[index]?.kinds_rocks_name === props?.inewInv?.invoices_kind_material){
+                return typesRocks[index]?.hebrow;
+            }   
+        }
     }
 
     return (
@@ -144,8 +176,8 @@ export const ComponentToPrint = React.forwardRef((props, ref) => {
                                             <td><p>مستوى الماء</p></td>
                                         </tr>
                                         <tr>
-                                            <td>{props.inewInv.invoices_kind_type_of_concrete}</td>
-                                            <td>{props.inewInv.invoices_kind_material}</td>
+                                            <td>{GetConccertTypeArbic()}</td>
+                                            <td>{GetRocktTypeArbic()}</td>
                                             <td>{props.inewInv.invoices_concretd_grade}</td>
                                             <td>{props.inewInv.invoices_kind_egree_of_Exposure}</td>
                                         </tr>
@@ -378,8 +410,8 @@ export const ComponentToPrint = React.forwardRef((props, ref) => {
                                         <tr>
                                             {/* <td>{props.inewInv.invoices_quantity}</td>
                                     <td>{props.inewInv.invoices_kind_supplier_number}</td> */}
-                                            <td>{props.inewInv.invoices_kind_type_of_concrete}</td>
-                                            <td>{props.inewInv.invoices_kind_material}</td>
+                                            <td>{GetConccertTypeHebrow()}</td>
+                                            <td>{GetRockTypeHebrow()}</td>
                                             <td>{props.inewInv.invoices_concretd_grade}</td>
                                             <td>{props.inewInv.invoices_kind_egree_of_Exposure}</td>
                                         </tr>
