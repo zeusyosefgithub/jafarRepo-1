@@ -8,6 +8,8 @@ import { FaHouseChimney } from "react-icons/fa6";
 import { FaUser } from "react-icons/fa";
 import { FaTruckFront } from "react-icons/fa6";
 import GetTrucks from "./getDocs";
+import { FaLocationDot } from "react-icons/fa6";
+
 
 
 
@@ -40,31 +42,31 @@ export const ComponentToPrint = React.forwardRef((props, ref) => {
 
     const GetConccertTypeArbic = () => {
         for (let index = 0; index < typesConccert?.length; index++) {
-            if(typesConccert[index]?.kinds_concrete_name === props?.inewInv?.invoices_kind_type_of_concrete){
+            if (typesConccert[index]?.kinds_concrete_name === props?.inewInv?.invoices_kind_type_of_concrete) {
                 return typesConccert[index]?.arbic;
-            }   
+            }
         }
     }
     const GetConccertTypeHebrow = () => {
         for (let index = 0; index < typesConccert?.length; index++) {
-            if(typesConccert[index]?.kinds_concrete_name === props?.inewInv?.invoices_kind_type_of_concrete){
+            if (typesConccert[index]?.kinds_concrete_name === props?.inewInv?.invoices_kind_type_of_concrete) {
                 return typesConccert[index]?.hebrow;
-            }   
+            }
         }
     }
 
     const GetRocktTypeArbic = () => {
         for (let index = 0; index < typesRocks?.length; index++) {
-            if(typesRocks[index]?.kinds_rocks_name === props?.inewInv?.invoices_kind_material){
+            if (typesRocks[index]?.kinds_rocks_name === props?.inewInv?.invoices_kind_material) {
                 return typesRocks[index]?.arbic;
-            }   
+            }
         }
     }
     const GetRockTypeHebrow = () => {
         for (let index = 0; index < typesRocks?.length; index++) {
-            if(typesRocks[index]?.kinds_rocks_name === props?.inewInv?.invoices_kind_material){
+            if (typesRocks[index]?.kinds_rocks_name === props?.inewInv?.invoices_kind_material) {
                 return typesRocks[index]?.hebrow;
-            }   
+            }
         }
     }
 
@@ -112,21 +114,21 @@ export const ComponentToPrint = React.forwardRef((props, ref) => {
                                             <td className="pb-3 text-base flex items-center"> رقم الفاتورة : {props.inewInv.invoices_id}</td>
                                         </tr>
                                         <tr >
-                                            <td className="p-1 text-sm flex items-center"> <FaUser className="ml-1" /> الزبون : {props.inewInv.invoices_customer_name}</td>
+                                            <td className="p-1 text-xs flex items-center"> <FaUser className="ml-1" /> الزبون : {props.inewInv.invoices_customer_name}</td>
                                         </tr>
                                         <tr>
-                                            <td className="p-1 text-sm flex items-center"> <FaHouseChimney className="ml-1" /> العنوان : {props.inewInv.invoices_customer_city}</td>
+                                            <td className="p-1 text-xs flex items-center"> <FaHouseChimney className="ml-1" /> العنوان : {props.inewInv.invoices_customer_city}</td>
                                         </tr>
                                         <tr>
-                                            <td className="p-1 text-sm flex items-center"> <svg className="ml-1" xmlns="http://www.w3.org/2000/svg" height="16" width="15" viewBox="0 0 576 512"><path d="M256 32H181.2c-27.1 0-51.3 17.1-60.3 42.6L3.1 407.2C1.1 413 0 419.2 0 425.4C0 455.5 24.5 480 54.6 480H256V416c0-17.7 14.3-32 32-32s32 14.3 32 32v64H521.4c30.2 0 54.6-24.5 54.6-54.6c0-6.2-1.1-12.4-3.1-18.2L455.1 74.6C446 49.1 421.9 32 394.8 32H320V96c0 17.7-14.3 32-32 32s-32-14.3-32-32V32zm64 192v64c0 17.7-14.3 32-32 32s-32-14.3-32-32V224c0-17.7 14.3-32 32-32s32 14.3 32 32z" /></svg> الشارع : {props.inewInv.invoices_customer_street}</td>
+                                            <td className="p-1 text-xs flex items-center"> <svg className="ml-1" xmlns="http://www.w3.org/2000/svg" height="16" width="15" viewBox="0 0 576 512"><path d="M256 32H181.2c-27.1 0-51.3 17.1-60.3 42.6L3.1 407.2C1.1 413 0 419.2 0 425.4C0 455.5 24.5 480 54.6 480H256V416c0-17.7 14.3-32 32-32s32 14.3 32 32v64H521.4c30.2 0 54.6-24.5 54.6-54.6c0-6.2-1.1-12.4-3.1-18.2L455.1 74.6C446 49.1 421.9 32 394.8 32H320V96c0 17.7-14.3 32-32 32s-32-14.3-32-32V32zm64 192v64c0 17.7-14.3 32-32 32s-32-14.3-32-32V224c0-17.7 14.3-32 32-32s32 14.3 32 32z" /></svg> الشارع : {props.inewInv.invoices_customer_street}</td>
                                         </tr>
                                         <tr>
-                                            <td className="p-1 text-sm flex items-center"> <FaPhone className="ml-1" /> الهاتف : {props.inewInv.invoices_customer_id}</td>
+                                            <td className="p-1 text-xs flex items-center"> <FaPhone className="ml-1" /> الهاتف : {props.inewInv.invoices_customer_id}</td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
-                            <div className="border-2 mr-3 ml-3 m-auto h-1/2 border-[#a1a1aa]"></div>
+                            <div className="border-2 mr-3 ml-3 m-auto h-32 border-[#a1a1aa]"></div>
                             <div className="invoic_propr">
                                 <table>
                                     <tbody>
@@ -134,14 +136,20 @@ export const ComponentToPrint = React.forwardRef((props, ref) => {
                                             <td className="pb-3 text-base flex items-center"> التاريخ : {props.inewInv.invoices_data}</td>
                                         </tr>
                                         <tr>
-                                            <td className="p-1 text-sm flex items-center"> <FaTruckFront className="ml-1" /> المضخة : {props.inewInv.invoices_pump}</td>
+                                            <td className="p-1 text-xs flex items-center"> <FaTruckFront className="ml-1" /> المضخة : {props.inewInv.invoices_pump}</td>
                                         </tr>
                                         <tr>
-                                            <td className="p-1 text-sm flex items-center"> <FaTruckFront className="ml-1" /> الخلاطة : {props.shippingList.truck_number}</td>
+                                            <td className="p-1 text-xs flex items-center"> <FaTruckFront className="ml-1" /> الخلاطة : {props.shippingList.truck_number}</td>
                                         </tr>
                                         <tr>
-                                            <td className="p-1 text-sm flex items-center"> <FaUser className="ml-1" /> السائق : {props.shippingList.driver_name}</td>
+                                            <td className="p-1 text-xs flex items-center"> <FaUser className="ml-1" /> السائق : {props.shippingList.driver_name}</td>
                                         </tr>
+                                        {
+                                            props.isLocated &&
+                                            <tr>
+                                                <td className="p-1 text-xs flex items-center"> <FaLocationDot className="ml-1" /> الموقع : {props.shippingList.location}</td>
+                                            </tr>
+                                        }
                                     </tbody>
                                 </table>
                             </div>
@@ -206,7 +214,7 @@ export const ComponentToPrint = React.forwardRef((props, ref) => {
                                 <tbody>
                                     <tr>
                                         <th>غادر في</th>
-                                        <th>{props.shippingList.shipping_date?.slice(0,5)}</th>
+                                        <th>{props.shippingList.shipping_date?.slice(0, 5)}</th>
                                     </tr>
                                     <tr>
                                         <td>وقت الوصول</td>
@@ -338,21 +346,21 @@ export const ComponentToPrint = React.forwardRef((props, ref) => {
                                             <td className="pb-3 text-base flex items-center"> הזמנה מספר : {props.inewInv.invoices_id}</td>
                                         </tr>
                                         <tr >
-                                            <td className="p-1 text-sm flex items-center"> <FaUser className="ml-1" /> לקוח : {props.inewInv.invoices_customer_name}</td>
+                                            <td className="p-1 text-xs flex items-center"> <FaUser className="ml-1" /> לקוח : {props.inewInv.invoices_customer_name}</td>
                                         </tr>
                                         <tr>
-                                            <td className="p-1 text-sm flex items-center"> <FaHouseChimney className="ml-1" /> כתובת : {props.inewInv.invoices_customer_city}</td>
+                                            <td className="p-1 text-xs flex items-center"> <FaHouseChimney className="ml-1" /> כתובת : {props.inewInv.invoices_customer_city}</td>
                                         </tr>
                                         <tr>
-                                            <td className="p-1 text-sm flex items-center"> <svg className="ml-1" xmlns="http://www.w3.org/2000/svg" height="16" width="15" viewBox="0 0 576 512"><path d="M256 32H181.2c-27.1 0-51.3 17.1-60.3 42.6L3.1 407.2C1.1 413 0 419.2 0 425.4C0 455.5 24.5 480 54.6 480H256V416c0-17.7 14.3-32 32-32s32 14.3 32 32v64H521.4c30.2 0 54.6-24.5 54.6-54.6c0-6.2-1.1-12.4-3.1-18.2L455.1 74.6C446 49.1 421.9 32 394.8 32H320V96c0 17.7-14.3 32-32 32s-32-14.3-32-32V32zm64 192v64c0 17.7-14.3 32-32 32s-32-14.3-32-32V224c0-17.7 14.3-32 32-32s32 14.3 32 32z" /></svg> רחוב : {props.inewInv.invoices_customer_street}</td>
+                                            <td className="p-1 text-xs flex items-center"> <svg className="ml-1" xmlns="http://www.w3.org/2000/svg" height="16" width="15" viewBox="0 0 576 512"><path d="M256 32H181.2c-27.1 0-51.3 17.1-60.3 42.6L3.1 407.2C1.1 413 0 419.2 0 425.4C0 455.5 24.5 480 54.6 480H256V416c0-17.7 14.3-32 32-32s32 14.3 32 32v64H521.4c30.2 0 54.6-24.5 54.6-54.6c0-6.2-1.1-12.4-3.1-18.2L455.1 74.6C446 49.1 421.9 32 394.8 32H320V96c0 17.7-14.3 32-32 32s-32-14.3-32-32V32zm64 192v64c0 17.7-14.3 32-32 32s-32-14.3-32-32V224c0-17.7 14.3-32 32-32s32 14.3 32 32z" /></svg> רחוב : {props.inewInv.invoices_customer_street}</td>
                                         </tr>
                                         <tr>
-                                            <td className="p-1 text-sm flex items-center"> <FaPhone className="ml-1" /> טלפון : {props.inewInv.invoices_customer_id}</td>
+                                            <td className="p-1 text-xs flex items-center"> <FaPhone className="ml-1" /> טלפון : {props.inewInv.invoices_customer_id}</td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
-                            <div className="border-2 mr-3 ml-3 m-auto h-1/2 border-[#a1a1aa]"></div>
+                            <div className="border-2 mr-3 ml-3 m-auto mt-4 h-32 border-[#a1a1aa]"></div>
                             <div className="invoic_propr">
                                 <table>
                                     <tbody>
@@ -360,14 +368,20 @@ export const ComponentToPrint = React.forwardRef((props, ref) => {
                                             <td className="pb-3 text-base flex items-center"> תאריך : {props.inewInv.invoices_data}</td>
                                         </tr>
                                         <tr>
-                                            <td className="p-1 text-sm flex items-center"> <FaTruckFront className="ml-1" /> משאבה : {props.inewInv.invoices_pump}</td>
+                                            <td className="p-1 text-xs flex items-center"> <FaTruckFront className="ml-1" /> משאבה : {props.inewInv.invoices_pump}</td>
                                         </tr>
                                         <tr>
-                                            <td className="p-1 text-sm flex items-center"> <FaTruckFront className="ml-1" /> מערבל : {props.shippingList.truck_number}</td>
+                                            <td className="p-1 text-xs flex items-center"> <FaTruckFront className="ml-1" /> מערבל : {props.shippingList.truck_number}</td>
                                         </tr>
                                         <tr>
-                                            <td className="p-1 text-sm flex items-center"> <FaUser className="ml-1" /> נהג : {props.shippingList.driver_name}</td>
+                                            <td className="p-1 text-xs flex items-center"> <FaUser className="ml-1" /> נהג : {props.shippingList.driver_name}</td>
                                         </tr>
+                                        {
+                                            props.isLocated &&
+                                            <tr>
+                                                <td className="p-1 text-xs flex items-center"> <FaLocationDot className="ml-1" /> מיקום : {props.shippingList.location}</td>
+                                            </tr>
+                                        }
                                     </tbody>
                                 </table>
                             </div>
@@ -440,7 +454,7 @@ export const ComponentToPrint = React.forwardRef((props, ref) => {
                                 <tbody>
                                     <tr>
                                         <th>יצאה בשעה</th>
-                                        <th>{props.shippingList.shipping_date?.slice(0,5)}</th>
+                                        <th>{props.shippingList.shipping_date?.slice(0, 5)}</th>
                                     </tr>
                                     <tr>
                                         <td>שעת הגעה</td>

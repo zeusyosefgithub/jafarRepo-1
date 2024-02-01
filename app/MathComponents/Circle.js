@@ -119,7 +119,7 @@ export default function Circle(typeTime, Time,list,kindSearch,listConncerts,firs
                 for (let index1 = 0; index1 < list?.length; index1++) {
                     if(searchdate[index] === list[index1]?.invoices_data){
                         if(list[index1]?.invoices_kind_type_of_concrete === val4){
-                            sum++;
+                            sum += parseFloat(list[index1]?.provide);
                         }          
                     }
                 }
@@ -198,12 +198,12 @@ export default function Circle(typeTime, Time,list,kindSearch,listConncerts,firs
             }
             else if(typeTime === 'محدد' && Time === 'شهر'){
                 for (let index = 0; index < types.length; index++) {
-                    SumAll.push(GetSum(types[index],firstDate).month);
+                    SumAll.push(GetSum(types[index],'1/' + firstDate).month);
                 }
             }
             else if(typeTime === 'محدد' && Time === 'سنة'){
                 for (let index = 0; index < types.length; index++) {
-                    SumAll.push(GetSum(types[index], firstDate).year);
+                    SumAll.push(GetSum(types[index],'1/1/' + firstDate).year);
                 }
             }
             else if (typeTime === 'محدد' && Time === 'من - الى') {
@@ -238,12 +238,12 @@ export default function Circle(typeTime, Time,list,kindSearch,listConncerts,firs
             }
             else if(typeTime === 'محدد' && Time === 'شهر'){
                 for (let index = 0; index < types.length; index++) {
-                    SumAll.push(GetSum(types[index],firstDate).month * GetConncertPrice(types[index]));
+                    SumAll.push(GetSum(types[index],'1/' + firstDate).month * GetConncertPrice(types[index]));
                 }
             }
             else if(typeTime === 'محدد' && Time === 'سنة'){
                 for (let index = 0; index < types.length; index++) {
-                    SumAll.push(GetSum(types[index], firstDate).year * GetConncertPrice(types[index]));
+                    SumAll.push(GetSum(types[index],'1/1/' + firstDate).year * GetConncertPrice(types[index]));
                 }
             }
             else if (typeTime === 'محدد' && Time === 'من - الى') {

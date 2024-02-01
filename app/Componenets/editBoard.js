@@ -126,7 +126,7 @@ export default function EditBoard(props) {
                 <div className="mb-10">
                     <div className="text-center text-xl border-r-4 border-[#334155] bg-gray-200">{index + 1} الطلبية رقم</div>
                     <div className="border-r-4 border-[#334155] bg-gray-200 pb-3 respon_shipping_edit_borad">
-                        <ComponentToPrint languge={isLanguge} currentTruck={index + 1} currentQuan={countShipps[index].current_quantity} shippingList={countShipps[index]} inewInv={valuesProvide[index]} ref={el => AllComponentsRefs.current[index] = el} />
+                        <ComponentToPrint isLocated={countShipps[index]?.location ? true : false} languge={isLanguge} currentTruck={index + 1} currentQuan={countShipps[index].current_quantity} shippingList={countShipps[index]} inewInv={valuesProvide[index]} ref={el => AllComponentsRefs.current[index] = el} />
                         <div className="flex justify-around mt-5 mb-5 items-center">
                             <div className="flex items-center">
                                 <label class="switch">

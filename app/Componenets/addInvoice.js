@@ -7,7 +7,7 @@ import FormBoxNewCus from "./formBoxNewCus";
 import GetTrucks from "./getDocs";
 import { Button } from "@nextui-org/button";
 import { IoMdArrowForward } from "react-icons/io";
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/react";
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Input } from "@nextui-org/react";
 
 
 
@@ -39,6 +39,11 @@ export default function AddInvoice() {
     const [errorKindCon, setErrorKindCon] = useState("");
     const collec = collection(firestore, "invoices");
     const AllCustomers = GetTrucks("customers");
+
+
+    const [disableByTypeCon,setDisableByTypeCon] = useState(false);
+    const [isAutoDate,setIsAutoDate] = useState(false);
+    const [autoDateVal,setAutoDateVal] = useState('');
 
     function handelShowDisablePump(isShow) {
         setShowPump(isShow)
@@ -106,13 +111,13 @@ export default function AddInvoice() {
                 invoices_customer_city: customer.customer_city,
                 invoices_quantity: quantityRef.current.value,
                 invoices_concretd_grade: concretdGradeRef.current.value,
-                invoices_kind_material: dropValue1.kinds_rocks_name,
+                invoices_kind_material: disableByTypeCon ? '---' : dropValue1.kinds_rocks_name,
                 invoices_kind_type_of_concrete: dropValue2.kinds_concrete_name,
                 invoices_kind_egree_of_Exposure: degreeOfExposureRef.current.value,
-                invoices_pump: pump,
+                invoices_pump: disableByTypeCon ? '---' : pump,
                 provide: 0,
                 stayed: quantityRef.current.value - 0,
-                invoices_data: currentdate
+                invoices_data: isAutoDate ? autoDateVal : currentdate
             };
         }
         else {
@@ -150,13 +155,13 @@ export default function AddInvoice() {
                 invoices_customer_city: customerCityRef.current.value,
                 invoices_quantity: quantityRef.current.value,
                 invoices_concretd_grade: concretdGradeRef.current.value,
-                invoices_kind_material: dropValue1.kinds_rocks_name,
+                invoices_kind_material: disableByTypeCon ? '---' : dropValue1.kinds_rocks_name,
                 invoices_kind_type_of_concrete: dropValue2.kinds_concrete_name,
                 invoices_kind_egree_of_Exposure: degreeOfExposureRef.current.value,
-                invoices_pump: pump,
+                invoices_pump: disableByTypeCon ? '---' : pump,
                 provide: 0,
                 stayed: quantityRef.current.value - 0,
-                invoices_data: currentdate
+                invoices_data: isAutoDate ? autoDateVal : currentdate
             };
         }
         setErrorCusQuant("");
@@ -175,11 +180,14 @@ export default function AddInvoice() {
         if (!degreeOfExposureRef.current.value) {
             return setErrorCusDegExp("!لم يتم ادخال ضغط البطون قيمة");
         }
-        if (!pump) {
+        if (!pump && !disableByTypeCon) {
             return setErrorPump("!لم يتم اختيار اي مضخة خرسانة");
         }
-        if (!dropValue1 || !dropValue2) {
-            return setErrorKindCon("!لم يتم اخيار نوع البطون");
+        if (!dropValue1 && !disableByTypeCon) {
+            return setErrorKindCon("!لم يتم اخيار نوع البطون او الصرار");
+        }
+        if (!dropValue2) {
+            return setErrorKindCon("!لم يتم اخيار نوع البطون او الصرار");
         }
         setErrorCusQuant("");
         setErrorCusConGrade("");
@@ -206,6 +214,7 @@ export default function AddInvoice() {
         setIsNewCus(true);
         setDropValue1(null);
         setDropValue2(null);
+        setDisableByTypeCon(false);
         concretdGradeRef.current.value = "";
         degreeOfExposureRef.current.value = "";
         quantityRef.current.value = "";
@@ -218,6 +227,15 @@ export default function AddInvoice() {
     const [dropValue2, setDropValue2] = useState(null);
 
 
+    const checkToDisable = (val) => {
+        if(val === 'طينة' || val === 'اسمنتيت' || val === 'هربتسا'){
+            setDisableByTypeCon(true);
+        }
+        else{
+            setDisableByTypeCon(false);
+        }
+    }
+
     return (
         <div className="rounded-3xl bg-[#f5f5f5] border-2 border-[#334155] p-10">
             {
@@ -228,6 +246,20 @@ export default function AddInvoice() {
             <div className="max-w- mx-auto">
                 <div>
                     <div>
+                        <div dir="rtl">
+                            {
+                                isAutoDate ?
+                                <Button onClick={() => setIsAutoDate(false)}>تاريخ يدوي</Button> :
+                                <Button onClick={() => setIsAutoDate(true)}>تاريخ تلقائي</Button>
+                            }
+                            {
+                                isAutoDate && 
+                                <div className="flex items-center">
+                                    <Input value={autoDateVal} onValueChange={(val) => {setAutoDateVal(val)}} color="primary" size="lg" className="w-1/4 m-5" label="تاريخ يدوي"/>
+                                    <div>تنبيه !! : التاريخ يجب ان يكون بدون اصفار في بداية الارقام مثال ({currentdate})</div>
+                                </div>
+                            }
+                        </div>
                         <div className="flex justify-end text-3xl mb-6 border-r-4 border-[#334155] bg-gray-300 p-3 mt-3 rounded-lg">المشتري</div>
                         {
                             !isNewCus && <div className="mb-5 flex justify-end">
@@ -252,9 +284,9 @@ export default function AddInvoice() {
                                             </div>
                                         </div>
                                         <div className="w-1/6">
-                                            <button onClick={() => setNewCus(null)} class="w-full bg-white border border-[#dc2626] hover:bg-gray-400 text-black font-bold py-2 px-4 rounded flex justify-around items-center">
-                                                <div className="text-xl font-bold text-[#dc2626]">ازالة</div>
-                                            </button>
+                                            <Button color="danger" variant="bordered" size="lg" onClick={() => setNewCus(null)}>
+                                                <div className="">ازالة</div>
+                                            </Button>
                                         </div>
                                     </div>
                                     :
@@ -343,19 +375,19 @@ export default function AddInvoice() {
                                                     </div>
                                                 </div>
                                                 <div className="w-1/6">
-                                                    <button onClick={() => setPump(null)} class="w-full bg-white border border-[#dc2626] hover:bg-gray-400 text-black font-bold py-2 px-4 rounded flex justify-around items-center">
-                                                        <div className="text-xl font-bold text-[#dc2626]">ازالة</div>
-                                                    </button>
+                                                    <Button color="danger" variant="bordered" size="lg" onClick={() => setPump(null)}>
+                                                        <div>ازالة</div>
+                                                    </Button>
                                                 </div>
                                             </div>
                                             :
                                             <div className="flex justify-center">
-                                                <button onClick={() => {setShowPump(true); setShowNewCus(false); }} class="bg-white border border-black hover:bg-gray-400 text-black font-bold py-2 px-4 rounded flex justify-around items-center">
+                                                <Button isDisabled={disableByTypeCon} size="lg" onClick={() => {setShowPump(true); setShowNewCus(false); }}>
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                                                     </svg>
                                                     <div className="font-bold">اختر مضخة</div>
-                                                </button>
+                                                </Button>
                                             </div>
                                     }
                                 </div>
@@ -363,6 +395,7 @@ export default function AddInvoice() {
                             <Dropdown dir="rtl" className="test-fontt">
                                 <DropdownTrigger>
                                     <Button
+                                        isDisabled={disableByTypeCon}
                                         size="lg"
                                         className="z-0 capitalize"
                                     >
@@ -400,7 +433,7 @@ export default function AddInvoice() {
                                 >
                                     {
                                         theList6.map(list => {
-                                            return <DropdownItem onClick={() => {setDropValue2(list) }} key={list.arbic}>{list.arbic}</DropdownItem>
+                                            return <DropdownItem onClick={() => {setDropValue2(list);checkToDisable(list.kinds_concrete_name);}} key={list.arbic}>{list.arbic}</DropdownItem>
                                         })
                                     }
                                 </DropdownMenu>

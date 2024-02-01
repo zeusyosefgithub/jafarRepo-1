@@ -14,6 +14,7 @@ import { ComponentToPrint } from "./Componenets/toPrint";
 import { useReactToPrint } from "react-to-print";
 import Report from "./Componenets/report";
 import { Button } from "@nextui-org/button";
+import { Input } from "@nextui-org/react";
 
 export default function Home() {
 
@@ -44,6 +45,10 @@ export default function Home() {
   const [currentRepoTable, setCurrentRepoTable] = useState(null);
   const [currentRepoCir, setCurrentRepoCir] = useState(null);
   const [currentRepoBar, setCurrentRepoBar] = useState(null);
+
+
+  const [isLocated,setIsLocated] = useState(false);
+  const [locationVal,setLocationVal] = useState('');
 
   var date = new Date();
   let year = date.getFullYear();
@@ -130,6 +135,8 @@ export default function Home() {
     setCheckClickedInv(false);
     setInvData(null);
     setidIn(null);
+    setIsLocated(false);
+    setLocationVal(null);
     clearColorData();
     setCurrentQuantity(currentQuantityRef.current?.value)
     currentQuantityRef.current && currentQuantityRef.current.value == "";
@@ -138,8 +145,16 @@ export default function Home() {
     content: () => componentRef.current,
   });
 
+  const currectShippId = () => {
+    let maxValue = 0;
+    for (let index = 0; index < listShippings?.length; index++) {
+        maxValue = Math.max(maxValue, listShippings[index]?.shipp_id)
+    }
+    return maxValue + 1;
+}
+
   const handelAddShpping = async () => {
-    let counterShipps = listShippings?.length + 1;
+    let counterShipps = currectShippId();
     setErrorMessageDriverTruck("");
     if (!truck || !driver) {
       return setErrorMessageDriverTruck("!لم يتم اختيار خلاطه او سائق");
@@ -155,7 +170,8 @@ export default function Home() {
         driver_name: driver,
         invoice_id: invData?.invoices_id,
         shipping_date: currenttime,
-        truck_number: truck
+        truck_number: truck,
+        location : isLocated ? locationVal : null
       };
       setCurrentQuantity(currentQuantityRef.current?.value);
       setShippingToPrint(shippingData);
@@ -233,7 +249,17 @@ export default function Home() {
                             <div className="p-3 flex justify-around text-3xl mt-10 mb-7 bg-gray-300"><div>الفاتورة رقم {idIn}</div><div>اضافة الارسالية رقم : 1</div></div>
                         }
 
-
+                        <div dir="rtl" className="mr-7 flex items-center">
+                          {
+                            isLocated ?
+                              <Button onClick={() => setIsLocated(false)}>اضافة موقع</Button> :
+                              <Button onClick={() => setIsLocated(true)}>بدون موقع</Button>
+                          }
+                          {
+                            isLocated &&
+                            <Input value={locationVal} onValueChange={(val) => { setLocationVal(val) }} color="primary" size="sm" className="w-1/4 m-5" label="اسم الموقع" />
+                          }
+                        </div>
                         <div className="flex justify-around w-full mt-7">
                           <div className="">
                             {
@@ -252,19 +278,19 @@ export default function Home() {
                                     </div>
                                   </div>
                                   <div className="w-1/3">
-                                    <button onClick={() => setDriver(null)} class="w-full bg-white border border-[#dc2626] hover:bg-gray-400 text-black font-bold py-2 px-4 rounded flex justify-around items-center">
+                                    <Button color="danger" variant="bordered" size="lg" onClick={() => setDriver(null)}>
                                       <div className="text-xl font-bold text-[#dc2626]">ازالة</div>
-                                    </button>
+                                    </Button>
                                   </div>
                                 </div>
                                 :
                                 <div className="">
-                                  <button onClick={() => { setShowDriver(true); setShowTruck(false); }} class="w-full bg-white border border-black hover:bg-gray-400 text-black font-bold py-2 px-4 rounded flex justify-around items-center">
+                                  <Button size="lg" onClick={() => { setShowDriver(true); setShowTruck(false); }}>
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                       <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                                     </svg>
                                     <div className="text-xl font-bold">اختر سائق</div>
-                                  </button>
+                                  </Button>
                                 </div>
                             }
 
@@ -283,19 +309,19 @@ export default function Home() {
                                     </div>
                                   </div>
                                   <div className="w-1/3">
-                                    <button onClick={() => setTruck(null)} class="w-full bg-white hover:bg-gray-400 border border-[#dc2626] text-black font-bold py-2 px-4 rounded flex justify-around items-center">
+                                    <Button color="danger" variant="bordered" size="lg" onClick={() => setTruck(null)} >
                                       <div className="text-xl font-bold text-[#dc2626]">ازالة</div>
-                                    </button>
+                                    </Button>
                                   </div>
                                 </div>
                                 :
                                 <div className="">
-                                  <button onClick={() => { setShowTruck(true); setShowDriver(false); }} class="w-full bg-white hover:bg-gray-400 border border-black text-black font-bold py-2 px-4 rounded flex justify-around items-center">
+                                  <Button size="lg" onClick={() => { setShowTruck(true); setShowDriver(false); }}>
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                       <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                                     </svg>
                                     <div className="text-xl font-bold">اختر الخلاطه</div>
-                                  </button>
+                                  </Button>
                                 </div>
                             }
                           </div>
@@ -353,7 +379,7 @@ export default function Home() {
                 </table>
                 {
                   checkClickedInv && <div className="hide_invioc">
-                    <ComponentToPrint inewInv={invData} shippingList={shippingToPrint} currentQuan={currentQuantity} languge={languge} ref={componentRef} />
+                    <ComponentToPrint isLocated={isLocated} inewInv={invData} shippingList={shippingToPrint} currentQuan={currentQuantity} languge={languge} ref={componentRef} />
                   </div>
                 }
               </div>

@@ -442,23 +442,23 @@ export default function QuantityPrice(val1, val2, Invoices, val4, price, dateSea
         let listYears = NumberMonthsWorks();
         return (((NumberAllInvoices(list, val) / listYears.length) * 10) - (((NumberAllInvoices(list, val) / listYears.length) * 10) % 1)) / 10;
     }
-    const GetMaxValueYear = (list, val) => {
+    const GetMaxValueYear = (list) => {
         let max = 0;
         let worksYears = NumberWorksYears();
         let maxInYear = 0;
         for (let index = 0; index < worksYears?.length; index++) {
             for (let index1 = 0; index1 < list?.length; index1++) {
-                if(list[index]?.invoices_kind_type_of_concrete === 'طينة' && val4 === 'طينة مبلولة'){
-                    if(parseFloat(list[index]?.invoices_concretd_grade) != 0){
+                if(list[index1]?.invoices_kind_type_of_concrete === 'طينة' && val4 === 'طينة مبلولة'){
+                    if(parseFloat(list[index1]?.invoices_concretd_grade) != 0){
                         maxInYear += parseFloat(list[index1]?.provide);
                     }
                 }
-                else if(list[index]?.invoices_kind_type_of_concrete === 'طينة' && val4 === 'طينة ناشفة'){
-                    if(parseFloat(list[index]?.invoices_concretd_grade) == 0){
+                else if(list[index1]?.invoices_kind_type_of_concrete === 'طينة' && val4 === 'طينة ناشفة'){
+                    if(parseFloat(list[index1]?.invoices_concretd_grade) == 0){
                         maxInYear += parseFloat(list[index1]?.provide);
                     }
                 }
-                else if(list[index]?.invoices_kind_type_of_concrete === val4) {
+                else if(list[index1]?.invoices_kind_type_of_concrete === val4) {
                     maxInYear += parseFloat(list[index1]?.provide);
                 }
             }
@@ -467,23 +467,23 @@ export default function QuantityPrice(val1, val2, Invoices, val4, price, dateSea
         }
         return max;
     }
-    const GetMinValueYear = (list, val) => {
+    const GetMinValueYear = (list) => {
         let min = 9999999;
         let worksYears = NumberWorksYears();
         let maxInYear = 0;
         for (let index = 0; index < worksYears?.length; index++) {
             for (let index1 = 0; index1 < list?.length; index1++) {
-                if(list[index]?.invoices_kind_type_of_concrete === 'طينة' && val4 === 'طينة مبلولة'){
-                    if(parseFloat(list[index]?.invoices_concretd_grade) != 0){
+                if(list[index1]?.invoices_kind_type_of_concrete === 'طينة' && val4 === 'طينة مبلولة'){
+                    if(parseFloat(list[index1]?.invoices_concretd_grade) != 0){
                         maxInYear += parseFloat(list[index1]?.provide);
                     }
                 }
-                else if(list[index]?.invoices_kind_type_of_concrete === 'طينة' && val4 === 'طينة ناشفة'){
-                    if(parseFloat(list[index]?.invoices_concretd_grade) == 0){
+                else if(list[index1]?.invoices_kind_type_of_concrete === 'طينة' && val4 === 'طينة ناشفة'){
+                    if(parseFloat(list[index1]?.invoices_concretd_grade) == 0){
                         maxInYear += parseFloat(list[index1]?.provide);
                     }
                 }
-                else if(list[index]?.invoices_kind_type_of_concrete === val4) {
+                else if(list[index1]?.invoices_kind_type_of_concrete === val4) {
                     maxInYear += parseFloat(list[index1]?.provide);
                 }
             }
@@ -579,6 +579,12 @@ export default function QuantityPrice(val1, val2, Invoices, val4, price, dateSea
                 if (val4 === sortedList[index]?.invoices_kind_type_of_concrete) {
                     sum += parseFloat(sortedList[index]?.provide);
                 }
+                else if(parseFloat(sortedList[index]?.invoices_concretd_grade) != 0 && val4 === 'طينة مبلولة' && sortedList[index]?.invoices_kind_type_of_concrete === 'طينة'){
+                    sum += parseFloat(sortedList[index]?.provide);
+                }
+                else if(parseFloat(sortedList[index]?.invoices_concretd_grade) == 0 && val4 === 'طينة ناشفة' && sortedList[index]?.invoices_kind_type_of_concrete === 'طينة'){
+                    sum += parseFloat(sortedList[index]?.provide);
+                }
             }
             return QuanOrPrice != 0 && (
                 <>
@@ -656,577 +662,4 @@ export default function QuantityPrice(val1, val2, Invoices, val4, price, dateSea
     }
 
     return GetNumberInvoices();
-
-
-
-    // if (val4 === 'كمية بطون 300 (كوب)') {
-    //     if (val3 === 'sum') {
-    //         return GetNumberInvoices(val1, val2,'300').sum;
-    //     }
-    //     else if (val3 === 'avg') {
-    //         return GetNumberInvoices(val1, val2,'300').avg;
-    //     }
-    //     else if (val3 === 'max') {
-    //         return GetNumberInvoices(val1, val2,'300').max;
-    //     }
-    //     else {
-    //         return GetNumberInvoices(val1, val2,'300').min;
-    //     }
-
-    // }
-    // else if (val4 === 'سعر بطون 300') {
-    //     if (val3 === 'sum') {
-    //         return GetNumberInvoices(val1, val2).sum;
-    //     }
-    //     else if (val3 === 'avg') {
-    //         return GetNumberInvoices(val1, val2).avg;
-    //     }
-    //     else if (val3 === 'max') {
-    //         return GetNumberInvoices(val1, val2).max;
-    //     }
-    //     else {
-    //         return GetNumberInvoices(val1, val2).min;
-    //     }
-
-    // }
-    // else if (val4 === 'كمية بطون 400 (كوب)') {
-    //     if (val3 === 'sum') {
-    //         return GetNumberInvoices(val1, val2,'400').sum;
-    //     }
-    //     else if (val3 === 'avg') {
-    //         return GetNumberInvoices(val1, val2,'400').avg;
-    //     }
-    //     else if (val3 === 'max') {
-    //         return GetNumberInvoices(val1, val2,'400').max;
-    //     }
-    //     else {
-    //         return GetNumberInvoices(val1, val2,'400').min;
-    //     }
-
-    // }
-    // else if (val4 === 'سعر بطون 400') {
-    //     if (val3 === 'sum') {
-    //         return GetNumberInvoices(val1, val2).sum;
-    //     }
-    //     else if (val3 === 'avg') {
-    //         return GetNumberInvoices(val1, val2).avg;
-    //     }
-    //     else if (val3 === 'max') {
-    //         return GetNumberInvoices(val1, val2).max;
-    //     }
-    //     else {
-    //         return GetNumberInvoices(val1, val2).min;
-    //     }
-
-    // }
-    // else if (val4 === 'كمية اسمنتيت (كوب)') {
-    //     if (val3 === 'sum') {
-    //         return GetNumberInvoices(val1, val2).sum;
-    //     }
-    //     else if (val3 === 'avg') {
-    //         return GetNumberInvoices(val1, val2).avg;
-    //     }
-    //     else if (val3 === 'max') {
-    //         return GetNumberInvoices(val1, val2).max;
-    //     }
-    //     else {
-    //         return GetNumberInvoices(val1, val2).min;
-    //     }
-
-    // }
-    // else if (val4 === 'سعر اسمنتيت') {
-    //     if (val3 === 'sum') {
-    //         return GetNumberInvoices(val1, val2).sum;
-    //     }
-    //     else if (val3 === 'avg') {
-    //         return GetNumberInvoices(val1, val2).avg;
-    //     }
-    //     else if (val3 === 'max') {
-    //         return GetNumberInvoices(val1, val2).max;
-    //     }
-    //     else {
-    //         return GetNumberInvoices(val1, val2).min;
-    //     }
-
-    // }
-    // else if (val4 === 'كمية هربتسا (كوب)') {
-    //     if (val3 === 'sum') {
-    //         return GetNumberInvoices(val1, val2).sum;
-    //     }
-    //     else if (val3 === 'avg') {
-    //         return GetNumberInvoices(val1, val2).avg;
-    //     }
-    //     else if (val3 === 'max') {
-    //         return GetNumberInvoices(val1, val2).max;
-    //     }
-    //     else {
-    //         return GetNumberInvoices(val1, val2).min;
-    //     }
-
-    // }
-    // else if (val4 === 'سعر هربتسا') {
-    //     if (val3 === 'sum') {
-    //         return GetNumberInvoices(val1, val2).sum;
-    //     }
-    //     else if (val3 === 'avg') {
-    //         return GetNumberInvoices(val1, val2).avg;
-    //     }
-    //     else if (val3 === 'max') {
-    //         return GetNumberInvoices(val1, val2).max;
-    //     }
-    //     else {
-    //         return GetNumberInvoices(val1, val2).min;
-    //     }
-
-    // }
-    // else if (val4 === 'كمية طينة مبلولة (كوب)') {
-    //     if (val3 === 'sum') {
-    //         return GetNumberInvoices(val1, val2).sum;
-    //     }
-    //     else if (val3 === 'avg') {
-    //         return GetNumberInvoices(val1, val2).avg;
-    //     }
-    //     else if (val3 === 'max') {
-    //         return GetNumberInvoices(val1, val2).max;
-    //     }
-    //     else {
-    //         return GetNumberInvoices(val1, val2).min;
-    //     }
-
-    // }
-    // else if (val4 === 'سعر طينة مبلولة') {
-    //     if (val3 === 'sum') {
-    //         return GetNumberInvoices(val1, val2).sum;
-    //     }
-    //     else if (val3 === 'avg') {
-    //         return GetNumberInvoices(val1, val2).avg;
-    //     }
-    //     else if (val3 === 'max') {
-    //         return GetNumberInvoices(val1, val2).max;
-    //     }
-    //     else {
-    //         return GetNumberInvoices(val1, val2).min;
-    //     }
-
-    // }
-    // else if (val4 === 'كمية طينة ناشفة (كوب)') {
-    //     if (val3 === 'sum') {
-    //         return GetNumberInvoices(val1, val2).sum;
-    //     }
-    //     else if (val3 === 'avg') {
-    //         return GetNumberInvoices(val1, val2).avg;
-    //     }
-    //     else if (val3 === 'max') {
-    //         return GetNumberInvoices(val1, val2).max;
-    //     }
-    //     else {
-    //         return GetNumberInvoices(val1, val2).min;
-    //     }
-
-    // }
-    // else if (val4 === 'سعر طينة ناشفة') {
-    //     if (val3 === 'sum') {
-    //         return GetNumberInvoices(val1, val2).sum;
-    //     }
-    //     else if (val3 === 'avg') {
-    //         return GetNumberInvoices(val1, val2).avg;
-    //     }
-    //     else if (val3 === 'max') {
-    //         return GetNumberInvoices(val1, val2).max;
-    //     }
-    //     else {
-    //         return GetNumberInvoices(val1, val2).min;
-    //     }
-
-    // }
-    // else if (val4 === 'كمية اسمنت اسود (طن)') {
-    //     if (val3 === 'sum') {
-    //         return GetNumberInvoices(val1, val2).sum;
-    //     }
-    //     else if (val3 === 'avg') {
-    //         return GetNumberInvoices(val1, val2).avg;
-    //     }
-    //     else if (val3 === 'max') {
-    //         return GetNumberInvoices(val1, val2).max;
-    //     }
-    //     else {
-    //         return GetNumberInvoices(val1, val2).min;
-    //     }
-
-    // }
-    // else if (val4 === 'كمية اسمنت اسود (كيلو)') {
-    //     if (val3 === 'sum') {
-    //         return GetNumberInvoices(val1, val2).sum;
-    //     }
-    //     else if (val3 === 'avg') {
-    //         return GetNumberInvoices(val1, val2).avg;
-    //     }
-    //     else if (val3 === 'max') {
-    //         return GetNumberInvoices(val1, val2).max;
-    //     }
-    //     else {
-    //         return GetNumberInvoices(val1, val2).min;
-    //     }
-
-    // }
-    // else if (val4 === 'سعر اسمنت اسود') {
-    //     if (val3 === 'sum') {
-    //         return GetNumberInvoices(val1, val2).sum;
-    //     }
-    //     else if (val3 === 'avg') {
-    //         return GetNumberInvoices(val1, val2).avg;
-    //     }
-    //     else if (val3 === 'max') {
-    //         return GetNumberInvoices(val1, val2).max;
-    //     }
-    //     else {
-    //         return GetNumberInvoices(val1, val2).min;
-    //     }
-
-    // }
-    // else if (val4 === 'كمية عدس (طن)') {
-    //     if (val3 === 'sum') {
-    //         return GetNumberInvoices(val1, val2).sum;
-    //     }
-    //     else if (val3 === 'avg') {
-    //         return GetNumberInvoices(val1, val2).avg;
-    //     }
-    //     else if (val3 === 'max') {
-    //         return GetNumberInvoices(val1, val2).max;
-    //     }
-    //     else {
-    //         return GetNumberInvoices(val1, val2).min;
-    //     }
-
-    // }
-    // else if (val4 === 'كمية عدس (كيلو)') {
-    //     if (val3 === 'sum') {
-    //         return GetNumberInvoices(val1, val2).sum;
-    //     }
-    //     else if (val3 === 'avg') {
-    //         return GetNumberInvoices(val1, val2).avg;
-    //     }
-    //     else if (val3 === 'max') {
-    //         return GetNumberInvoices(val1, val2).max;
-    //     }
-    //     else {
-    //         return GetNumberInvoices(val1, val2).min;
-    //     }
-
-    // }
-    // else if (val4 === 'سعر عدس') {
-    //     if (val3 === 'sum') {
-    //         return GetNumberInvoices(val1, val2).sum;
-    //     }
-    //     else if (val3 === 'avg') {
-    //         return GetNumberInvoices(val1, val2).avg;
-    //     }
-    //     else if (val3 === 'max') {
-    //         return GetNumberInvoices(val1, val2).max;
-    //     }
-    //     else {
-    //         return GetNumberInvoices(val1, val2).min;
-    //     }
-
-    // }
-    // else if (val4 === 'كمية سمسم (طن)') {
-    //     if (val3 === 'sum') {
-    //         return GetNumberInvoices(val1, val2).sum;
-    //     }
-    //     else if (val3 === 'avg') {
-    //         return GetNumberInvoices(val1, val2).avg;
-    //     }
-    //     else if (val3 === 'max') {
-    //         return GetNumberInvoices(val1, val2).max;
-    //     }
-    //     else {
-    //         return GetNumberInvoices(val1, val2).min;
-    //     }
-
-    // }
-    // else if (val4 === 'كمية سمسم (كيلو)') {
-    //     if (val3 === 'sum') {
-    //         return GetNumberInvoices(val1, val2).sum;
-    //     }
-    //     else if (val3 === 'avg') {
-    //         return GetNumberInvoices(val1, val2).avg;
-    //     }
-    //     else if (val3 === 'max') {
-    //         return GetNumberInvoices(val1, val2).max;
-    //     }
-    //     else {
-    //         return GetNumberInvoices(val1, val2).min;
-    //     }
-
-    // }
-    // else if (val4 === 'سعر سمسم') {
-    //     if (val3 === 'sum') {
-    //         return GetNumberInvoices(val1, val2).sum;
-    //     }
-    //     else if (val3 === 'avg') {
-    //         return GetNumberInvoices(val1, val2).avg;
-    //     }
-    //     else if (val3 === 'max') {
-    //         return GetNumberInvoices(val1, val2).max;
-    //     }
-    //     else {
-    //         return GetNumberInvoices(val1, val2).min;
-    //     }
-
-    // }
-    // else if (val4 === 'كمية فولية (طن)') {
-    //     if (val3 === 'sum') {
-    //         return GetNumberInvoices(val1, val2).sum;
-    //     }
-    //     else if (val3 === 'avg') {
-    //         return GetNumberInvoices(val1, val2).avg;
-    //     }
-    //     else if (val3 === 'max') {
-    //         return GetNumberInvoices(val1, val2).max;
-    //     }
-    //     else {
-    //         return GetNumberInvoices(val1, val2).min;
-    //     }
-
-    // }
-    // else if (val4 === 'كمية فولية (كيلو)') {
-    //     if (val3 === 'sum') {
-    //         return GetNumberInvoices(val1, val2).sum;
-    //     }
-    //     else if (val3 === 'avg') {
-    //         return GetNumberInvoices(val1, val2).avg;
-    //     }
-    //     else if (val3 === 'max') {
-    //         return GetNumberInvoices(val1, val2).max;
-    //     }
-    //     else {
-    //         return GetNumberInvoices(val1, val2).min;
-    //     }
-
-    // }
-    // else if (val4 === 'سعر فولية') {
-    //     if (val3 === 'sum') {
-    //         return GetNumberInvoices(val1, val2).sum;
-    //     }
-    //     else if (val3 === 'avg') {
-    //         return GetNumberInvoices(val1, val2).avg;
-    //     }
-    //     else if (val3 === 'max') {
-    //         return GetNumberInvoices(val1, val2).max;
-    //     }
-    //     else {
-    //         return GetNumberInvoices(val1, val2).min;
-    //     }
-
-    // }
-    // else if (val4 === 'كمية رمل (طن)') {
-    //     if (val3 === 'sum') {
-    //         return GetNumberInvoices(val1, val2).sum;
-    //     }
-    //     else if (val3 === 'avg') {
-    //         return GetNumberInvoices(val1, val2).avg;
-    //     }
-    //     else if (val3 === 'max') {
-    //         return GetNumberInvoices(val1, val2).max;
-    //     }
-    //     else {
-    //         return GetNumberInvoices(val1, val2).min;
-    //     }
-
-    // }
-    // else if (val4 === 'كمية رمل (كيلو)') {
-    //     if (val3 === 'sum') {
-    //         return GetNumberInvoices(val1, val2).sum;
-    //     }
-    //     else if (val3 === 'avg') {
-    //         return GetNumberInvoices(val1, val2).avg;
-    //     }
-    //     else if (val3 === 'max') {
-    //         return GetNumberInvoices(val1, val2).max;
-    //     }
-    //     else {
-    //         return GetNumberInvoices(val1, val2).min;
-    //     }
-
-    // }
-    // else if (val4 === 'سعر رمل') {
-    //     if (val3 === 'sum') {
-    //         return GetNumberInvoices(val1, val2).sum;
-    //     }
-    //     else if (val3 === 'avg') {
-    //         return GetNumberInvoices(val1, val2).avg;
-    //     }
-    //     else if (val3 === 'max') {
-    //         return GetNumberInvoices(val1, val2).max;
-    //     }
-    //     else {
-    //         return GetNumberInvoices(val1, val2).min;
-    //     }
-
-    // }
-    // else if (val4 === 'كمية ناعمة (طن)') {
-    //     if (val3 === 'sum') {
-    //         return GetNumberInvoices(val1, val2).sum;
-    //     }
-    //     else if (val3 === 'avg') {
-    //         return GetNumberInvoices(val1, val2).avg;
-    //     }
-    //     else if (val3 === 'max') {
-    //         return GetNumberInvoices(val1, val2).max;
-    //     }
-    //     else {
-    //         return GetNumberInvoices(val1, val2).min;
-    //     }
-
-    // }
-    // else if (val4 === 'كمية ناعمة (كيلو)') {
-    //     if (val3 === 'sum') {
-    //         return GetNumberInvoices(val1, val2).sum;
-    //     }
-    //     else if (val3 === 'avg') {
-    //         return GetNumberInvoices(val1, val2).avg;
-    //     }
-    //     else if (val3 === 'max') {
-    //         return GetNumberInvoices(val1, val2).max;
-    //     }
-    //     else {
-    //         return GetNumberInvoices(val1, val2).min;
-    //     }
-
-    // }
-    // else if (val4 === 'سعر ناعمة') {
-    //     if (val3 === 'sum') {
-    //         return GetNumberInvoices(val1, val2).sum;
-    //     }
-    //     else if (val3 === 'avg') {
-    //         return GetNumberInvoices(val1, val2).avg;
-    //     }
-    //     else if (val3 === 'max') {
-    //         return GetNumberInvoices(val1, val2).max;
-    //     }
-    //     else {
-    //         return GetNumberInvoices(val1, val2).min;
-    //     }
-
-    // }
-    // else if (val4 === 'كمية ماء (كوب)') {
-    //     if (val3 === 'sum') {
-    //         return GetNumberInvoices(val1, val2).sum;
-    //     }
-    //     else if (val3 === 'avg') {
-    //         return GetNumberInvoices(val1, val2).avg;
-    //     }
-    //     else if (val3 === 'max') {
-    //         return GetNumberInvoices(val1, val2).max;
-    //     }
-    //     else {
-    //         return GetNumberInvoices(val1, val2).min;
-    //     }
-
-    // }
-    // else if (val4 === 'كمية ماء (لتر)') {
-    //     if (val3 === 'sum') {
-    //         return GetNumberInvoices(val1, val2).sum;
-    //     }
-    //     else if (val3 === 'avg') {
-    //         return GetNumberInvoices(val1, val2).avg;
-    //     }
-    //     else if (val3 === 'max') {
-    //         return GetNumberInvoices(val1, val2).max;
-    //     }
-    //     else {
-    //         return GetNumberInvoices(val1, val2).min;
-    //     }
-
-    // }
-    // else if (val4 === 'سعر ماء') {
-    //     if (val3 === 'sum') {
-    //         return GetNumberInvoices(val1, val2).sum;
-    //     }
-    //     else if (val3 === 'avg') {
-    //         return GetNumberInvoices(val1, val2).avg;
-    //     }
-    //     else if (val3 === 'max') {
-    //         return GetNumberInvoices(val1, val2).max;
-    //     }
-    //     else {
-    //         return GetNumberInvoices(val1, val2).min;
-    //     }
-
-    // }
-    // else if (val4 === 'كمية ماء (كوب)') {
-    //     if (val3 === 'sum') {
-    //         return GetNumberInvoices(val1, val2).sum;
-    //     }
-    //     else if (val3 === 'avg') {
-    //         return GetNumberInvoices(val1, val2).avg;
-    //     }
-    //     else if (val3 === 'max') {
-    //         return GetNumberInvoices(val1, val2).max;
-    //     }
-    //     else {
-    //         return GetNumberInvoices(val1, val2).min;
-    //     }
-
-    // }
-    // else if (val4 === 'كمية مودراغ (لتر)') {
-    //     if (val3 === 'sum') {
-    //         return GetNumberInvoices(val1, val2).sum;
-    //     }
-    //     else if (val3 === 'avg') {
-    //         return GetNumberInvoices(val1, val2).avg;
-    //     }
-    //     else if (val3 === 'max') {
-    //         return GetNumberInvoices(val1, val2).max;
-    //     }
-    //     else {
-    //         return GetNumberInvoices(val1, val2).min;
-    //     }
-
-    // }
-    // else if (val4 === 'سعر مودراغ') {
-    //     if (val3 === 'sum') {
-    //         return GetNumberInvoices(val1, val2).sum;
-    //     }
-    //     else if (val3 === 'avg') {
-    //         return GetNumberInvoices(val1, val2).avg;
-    //     }
-    //     else if (val3 === 'max') {
-    //         return GetNumberInvoices(val1, val2).max;
-    //     }
-    //     else {
-    //         return GetNumberInvoices(val1, val2).min;
-    //     }
-
-    // }
-    // else if (val4 === 'كمية سوبر (كوب)') {
-    //     if (val3 === 'sum') {
-    //         return GetNumberInvoices(val1, val2).sum;
-    //     }
-    //     else if (val3 === 'avg') {
-    //         return GetNumberInvoices(val1, val2).avg;
-    //     }
-    //     else if (val3 === 'max') {
-    //         return GetNumberInvoices(val1, val2).max;
-    //     }
-    //     else {
-    //         return GetNumberInvoices(val1, val2).min;
-    //     }
-
-    // }
-    // else if (val4 === 'كمية سوبر (لتر)') {
-    //     if (val3 === 'sum') {
-    //         return GetNumberInvoices(val1, val2).sum;
-    //     }
-    //     else if (val3 === 'avg') {
-    //         return GetNumberInvoices(val1, val2).avg;
-    //     }
-    //     else if (val3 === 'max') {
-    //         return GetNumberInvoices(val1, val2).max;
-    //     }
-    //     else {
-    //         return GetNumberInvoices(val1, val2).min;
-    //     }
-
-    // }
 }
