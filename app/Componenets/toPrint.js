@@ -29,6 +29,7 @@ export const ComponentToPrint = React.forwardRef((props, ref) => {
     const shipps = GetTrucks("shipping");
     const typesConccert = GetTrucks('kinds concrete');
     const typesRocks = GetTrucks('kinds rocks');
+    const Drivers = GetTrucks('drivers');
 
     const getNumberShipp = () => {
         let count = 0;
@@ -66,6 +67,14 @@ export const ComponentToPrint = React.forwardRef((props, ref) => {
         for (let index = 0; index < typesRocks?.length; index++) {
             if (typesRocks[index]?.kinds_rocks_name === props?.inewInv?.invoices_kind_material) {
                 return typesRocks[index]?.hebrow;
+            }
+        }
+    }
+
+    const GetDriverNameArbic = () => {
+        for (let index = 0; index < Drivers?.length; index++) {
+            if(Drivers[index]?.driver_name === props.shippingList?.driver_name){
+                return Drivers[index]?.arbic;
             }
         }
     }
@@ -142,7 +151,7 @@ export const ComponentToPrint = React.forwardRef((props, ref) => {
                                             <td className="p-1 text-xs flex items-center"> <FaTruckFront className="ml-1" /> الخلاطة : {props.shippingList.truck_number}</td>
                                         </tr>
                                         <tr>
-                                            <td className="p-1 text-xs flex items-center"> <FaUser className="ml-1" /> السائق : {props.shippingList.driver_name}</td>
+                                            <td className="p-1 text-xs flex items-center"> <FaUser className="ml-1" /> السائق : {GetDriverNameArbic()}</td>
                                         </tr>
                                         {
                                             props.isLocated &&

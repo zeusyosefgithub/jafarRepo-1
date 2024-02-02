@@ -943,7 +943,7 @@ export default function AllLists(props) {
                                                         {
                                                             theList5.map(list => {
                                                                 return <tr className="pointer_line">
-                                                                    <th className="text-base"><div className="flex justify-around items-center">{list.kinds_rocks_name}<FaTrash onClick={() => deleteKinRuck(list.id)} className="hover:text-[#dc2626] cursor-pointer" /></div></th>
+                                                                    <th className="text-base"><div className="flex justify-around items-center">{list.kinds_rocks_name}</div></th>
                                                                 </tr>
                                                             })
                                                         }
@@ -963,7 +963,7 @@ export default function AllLists(props) {
                                                             {
                                                                 theList6.map(list => {
                                                                     return <tr className="pointer_line">
-                                                                        <th className="text-base"><div className="flex justify-around items-center">{list.kinds_concrete_name}<FaTrash onClick={() => deleteKinCon(list.id)} className="hover:text-[#dc2626] cursor-pointer" /></div></th>
+                                                                        <th className="text-base"><div className="flex justify-around items-center">{list.kinds_concrete_name}</div></th>
                                                                     </tr>
                                                                 })
                                                             }

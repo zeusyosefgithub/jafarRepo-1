@@ -4,12 +4,19 @@ import { FiPlus } from "react-icons/fi";
 import GetTrucks from './getDocs';
 import { TbReportAnalytics } from "react-icons/tb";
 import FormBoxReport from './formBoxReport';
+import { deleteDoc, doc } from 'firebase/firestore';
+import { firestore } from '../FireBase/firebase';
 
 export default function Reports(props) {
 
     const listInvoices = GetTrucks('invoices');
     const [showReport,setShowReport] = useState(false);
     const Reports = GetTrucks('ReportsChoises');
+
+    const deleteReport = async(id) => {
+        await deleteDoc(doc(firestore, "ReportsChoises", id))
+    }
+
     return (
         <div className=''>
             {
@@ -39,7 +46,7 @@ export default function Reports(props) {
                             {
                                 Reports.map((rep,i) => {
                                     return <tr>
-                                        <th><Button onClick={() => props.TakeRepo(rep)}>عرض</Button></th>
+                                        <th><div className='flex justify-around'><Button color="danger" variant="bordered" size='sm' onClick={() => {deleteReport(rep.id)}}>حذف</Button><Button size='sm' onClick={() => props.TakeRepo(rep)}>عرض</Button></div></th>
                                         <th>{rep.record_time} - {rep.type_time}</th>
                                         <th>{rep.kind}</th>
                                         <th>{rep.RebortName}</th>

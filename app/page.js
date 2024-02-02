@@ -387,7 +387,8 @@ export default function Home() {
           </div>
           <div className="m-10"></div>
           <div className="w-full flex">
-            <div className="w-1/2"><Reports TakeRepo={(repo) => {repo.kind === 'جدول' ? setCurrentRepoTable(repo) : repo.kind === 'دائرة' ? setCurrentRepoCir(repo) : setCurrentRepoBar(repo) }} /></div>
+            <div className="w-full">
+              <Reports TakeRepo={(repo) => {repo.kind === 'جدول' ? setCurrentRepoTable(repo) : repo.kind === 'دائرة' ? setCurrentRepoCir(repo) : setCurrentRepoBar(repo) }} /></div>
             <div className="m-4"></div>
           </div>
         </div>

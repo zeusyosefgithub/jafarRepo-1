@@ -19,11 +19,13 @@ export default function AddDriver() {
     const driverNameRef = useRef();
     const [errorDriverName,setErrorDriverName] = useState("");
     const driverDiscRef = useRef();
+    const driverNameArbicRef = useRef();
 
     const resetAll = () => {
         driverIdRef.current.value = "";
         driverNameRef.current.value = "";
         driverDiscRef.current.value = "";
+        driverNameArbicRef.current.value = "";
     }
 
     const handelAddPrint = async() => {
@@ -42,7 +44,8 @@ export default function AddDriver() {
         let newData = {
             driver_id: driverIdRef.current.value,
             driver_name: driverNameRef.current.value,
-            driver_disc: driverDiscRef.current.value
+            driver_disc: driverDiscRef.current.value,
+            arbic: driverNameArbicRef.current.value
         };
         try{
             await addDoc(collec,newData);
@@ -61,12 +64,16 @@ export default function AddDriver() {
             
             <div className="max-w- mx-auto">
                 <div className="relative z-0 w-full mt-10 mb-10 group">
-                    <input ref={driverNameRef} dir="rtl" type="text" name="driverName" id="driverName" className="block py-2.5 px-0 w-full text-xl text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-black peer" placeholder="اسم السائق" required />
+                    <input ref={driverNameRef} dir="rtl" type="text" name="driverName" id="driverName" className="block py-2.5 px-0 w-full text-xl text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-black peer" placeholder="اسم السائق بالعبري" required />
                     <label dir="rtl" htmlFor="driverName" className="peer-focus:font-medium absolute text-2xl text-black dark:text-gray-400 duration-300 transform -translate-y-0 scale-75 top-0 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-black peer-focus:dark:text-black peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-10 text-right w-full"/>
                 </div>
                 <div className="relative z-0 w-full mt-10 mb-10 group">
                     <input ref={driverIdRef} dir="rtl" type="number" name="driverId" id="driverId" className="block py-2.5 px-0 w-full text-xl text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-black peer" placeholder="رقم السائق" required />
                     <label dir="rtl" htmlFor="driverId" className="peer-focus:font-medium absolute text-2xl text-black dark:text-gray-400 duration-300 transform -translate-y-0 scale-75 top-0 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-black peer-focus:dark:text-black peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-12 peer-focus:text-2xl text-right w-full"/>
+                </div>
+                <div className="relative z-0 w-full mt-10 mb-10 group">
+                    <input ref={driverNameArbicRef} dir="rtl" type="number" name="driverNameArbic" id="driverNameArbic" className="block py-2.5 px-0 w-full text-xl text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-black peer" placeholder="اسم السائق بالعربي"/>
+                    <label dir="rtl" htmlFor="driverNameArbic" className="peer-focus:font-medium absolute text-2xl text-black dark:text-gray-400 duration-300 transform -translate-y-0 scale-75 top-0 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-black peer-focus:dark:text-black peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-12 peer-focus:text-2xl text-right w-full"/>
                 </div>
                 <div className="relative z-0 w-full mt-10 mb-10 group">
                     <input ref={driverDiscRef} dir="rtl" type="number" name="driverDisc" id="driverDisc" className="block py-2.5 px-0 w-full text-xl text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-black peer" placeholder="ملاحظات اخرى (غير اجباري)"/>
