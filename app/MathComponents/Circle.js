@@ -3,7 +3,7 @@ import { Bar } from "react-chartjs-2";
 import { Pie } from "react-chartjs-2";
 import { Chart as chartJS } from 'chart.js/auto';
 import plugin from "chartjs-plugin-datalabels";
-export default function Circle(typeTime, Time,list,kindSearch,listConncerts,firstDate,lastDate){
+export default function Circle(typeTime, Time,list,kindSearch,listConncerts,firstDate,lastDate,isCircle){
 
     var date = new Date();
     let year = date.getFullYear();
@@ -117,10 +117,17 @@ export default function Circle(typeTime, Time,list,kindSearch,listConncerts,firs
             let sum = 0;
             for (let index = 0; index < searchdate?.length; index++) {
                 for (let index1 = 0; index1 < list?.length; index1++) {
+                    let gradeCon = parseFloat(list[index1]?.invoices_concretd_grade);
                     if(searchdate[index] === list[index1]?.invoices_data){
                         if(list[index1]?.invoices_kind_type_of_concrete === val4){
                             sum += parseFloat(list[index1]?.provide);
-                        }          
+                        }
+                        else if (val4 === 'طينة مبلولة' && gradeCon != 0 && list[index1]?.invoices_kind_type_of_concrete === 'طينة'){
+                            sum += parseFloat(list[index1]?.provide);
+                        }  
+                        else if (val4 === 'طينة ناشفة' && gradeCon == 0 && list[index1]?.invoices_kind_type_of_concrete === 'طينة'){
+                            sum += parseFloat(list[index1]?.provide);
+                        }       
                     }
                 }
             }
@@ -135,20 +142,40 @@ export default function Circle(typeTime, Time,list,kindSearch,listConncerts,firs
         let sumY = 0;
         let search = searchdate ? searchdate : currentdate;
         for (let index = 0; index < list?.length; index++) {
+            let gradeCon = parseFloat(list[index]?.invoices_concretd_grade);
             if (list[index]?.invoices_data == search) {
                 if (list[index]?.invoices_kind_type_of_concrete === val4) {
                     sum += parseFloat(list[index]?.provide);
                 }
+                else if (val4 === 'طينة مبلولة' && gradeCon != 0 && list[index]?.invoices_kind_type_of_concrete === 'طينة'){
+                    sum += parseFloat(list[index]?.provide);
+                }  
+                else if (val4 === 'طينة ناشفة' && gradeCon == 0 && list[index]?.invoices_kind_type_of_concrete === 'طينة'){
+                    sum += parseFloat(list[index]?.provide);
+                }  
             }
             if (getJustMonth(list[index]?.invoices_data) == getJustMonth(search)) {
                 if (list[index]?.invoices_kind_type_of_concrete === val4) {
                     sumM += parseFloat(list[index]?.provide);
                 }
+                else if (val4 === 'طينة مبلولة' && gradeCon != 0 && list[index]?.invoices_kind_type_of_concrete === 'طينة'){
+                    console.log(1);
+                    sumM += parseFloat(list[index]?.provide);
+                }  
+                else if (val4 === 'طينة ناشفة' && gradeCon == 0 && list[index]?.invoices_kind_type_of_concrete === 'طينة'){
+                    sumM += parseFloat(list[index]?.provide);
+                }  
             }
             if (GetJustYear(list[index]?.invoices_data) == GetJustYear(search)) {
                 if (list[index]?.invoices_kind_type_of_concrete === val4) {
                     sumY += parseFloat(list[index]?.provide);
                 }
+                else if (val4 === 'طينة مبلولة' && gradeCon != 0 && list[index]?.invoices_kind_type_of_concrete === 'طينة'){
+                    sumY += parseFloat(list[index]?.provide);
+                }  
+                else if (val4 === 'طينة ناشفة' && gradeCon == 0 && list[index]?.invoices_kind_type_of_concrete === 'طينة'){
+                    sumY += parseFloat(list[index]?.provide);
+                }  
             }
         }
         return {
@@ -168,7 +195,7 @@ export default function Circle(typeTime, Time,list,kindSearch,listConncerts,firs
 
     const GetRes = () => {
         let data = {};
-        const types = ['بطون 300','بطون 400','دحوس','اسمنتيت','هربتسا'];
+        const types = ['بطون 300','بطون 400','دحوس','اسمنتيت','هربتسا','طينة مبلولة','طينة ناشفة'];
         let SumAll = [];
         if(kindSearch === 'كمية المواد النهائية (كوب)'){
             if(typeTime === 'تلقائي' && Time === 'يوم'){
@@ -180,6 +207,7 @@ export default function Circle(typeTime, Time,list,kindSearch,listConncerts,firs
                 for (let index = 0; index < types.length; index++) {
                     SumAll.push(GetSum(types[index]).month);
                 }
+                console.log(SumAll);
             }
             else if(typeTime === 'تلقائي' && Time === 'سنة'){
                 for (let index = 0; index < types.length; index++) {
@@ -256,19 +284,71 @@ export default function Circle(typeTime, Time,list,kindSearch,listConncerts,firs
             }
         }
         data = {
-            labels: ['بطون 300','بطون 400','دحوس','اسمنتيت','هربتسا'],
+            labels: ['بطون 300','بطون 400','دحوس','اسمنتيت','هربتسا','طينة مبلولة','طينة ناشفة'],
             datasets: [
                 {
-                    label: '',
+                    label: 'المواد النهائية',
                     data: SumAll,
-                    backgroundColor:['#fecdd3','#f5d0fe','#ddd6fe','#bfdbfe','#a5f3fc']
+                    backgroundColor:['#fecdd3','#f5d0fe','#ddd6fe','#bfdbfe','#a5f3fc','#a7f3d0','#d9f99d']
                 },
             ],
         }
+
+        // let data2 = {
+        //     labels: ['بطون 300','بطون 400','دحوس','اسمنتيت','هربتسا','طينة مبلولة','طينة ناشفة'],
+        //     datasets: [
+        //         {
+        //             label: 'بطون 300',
+        //             data: [300,null,null,null,null,null,null],
+        //             backgroundColor:['#fecdd3']
+        //         },
+        //         {
+        //             label: 'بطون 400',
+        //             data: [null,400,null,null,null,null,null],
+        //             backgroundColor:['#f5d0fe']
+        //         },
+        //         {
+        //             label: 'دحوس',
+        //             data: [null,null,23,null,null,null,null],
+        //             backgroundColor:['#ddd6fe']
+        //         },
+        //         {
+        //             label: 'اسمنتيت',
+        //             data: [null,null,null,213,null,null,null],
+        //             backgroundColor:['#fecdd3']
+        //         },
+        //         {
+        //             label: 'هربتسا',
+        //             data: [null,null,null,null,123,null,null],
+        //             backgroundColor:['#f5d0fe']
+        //         },
+        //         {
+        //             label: 'طينة مبلولة',
+        //             data: [null,null,null,null,null,123,null],
+        //             backgroundColor:['#ddd6fe']
+        //         },
+        //         {
+        //             label: 'طينة ناشفة',
+        //             data: [null,null,null,null,null,null,123],
+        //             backgroundColor:['#ddd6fe']
+        //         },
+        //     ],
+        // }
+
         return typeTime && Time && (
-            <div className="w-min">
-                <Pie className="w-96" plugins={[plugin]} data={data} />
+            <div className="w-full">
+                {
+                    isCircle && <div className="w-min">
+                        <Pie className="w-96" plugins={[plugin]} data={data} />
+                    </div>
+                }
+                {
+                    !isCircle && <div className="p-5 w-full">
+                        <Bar options={{responsive:true}} plugins={[plugin]} data={data} />
+                    </div>
+                }
             </div>
+
         )
     }
 

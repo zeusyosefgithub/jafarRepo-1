@@ -8,6 +8,8 @@ import InvoiceNumber from "../MathComponents/InvoicesNumber";
 
 export default function Report(props) {
 
+    const endMaterials = ['بطون 400','طينة مبلولة','طينة ناشفة','دحوس','بطون 300','اسمنتيت','هربتسا'];
+
     const Invoices = GetTrucks('invoices');
     const Shippings = GetTrucks('shipping');
     const KindsConncert = GetTrucks('kinds concrete');
@@ -26,21 +28,34 @@ export default function Report(props) {
         }
     }
 
-    const sortReturnedValues = (ele) => {
-        if(ele === 'عدد الارساليات'){
-            return ShippingProps(props.repo.record_time, props.repo.type_time, Shippings,ele,Invoices,props.repo.first_time,props.repo.last_time);
+    const sortReturnedValues = () => {
+        if(props.repo.elements === 'المواد النهائية'){
+            let resualt = [];
+            for (let index = 0; index < endMaterials?.length; index++) {
+                resualt.push(QuantityPrice(props.repo.record_time, props.repo.type_time, Invoices, endMaterials[index], GetCurrentPrice(endMaterials[index]),props.repo.first_time,props.repo.last_time, props.repo.math,true));
+            }
+            return resualt;
         }
-        else if (ele === 'عدد الفواتير'){
-            return InvoiceNumber(props.repo.record_time, props.repo.type_time, Invoices,ele,props.repo.first_time,props.repo.last_time)
+        else if (props.repo.elements === 'المبيعات'){
+            let resualt = [];
+            for (let index = 0; index < endMaterials?.length; index++) {
+                resualt.push(QuantityPrice(props.repo.record_time, props.repo.type_time, Invoices, endMaterials[index], GetCurrentPrice(endMaterials[index]),props.repo.first_time,props.repo.last_time, props.repo.math,false));
+            }
+            return resualt;
         }
-        return QuantityPrice(props.repo.record_time, props.repo.type_time, Invoices,ele,GetCurrentPrice(ele),props.repo.first_time,props.repo.last_time,props.repo.math);
+        else if(props.repo.elements === 'عدد الارساليات'){
+            return ShippingProps(props.repo.record_time, props.repo.type_time, Shippings,props.repo.elements,Invoices,props.repo.first_time,props.repo.last_time);
+        }
+        else if (props.repo.elements === 'عدد الفواتير'){
+            return InvoiceNumber(props.repo.record_time, props.repo.type_time, Invoices,props.repo.elements,props.repo.first_time,props.repo.last_time)
+        }
     }
 
     return(
-        <div>
+        <div className="overflow-auto max-h-96">
             {
                 props.kind === 'جدول' && 
-                <table className="w-full">
+                <table className="w-full main_hight_elements">
                     <tbody>
                         <tr>
                             <th>اصغر قيمة</th>
@@ -50,18 +65,16 @@ export default function Report(props) {
                             <th>العناصر</th>
                         </tr>
                         {
-                            props.repo.elements.map((ele,i) => {
-                                return sortReturnedValues(ele);
-                            })
+                            sortReturnedValues()
                         }
                     </tbody>
                 </table>
             }
             {
-                console.log(props)
+                props.kind === 'دائرة' && Circle(props.repo.record_time, props.repo.type_time, Invoices, props.repo.elements, KindsConncert, null, null, true)
             }
             {
-                props.kind === 'دائرة' && Circle(props.repo.record_time, props.repo.type_time, Invoices,props.repo.elements,KindsConncert)
+                props.kind === 'رسم بياني' && Circle(props.repo.record_time, props.repo.type_time, Invoices, props.repo.elements, KindsConncert, null, null, false)
             }
         </div>
     )

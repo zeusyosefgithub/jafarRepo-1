@@ -1,6 +1,6 @@
 'use client';
 
-export default function QuantityPrice(val1, val2, Invoices, val4, price, dateSearch, endDateSearch, QuanOrPrice,wichConn) {
+export default function QuantityPrice(val1, val2, Invoices, val4, price, dateSearch, endDateSearch, QuanOrPrice,isForQuan) {
 
     var date = new Date();
     let year = date.getFullYear();
@@ -508,11 +508,8 @@ export default function QuantityPrice(val1, val2, Invoices, val4, price, dateSea
     const GetLinesTables = (sum,avg,max,min,price,val4) => {
         return (
             <>
-            <tr>
-                <th colSpan={5} className="p-3 text-lg">{val4}</th>
-            </tr>
                 {
-                    checkIfThereInList('الكمية') && <tr>
+                    isForQuan && checkIfThereInList('الكمية') && <tr>
                         <th>
                             {min}
                         </th>
@@ -525,11 +522,11 @@ export default function QuantityPrice(val1, val2, Invoices, val4, price, dateSea
                         <th>
                             {sum}
                         </th>
-                        <th>الكمية</th>
+                        <th>{val4}</th>
                     </tr>
                 }
                 {
-                    checkIfThereInList('السعر') && <tr>
+                    !isForQuan && checkIfThereInList('السعر') && <tr>
                         <th>
                             {min * price}
                         </th>
@@ -542,7 +539,7 @@ export default function QuantityPrice(val1, val2, Invoices, val4, price, dateSea
                         <th>
                             {sum * price}
                         </th>
-                        <th>السعر</th>
+                        <th>{val4}</th>
                     </tr>
                 }
             </>
@@ -588,11 +585,8 @@ export default function QuantityPrice(val1, val2, Invoices, val4, price, dateSea
             }
             return QuanOrPrice != 0 && (
                 <>
-                    <tr>
-                        <th colSpan={5} className="p-3 text-lg">{val4}</th>
-                    </tr>
                     {
-                        checkIfThereInList('الكمية') && <tr>
+                        isForQuan && checkIfThereInList('الكمية') && <tr>
                             <th>
                                 {sum}
                             </th>
@@ -605,11 +599,11 @@ export default function QuantityPrice(val1, val2, Invoices, val4, price, dateSea
                             <th>
                                 {sum}
                             </th>
-                            <th>الكمية</th>
+                            <th>{val4}</th>
                         </tr>
                     }
                     {
-                        checkIfThereInList('السعر') && <tr>
+                        !isForQuan && checkIfThereInList('السعر') && <tr>
                             <th>
                                 {sum * price}
                             </th>
@@ -622,7 +616,7 @@ export default function QuantityPrice(val1, val2, Invoices, val4, price, dateSea
                             <th>
                                 {sum * price}
                             </th>
-                            <th>السعر</th>
+                            <th>{val4}</th>
                         </tr>
                     }
                 </>

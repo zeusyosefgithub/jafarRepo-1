@@ -1,12 +1,12 @@
 'use client';
-import React from "react";
+import React, { useEffect } from "react";
 import { useRef, useState } from "react";
 import GetTrucks from "./getDocs";
 import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/dropdown";
 import { IoIosArrowDown } from "react-icons/io";
 import { Button } from "@nextui-org/button";
 import { Checkbox, CheckboxGroup, Input, Radio, RadioGroup, Switch } from "@nextui-org/react";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc } from "firebase/firestore";
 import { firestore } from "../FireBase/firebase";
 import InvoiceNumber from "../MathComponents/InvoicesNumber";
 import QuantityPrice from "../MathComponents/QuantityPrice";
@@ -17,6 +17,8 @@ import { Chart as chartJS } from 'chart.js/auto';
 import Circle from "../MathComponents/Circle";
 
 export default function FormBoxReport(props) {
+
+    const endMaterials = ['بطون 400','طينة مبلولة','طينة ناشفة','دحوس','بطون 300','اسمنتيت','هربتسا'];
 
     var date = new Date();
     let year = date.getFullYear();
@@ -29,13 +31,13 @@ export default function FormBoxReport(props) {
     const [mathTime, setMathTime] = useState('');
     const [kindMathTime, setKindMathTime] = useState('');
 
-    const [toDayState,setToDayState] = useState('');
-    const [acoToTo,setToTo] = useState('');
+    const [toDayState, setToDayState] = useState('');
+    const [acoToTo, setToTo] = useState('');
 
-    const [elements,setElements] = useState(null);
-    const [math,setMath] = useState(['الكمية','السعر']);
+    const [elements, setElements] = useState(null);
+    const [math, setMath] = useState(['الكمية', 'السعر']);
 
-    const [reportName,setReportName] = useState('');
+    const [reportName, setReportName] = useState('');
 
     const Invoices = GetTrucks('invoices');
     const Shipping = GetTrucks('shipping');
@@ -55,7 +57,7 @@ export default function FormBoxReport(props) {
             else if (count == 0) {
                 array1.push(splitString[index]);
             }
-            else{
+            else {
                 array2.push(splitString[index]);
             }
         }
@@ -97,13 +99,13 @@ export default function FormBoxReport(props) {
     }
     const GetCurrentPrice = (val4) => {
         for (let index = 0; index < KindsConncert?.length; index++) {
-            if(val4 === 'طينة ناشفة' && KindsConncert[index]?.kinds_concrete_name === 'طينة'){
+            if (val4 === 'طينة ناشفة' && KindsConncert[index]?.kinds_concrete_name === 'طينة') {
                 return KindsConncert[index]?.priceN;
             }
-            else if(val4 === 'طينة مبلولة' && KindsConncert[index]?.kinds_concrete_name === 'طينة'){
+            else if (val4 === 'طينة مبلولة' && KindsConncert[index]?.kinds_concrete_name === 'طينة') {
                 return KindsConncert[index]?.priceM;
             }
-            else if(KindsConncert[index]?.kinds_concrete_name === val4){
+            else if (KindsConncert[index]?.kinds_concrete_name === val4) {
                 return KindsConncert[index]?.price;
             }
         }
@@ -112,19 +114,36 @@ export default function FormBoxReport(props) {
 
 
 
-    const wichProcMath = (typeTime, Time, ele) => {
-        if (kindReport === 'دائرة') {
-            return Circle(typeTime, Time, Invoices, ele, KindsConncert, toDayState, acoToTo);
+    const wichProcMath = () => {
+        if (kindReport === "رسم بياني"){
+            return Circle(mathTime, kindMathTime, Invoices, elements, KindsConncert, toDayState, acoToTo,false);
+        }
+        else if (kindReport === 'دائرة') {
+            return Circle(mathTime, kindMathTime, Invoices, elements, KindsConncert, toDayState, acoToTo,true);
         }
         else if (kindReport === 'جدول') {
-            if (ele === 'عدد الفواتير') {
-                return InvoiceNumber(typeTime, Time, Invoices, ele, toDayState, acoToTo);
+            if (elements === 'المواد النهائية') {
+                let resualt = [];
+                for (let index = 0; index < endMaterials?.length; index++) {
+                    resualt.push(QuantityPrice(mathTime, kindMathTime, Invoices, endMaterials[index], GetCurrentPrice(endMaterials[index]), toDayState, acoToTo, math,true));
+                }
+                return resualt;
             }
-            else if (ele === 'عدد الارساليات') {
-                return ShippingProps(typeTime, Time, Shipping, ele, Invoices, toDayState, acoToTo);
+            else if(elements === 'المبيعات'){
+                let resualt = [];
+                for (let index = 0; index < endMaterials?.length; index++) {
+                    resualt.push(QuantityPrice(mathTime, kindMathTime, Invoices, endMaterials[index], GetCurrentPrice(endMaterials[index]), toDayState, acoToTo, math,false));
+                }
+                return resualt;
+            }
+            else if (elements === 'عدد الفواتير') {
+                return InvoiceNumber(mathTime, kindMathTime, Invoices, elements, toDayState, acoToTo);
+            }
+            else if (elements === 'عدد الارساليات') {
+                return ShippingProps(mathTime, kindMathTime, Shipping, elements, Invoices, toDayState, acoToTo);
             }
             else {
-                return QuantityPrice(typeTime, Time, Invoices, ele, GetCurrentPrice(ele), toDayState, acoToTo, math);
+                return QuantityPrice(mathTime, kindMathTime, Invoices, elements, GetCurrentPrice(elements), toDayState, acoToTo, math);
             }
         }
 
@@ -139,25 +158,73 @@ export default function FormBoxReport(props) {
         return maxValue + 1;
     }
 
-    const SaveReport = async() => {
+    const SaveReport = async () => {
         const Data = {
-            elements : elements,
-            first_time : toDayState,
-            idRep : currectInvoiceId(),
-            kind : kindReport,
-            kind_two : kindReportKind,
-            last_time : acoToTo,
-            math : math,
-            record_time : mathTime,
-            RebortName : reportName,
-            type_time : kindMathTime,
+            elements: elements,
+            first_time: toDayState,
+            idRep: currectInvoiceId(),
+            kind: kindReport,
+            kind_two: kindReportKind,
+            last_time: acoToTo,
+            math: math,
+            record_time: mathTime,
+            RebortName: `${kindReport} ${elements} ${GetTypeTimeCurrectArbic(kindMathTime)} ${GetTypeTimeWords(mathTime)}`,
+            type_time: kindMathTime,
             date: currentdate
         }
         await addDoc(collection(firestore, "ReportsChoises"), Data);
         props.disable();
     }
-    
 
+    const updateReport = async() => {
+        props.disable();
+    }
+
+    const deleteReport = async() => {
+        await deleteDoc(doc(firestore, "ReportsChoises", props.report.id));
+        props.disable();
+    }
+
+    const GetTypeTimeCurrectArbic = (val) => {
+        return val === 'يوم' ? 'اليومية' :
+            val === 'شهر' ? 'الشهرية' :
+                val === 'سنة' ? 'السنوية' : null
+        // val === 'من - الى' ? '' :
+    }
+
+    const GetTypeTimeWords = (val) => {
+        return val === 'تلقائي' ? '(تلقائي)' :
+            val === 'محدد' && kindMathTime === 'يوم' ? toDayState :
+                val === 'محدد' && kindMathTime === 'شهر' ? toDayState :
+                    val === 'محدد' && kindMathTime === 'سنة' ? toDayState :
+                        val === 'محدد' && kindMathTime === "من - الى" ? `${toDayState}-${acoToTo}` : null
+    }
+
+    props.isCurrentRep ? () => {
+        setKindReport(props.report.kind);
+        setKindReportKind(props.report.kind_two);
+        setMathTime(props.report.record_time);
+        setKindMathTime(props.report.type_time);
+        setToDayState(props.report.first_time);
+        setToTo(props.report.last_time);
+        setElements(props.report.elements);
+        setMath(props.report.math);
+        setReportName(props.report.RebortName);
+    }
+        :
+        null
+
+    props.isCurrentRep && useEffect(() => {
+        setKindReport(props.report.kind);
+        setKindReportKind(props.report.kind_two);
+        setMathTime(props.report.record_time);
+        setKindMathTime(props.report.type_time);
+        setToDayState(props.report.first_time);
+        setToTo(props.report.last_time);
+        setElements(props.report.elements);
+        setMath(props.report.math);
+        setReportName(props.report.RebortName);
+    }, [props])
 
 
     return (
@@ -168,29 +235,16 @@ export default function FormBoxReport(props) {
                 </div>
                 <div className="m-1 pr-5 pl-5 pb-5 bg-white rounded-xl overflow-auto form_Box_Charts_Reports">
                     <div className="flex">
-                        <div className="w-1/2 border-r-2 border-black">
-                            {
-                                kindReport === 'جدول' && elements?.length && (mathTime === "تلقائي" || mathTime === "محدد") &&
-                                <div className="flex justify-center m-5" dir="rtl">
-                                    <CheckboxGroup
-                                    defaultValue={['الكمية','السعر']}
-                                    onValueChange={(value) => {
-                                        setMath(value)
-                                    }}
-                                    >
-                                        <div className="flex">
-                                            <div>اظهار فقط : </div>
-                                            <Checkbox value='الكمية'>الكمية</Checkbox>
-                                            <Checkbox value='السعر'>السعر</Checkbox>
-                                        </div>
-                                    </CheckboxGroup>
-                                </div>
-                            }
+                        <div className="w-1/2">
+                            <div className="text-sm flex justify-center m-5 text-black bg-gray-400 rounded-xl" dir="rtl">
+                                <div className="m-2">رقم التقرير : {currectInvoiceId()}</div>
+                                <div className="m-2">اسم التقرير : {kindReport} {elements} {GetTypeTimeCurrectArbic(kindMathTime)} {GetTypeTimeWords(mathTime)}</div>
+                            </div>
                             <div className="flex justify-center">
 
                                 <table className="overflow-auto">
                                     {
-                                        kindReport === 'جدول' && elements?.length && (mathTime === "تلقائي" || mathTime === "محدد") && <tbody>
+                                        kindReport === 'جدول' && <tbody>
                                             <tr>
                                                 <th className="text-base">اصغر قيمة</th>
                                                 <th className="text-base">اكبر قيمة</th>
@@ -199,19 +253,20 @@ export default function FormBoxReport(props) {
                                                 <th className="text-base">العناصر</th>
                                             </tr>
                                             {
-                                                elements?.map((ele, i) => {
-                                                    return wichProcMath(mathTime, kindMathTime, ele, i);
-                                                })
+                                                wichProcMath()
                                             }
                                         </tbody>
                                     }
                                 </table>
                                 {
-                                    kindReport === 'دائرة' && wichProcMath(mathTime, kindMathTime, elements)
+                                    kindReport === 'دائرة' || kindReport === "رسم بياني" && wichProcMath()
                                 }
                             </div>
                         </div>
                         <div className="w-full">
+                            <div className="flex justify-center m-4 text-xl text-black p-3 bg-gray-400 rounded-xl">
+                                العناصر
+                            </div>
                             <div className="flex w-full justify-end mb-4">
                                 <div dir="rtl" className="mr-10 ml-10 mt-4">
                                     <div className="flex items-end mb-5">
@@ -291,60 +346,30 @@ export default function FormBoxReport(props) {
                                 </div>
                                 <div className="">
                                     <div dir="rtl" className="">
-                                        <div className="m-5 flex text-xl">
-                                            <div className="ml-3">التقرير رقم</div>
-                                            <div>{currectInvoiceId()}</div>
-                                        </div>
-                                        <Input className="m-5" value={reportName} size="sm" onValueChange={(value) => { setReportName(value) }} type="text" label="اسم التقرير" />
-                                        <div className="flex items-end mb-5">
+                                        <div className="flex items-end m-5">
                                             <div className="ml-4">نوع التقرير : </div>
                                             <Dropdown dir="rtl" className="test-fontt">
                                                 <DropdownTrigger>
                                                     <Button size="sm">{kindReport}<IoIosArrowDown className="text-xl" /></Button>
                                                 </DropdownTrigger>
                                                 <DropdownMenu>
-                                                    <DropdownItem onClick={() => { setKindReport("رسم بياني"); setKindReportKind("");setElements(null); }}>رسم بياني</DropdownItem>
-                                                    <DropdownItem onClick={() => { setKindReport("دائرة"); setKindReportKind("");setElements(null); }}>دائرة</DropdownItem>
-                                                    <DropdownItem onClick={() => { setKindReport("جدول"); setKindReportKind(""); setElements(null);}}>جدول</DropdownItem>
+                                                    <DropdownItem onClick={() => { setKindReport("رسم بياني"); setKindReportKind(""); setElements(null); }}>رسم بياني</DropdownItem>
+                                                    <DropdownItem onClick={() => { setKindReport("دائرة"); setKindReportKind(""); setElements(null); }}>دائرة</DropdownItem>
+                                                    <DropdownItem onClick={() => { setKindReport("جدول"); setKindReportKind(""); setElements(null); }}>جدول</DropdownItem>
                                                 </DropdownMenu>
                                             </Dropdown>
                                         </div>
                                         {
-                                            kindReport === "رسم بياني" && <div className="flex items-end">
-                                                <div className="ml-4">نوع الرسم البياني : </div>
+                                            kindReport === 'جدول' &&
+                                            <div className="flex items-end m-5">
+                                                <div className="ml-4">نوع الجدول : </div>
                                                 <Dropdown dir="rtl" className="test-fontt">
                                                     <DropdownTrigger>
                                                         <Button size="sm">{kindReportKind}<IoIosArrowDown className="text-xl" /></Button>
                                                     </DropdownTrigger>
                                                     <DropdownMenu>
-                                                        <DropdownItem onClick={() => setKindReportKind("خطوط")}>خطوط</DropdownItem>
-                                                        <DropdownItem onClick={() => setKindReportKind("اعمدة")}>اعمدة</DropdownItem>
-                                                    </DropdownMenu>
-                                                </Dropdown>
-                                            </div>
-                                        }
-                                        {
-                                            kindReport === "دائرة" && <div className="flex items-end">
-                                                <div className="ml-4">نوع الدائرة : </div>
-                                                <Dropdown dir="rtl" className="test-fontt">
-                                                    <DropdownTrigger>
-                                                        <Button size="sm">{kindReportKind}<IoIosArrowDown className="text-xl" /></Button>
-                                                    </DropdownTrigger>
-                                                    <DropdownMenu>
-                                                        <DropdownItem onClick={() => setKindReportKind("حلقة")}>حلقة</DropdownItem>
-                                                    </DropdownMenu>
-                                                </Dropdown>
-                                            </div>
-                                        }
-                                        {
-                                            kindReport === "جدول" && <div className="flex items-end">
-                                                <div className="ml-4">نوع ال{kindReport} : </div>
-                                                <Dropdown dir="rtl" className="test-fontt">
-                                                    <DropdownTrigger>
-                                                        <Button size="sm">{kindReportKind}<IoIosArrowDown className="text-xl" /></Button>
-                                                    </DropdownTrigger>
-                                                    <DropdownMenu>
-                                                        <DropdownItem onClick={() => setKindReportKind("جدول شامل")}>جدول شامل</DropdownItem>
+                                                        <DropdownItem onClick={() => setKindReportKind("جدول عام")}>جدول عام</DropdownItem>
+                                                        <DropdownItem onClick={() => setKindReportKind("جدول المواد")}>جدول المواد</DropdownItem>
                                                         <DropdownItem onClick={() => setKindReportKind("جدول الزبائن")}>جدول الزبائن</DropdownItem>
                                                     </DropdownMenu>
                                                 </Dropdown>
@@ -353,84 +378,66 @@ export default function FormBoxReport(props) {
                                     </div>
                                 </div>
                             </div>
-                            <div className="border-t-2 border-black">
-                                <div className="flex justify-center m-4 text-xl">
+                            <div className="">
+                                <div className="flex justify-center m-4 text-xl text-black p-3 bg-gray-400 rounded-xl">
                                     العناصر
                                 </div>
                                 {
-                                    kindReport === 'جدول' &&
-                                    <CheckboxGroup
+                                    kindReport === 'جدول' && kindReportKind === 'جدول المواد' &&
 
+                                    <RadioGroup
+                                        defaultValue={elements}
                                         dir="rtl"
                                         onValueChange={(value) => {
                                             setElements(value);
-                                        }}>
-                                       
-                                            <div className="flex justify-around">
-                                            <div>
-                                                <div className="m-5">
-                                                    عام
-                                                </div>
-                                                <Checkbox value='عدد الفواتير'>&nbsp;&nbsp;&nbsp;عدد الفواتير</Checkbox>
-                                                <br />
-                                                <Checkbox value='عدد الارساليات'>&nbsp;&nbsp;&nbsp;عدد الارساليات</Checkbox>
-                                                <br />
-                                                <Checkbox isDisabled value='اجمالي المبيعات'>&nbsp;&nbsp;&nbsp;اجمالي المبيعات</Checkbox>
-                                                <br />
-                                                <Checkbox isDisabled value='عدد الزبائن'>&nbsp;&nbsp;&nbsp;عدد الزبائن</Checkbox>
-                                                <br />
-                                                <Checkbox isDisabled value='اجمالي المصروفات'>&nbsp;&nbsp;&nbsp;اجمالي المصروفات</Checkbox>
-                                                <br />
-                                                <Checkbox isDisabled value='اجمالي الارباح'>&nbsp;&nbsp;&nbsp;اجمالي الارباح</Checkbox>
-                                                <br />
+                                        }}
+                                    >
+                                        <Radio value='المبيعات'>&nbsp;&nbsp;&nbsp;المبيعات</Radio>
+                                        <Radio isDisabled value='المصروفات'>&nbsp;&nbsp;&nbsp;المصروفات</Radio>
+                                        <Radio isDisabled value='الارباح'>&nbsp;&nbsp;&nbsp;الارباح</Radio>
+                                        <Radio value='المواد النهائية'>&nbsp;&nbsp;&nbsp;المواد النهائية</Radio>
+                                        <Radio isDisabled value='المواد الخام'>&nbsp;&nbsp;&nbsp;المواد الخام</Radio>
+                                    </RadioGroup>
+                                }
+                                {
+                                    kindReport === 'جدول' && kindReportKind === 'جدول الزبائن' &&
 
-                                            </div>
-                                            <div>
-                                                <div className="m-5">
-                                                    بطون
-                                                </div>
-                                                <Checkbox value='بطون 300'>&nbsp;&nbsp;&nbsp;بطون 300</Checkbox>
-                                                <br />
-                                                <Checkbox value='بطون 400'>&nbsp;&nbsp;&nbsp;بطون 400</Checkbox>
-                                                <br />
-                                                <Checkbox value='اسمنتيت'>&nbsp;&nbsp;&nbsp;اسمنتيت</Checkbox>
-                                                <br />
-                                                <Checkbox value='هربتسا'>&nbsp;&nbsp;&nbsp;هربتسا</Checkbox>
-                                                <br />
-                                                <Checkbox value='طينة مبلولة'>&nbsp;&nbsp;&nbsp;طينة مبلولة</Checkbox>
-                                                <br />
-                                                <Checkbox value='طينة ناشفة'>&nbsp;&nbsp;&nbsp;طينة ناشفة</Checkbox>
-                                                <br />
-                                            </div>
-                                            <div>
-                                                <div className="m-5">
-                                                    صرار
-                                                </div>
-                                                <Checkbox isDisabled value='اسمنت اسود'>&nbsp;&nbsp;&nbsp;اسمنت اسود</Checkbox>
-                                                <br />
-                                                <Checkbox isDisabled value='عدس'>&nbsp;&nbsp;&nbsp;عدس</Checkbox>
-                                                <br />
-                                                <Checkbox isDisabled value='سمسم'>&nbsp;&nbsp;&nbsp;سمسم</Checkbox>
-                                                <br />
-                                                <Checkbox isDisabled value='مودراغ'>&nbsp;&nbsp;&nbsp;مودراغ</Checkbox>
-                                                <br />
-                                                <Checkbox isDisabled value='سوبر'>&nbsp;&nbsp;&nbsp;سوبر</Checkbox>
-                                                <br />
-                                                <Checkbox isDisabled value='فولية'>&nbsp;&nbsp;&nbsp;فولية</Checkbox>
-                                                <br />
-                                                <Checkbox isDisabled value='رمل'>&nbsp;&nbsp;&nbsp;رمل</Checkbox>
-                                                <br />
-                                                <Checkbox isDisabled value='ناعمة'>&nbsp;&nbsp;&nbsp;ناعمة</Checkbox>
-                                                <br />
-                                                <Checkbox isDisabled value='ماء'>&nbsp;&nbsp;&nbsp;ماء</Checkbox>
-                                                <br />
-                                            </div>
-                                        </div>
-                                    </CheckboxGroup>
+                                    <RadioGroup
+                                        defaultValue={elements}
+                                        dir="rtl"
+                                        onValueChange={(value) => {
+                                            setElements(value);
+                                        }}
+                                    >
+                                        <Radio value='زبون محدد'>&nbsp;&nbsp;&nbsp;زبون محدد</Radio>
+                                        {
+                                            elements === 'زبون محدد' && <Input className="m-3 w-72" label='اسم الزبون' />
+                                        }
+                                        <Radio value='كل الزبائن'>&nbsp;&nbsp;&nbsp;كل الزبائن</Radio>
+                                    </RadioGroup>
                                 }
                                 {
                                     kindReport === 'دائرة' &&
                                     <RadioGroup
+                                        defaultValue={elements}
+                                        dir="rtl"
+                                        onValueChange={(value) => {
+                                            setElements(value);
+                                        }}
+                                    >
+                                        <Radio value='اسعار المواد النهائية'>&nbsp;&nbsp;&nbsp;اسعار المواد النهائية</Radio>
+                                        <Radio isDisabled value='اسعار المواد الخام'>&nbsp;&nbsp;&nbsp;اسعار المواد الخام</Radio>
+                                        <Radio value='كمية المواد النهائية (كوب)'>&nbsp;&nbsp;&nbsp;كمية المواد النهائية (كوب)</Radio>
+                                        <Radio isDisabled value='كمية المواد الخام الصلبة (طن)'>&nbsp;&nbsp;&nbsp;كمية المواد الخام الصلبة (طن)</Radio>
+                                        <Radio isDisabled value='كمية المواد الخام الصلبة (كيلو)'>&nbsp;&nbsp;&nbsp;كمية المواد الخام الصلبة (كيلو)</Radio>
+                                        <Radio isDisabled value='كمية المواد الخام السائلة (كوب)'>&nbsp;&nbsp;&nbsp;كمية المواد الخام السائلة (كوب)</Radio>
+                                        <Radio isDisabled value='كمية المواد الخام السائلة (لتر)'>&nbsp;&nbsp;&nbsp;كمية المواد الخام السائلة (لتر)</Radio>
+                                    </RadioGroup>
+                                }
+                                {
+                                    kindReport === 'رسم بياني' &&
+                                    <RadioGroup
+                                        defaultValue={elements}
                                         dir="rtl"
                                         onValueChange={(value) => {
                                             setElements(value);
@@ -456,10 +463,26 @@ export default function FormBoxReport(props) {
                     <button onClick={() => props.disable()} className="flex-1 px-4 py-2 bg-[#334155] hover:bg-yellow-600 text-white text-2xl font-medium rounded-md">
                         الغاء
                     </button>
-                    <div className="mr-16 ml-16"/>
-                    <button onClick={SaveReport} className="flex-1 px-4 py-2 bg-[#334155] hover:bg-green-800 text-white text-2xl font-medium rounded-md">
-                        حفظ
-                    </button>
+                    {
+                        props.isCurrentRep && <>
+                            <div className="mr-16 ml-16" />
+                            <button onClick={deleteReport} className="flex-1 px-4 py-2 bg-[#334155] hover:bg-[#ef4444] text-white text-2xl font-medium rounded-md">
+                                حذف
+                            </button>
+                        </>
+                    }
+                    <div className="mr-16 ml-16" />
+                    {
+                        props.isCurrentRep ?
+                            <button onClick={updateReport} className="flex-1 px-4 py-2 bg-[#334155] hover:bg-green-800 text-white text-2xl font-medium rounded-md">
+                                حفظ التغييرات
+                            </button>
+                            :
+                            <button onClick={SaveReport} className="flex-1 px-4 py-2 bg-[#334155] hover:bg-green-800 text-white text-2xl font-medium rounded-md">
+                                حفظ
+                            </button>
+                    }
+
                 </div>
             </div>
         </div>

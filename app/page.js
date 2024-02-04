@@ -47,8 +47,8 @@ export default function Home() {
   const [currentRepoBar, setCurrentRepoBar] = useState(null);
 
 
-  const [isLocated,setIsLocated] = useState(false);
-  const [locationVal,setLocationVal] = useState('');
+  const [isLocated, setIsLocated] = useState(false);
+  const [locationVal, setLocationVal] = useState('');
 
   var date = new Date();
   let year = date.getFullYear();
@@ -148,10 +148,10 @@ export default function Home() {
   const currectShippId = () => {
     let maxValue = 0;
     for (let index = 0; index < listShippings?.length; index++) {
-        maxValue = Math.max(maxValue, listShippings[index]?.shipp_id)
+      maxValue = Math.max(maxValue, listShippings[index]?.shipp_id)
     }
     return maxValue + 1;
-}
+  }
 
   const handelAddShpping = async () => {
     let counterShipps = currectShippId();
@@ -171,7 +171,7 @@ export default function Home() {
         invoice_id: invData?.invoices_id,
         shipping_date: currenttime,
         truck_number: truck,
-        location : isLocated ? locationVal : null
+        location: isLocated ? locationVal : null
       };
       setCurrentQuantity(currentQuantityRef.current?.value);
       setShippingToPrint(shippingData);
@@ -197,31 +197,58 @@ export default function Home() {
 
       <div className="flex pr-14 pl-14 pb-14">
         <div className="w-1/2">
-          <div className="flex items-start max-h-96">
-            <div className="w-1/2 overflow-auto max-h-96">
-              {
-                currentRepoTable && <Report repo={currentRepoTable} kind={currentRepoTable?.kind}/>
-              }
-            </div>
-            <div className="m-10"></div>
-            <div className="w-1/2 ">
-              <div className="">
+          <div className="flex items-start">
+            <div className="w-1/2">
+              <div className="bg-slate-100 shadow-xl p-3 highting_boxes_tabel_cir rounded-xl">
                 {
-                  currentRepoCir && <Report repo={currentRepoCir} kind={currentRepoCir?.kind} />
+                  currentRepoCir && <div className="text-base flex justify-center m-5 text-black bg-gray-400 rounded-xl" dir="rtl">
+                    <div className="m-2">رقم : {currentRepoCir?.idRep}</div>
+                    <div className="m-2">اسم : {currentRepoCir?.RebortName}</div>
+                  </div>
                 }
+                <div className="flex justify-center">
+                  {
+                    currentRepoCir && <Report repo={currentRepoCir} kind={currentRepoCir?.kind} />
+                  }
+                </div>
               </div>
             </div>
+            <div className="m-10"></div>
+            <div className="w-1/2">
+              <div className="bg-slate-100 shadow-xl p-3 highting_boxes_tabel_cir rounded-xl">
+                {
+                  currentRepoTable && <div className="text-base flex justify-center m-5 text-black bg-gray-400 rounded-xl" dir="rtl">
+                    <div className="m-2">رقم : {currentRepoTable?.idRep}</div>
+                    <div className="m-2">اسم : {currentRepoTable?.RebortName}</div>
+                  </div>
+                }
+                <div className="flex justify-center overflow-auto max-h-96">
+                  {
+                    currentRepoTable && <Report repo={currentRepoTable} kind={currentRepoTable?.kind} />
+                  }
+                </div>
+              </div>
+
+            </div>
           </div>
-          <div>
+          <div className="bg-slate-100 shadow-xl p-3 highting_boxes_tabel_cir rounded-xl mt-10">
             {
-              currentRepoBar && <Report repo={currentRepoBar} kind={currentRepoBar?.kind}/>
+              currentRepoBar && <div className="text-base flex justify-center m-5 text-black bg-gray-400 rounded-xl" dir="rtl">
+                <div className="m-2">رقم : {currentRepoBar?.idRep}</div>
+                <div className="m-2">اسم : {currentRepoBar?.RebortName}</div>
+              </div>
             }
+            <div>
+              {
+                currentRepoBar && <Report repo={currentRepoBar} kind={currentRepoBar?.kind} />
+              }
+            </div>
           </div>
 
         </div>
         <div className="m-10"></div>
         <div className="w-1/2">
-          <div>
+          <div className="bg-slate-100 shadow-xl p-7 rounded-xl">
             <div className="bg-gray-400 p-3 text-center rounded-lg text-xl">الطلبيات المفتوحة</div>
             <div className="border-2 border-black">
               {
@@ -388,8 +415,9 @@ export default function Home() {
           <div className="m-10"></div>
           <div className="w-full flex">
             <div className="w-full">
-              <Reports TakeRepo={(repo) => {repo.kind === 'جدول' ? setCurrentRepoTable(repo) : repo.kind === 'دائرة' ? setCurrentRepoCir(repo) : setCurrentRepoBar(repo) }} /></div>
-            <div className="m-4"></div>
+              <div className="bg-slate-100 shadow-xl p-7 rounded-xl">
+              <Reports TakeRepo={(repo) => { repo.kind === 'جدول' ? setCurrentRepoTable(repo) : repo.kind === 'دائرة' ? setCurrentRepoCir(repo) : setCurrentRepoBar(repo) }} /></div>
+              </div>
           </div>
         </div>
       </div>
