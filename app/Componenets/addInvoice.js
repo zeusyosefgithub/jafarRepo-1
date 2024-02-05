@@ -8,6 +8,8 @@ import GetTrucks from "./getDocs";
 import { Button } from "@nextui-org/button";
 import { IoMdArrowForward } from "react-icons/io";
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Input } from "@nextui-org/react";
+import { CiCircleMinus } from "react-icons/ci";
+import { CiCirclePlus } from "react-icons/ci";
 
 
 
@@ -42,8 +44,11 @@ export default function AddInvoice() {
 
 
     const [disableByTypeCon,setDisableByTypeCon] = useState(false);
+    const [disableJustPump,setDisableJustPump] = useState(false);
     const [isAutoDate,setIsAutoDate] = useState(false);
     const [autoDateVal,setAutoDateVal] = useState('');
+
+    const [isWithPump,setIsWithPump] = useState(false);
 
     function handelShowDisablePump(isShow) {
         setShowPump(isShow)
@@ -114,7 +119,7 @@ export default function AddInvoice() {
                 invoices_kind_material: disableByTypeCon ? '---' : dropValue1.kinds_rocks_name,
                 invoices_kind_type_of_concrete: dropValue2.kinds_concrete_name,
                 invoices_kind_egree_of_Exposure: degreeOfExposureRef.current.value,
-                invoices_pump: disableByTypeCon ? '---' : pump,
+                invoices_pump: disableJustPump ? '---' : pump,
                 provide: 0,
                 stayed: quantityRef.current.value - 0,
                 invoices_data: isAutoDate ? autoDateVal : currentdate
@@ -158,7 +163,7 @@ export default function AddInvoice() {
                 invoices_kind_material: disableByTypeCon ? '---' : dropValue1.kinds_rocks_name,
                 invoices_kind_type_of_concrete: dropValue2.kinds_concrete_name,
                 invoices_kind_egree_of_Exposure: degreeOfExposureRef.current.value,
-                invoices_pump: disableByTypeCon ? '---' : pump,
+                invoices_pump: disableJustPump ? '---' : pump,
                 provide: 0,
                 stayed: quantityRef.current.value - 0,
                 invoices_data: isAutoDate ? autoDateVal : currentdate
@@ -180,7 +185,7 @@ export default function AddInvoice() {
         if (!degreeOfExposureRef.current.value) {
             return setErrorCusDegExp("!لم يتم ادخال ضغط البطون قيمة");
         }
-        if (!pump && !disableByTypeCon) {
+        if (!pump && !disableByTypeCon && !disableJustPump) {
             return setErrorPump("!لم يتم اختيار اي مضخة خرسانة");
         }
         if (!dropValue1 && !disableByTypeCon) {
@@ -230,9 +235,21 @@ export default function AddInvoice() {
     const checkToDisable = (val) => {
         if(val === 'طينة' || val === 'اسمنتيت' || val === 'هربتسا'){
             setDisableByTypeCon(true);
+            setPump(null);
+            setDisableJustPump(true);
+            setDropValue1(null);
+            setIsWithPump(false);
         }
         else{
             setDisableByTypeCon(false);
+            if(isWithPump && dropValue2){
+                setDisableJustPump(false);
+                setIsWithPump(false);
+            }
+            else if(!isWithPump && dropValue2){
+                setDisableJustPump(true);
+                setIsWithPump(true);
+            }
         }
     }
 
@@ -357,7 +374,7 @@ export default function AddInvoice() {
                                 <input ref={quantityRef} dir="rtl" type="text" name="quantity" id="quantity" className="block py-2.5 px-0 w-full text-xl text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-black peer" required />
                             </div>
                         </div>
-                        <div className="flex w-full justify-around">
+                        <div className="flex w-full justify-around items-center">
                             <div>
                                 <div className="">
                                     {
@@ -381,13 +398,26 @@ export default function AddInvoice() {
                                                 </div>
                                             </div>
                                             :
-                                            <div className="flex justify-center">
-                                                <Button isDisabled={disableByTypeCon} size="lg" onClick={() => {setShowPump(true); setShowNewCus(false); }}>
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                                                    </svg>
-                                                    <div className="font-bold">اختر مضخة</div>
-                                                </Button>
+                                            <div className="items-center">
+                                                <div className="flex justify-center">
+                                                    {
+                                                        isWithPump && dropValue2 ? 
+                                                        <CiCirclePlus onClick={() => {setIsWithPump(false);checkToDisable(dropValue2.kinds_concrete_name);}} className="text-[#84cc16] text-4xl rounded-none cursor-pointer" />
+                                                        :
+                                                        !isWithPump && dropValue2 ? 
+                                                        <CiCircleMinus onClick={() => {setIsWithPump(true);checkToDisable(dropValue2.kinds_concrete_name);}} className="text-[#ef4444] text-4xl rounded-none cursor-pointer" />
+                                                        : 
+                                                        null
+                                                    }
+                                                </div>
+                                                <div className="flex justify-center">
+                                                    <Button isDisabled={disableJustPump} size="lg" onClick={() => { setShowPump(true); setShowNewCus(false); }}>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                                        </svg>
+                                                        <div className="font-bold">اختر مضخة</div>
+                                                    </Button>
+                                                </div>
                                             </div>
                                     }
                                 </div>
