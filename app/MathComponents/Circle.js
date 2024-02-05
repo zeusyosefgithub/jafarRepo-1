@@ -1,5 +1,5 @@
 'use client';
-import { Bar } from "react-chartjs-2";
+import { Bar,Line } from "react-chartjs-2";
 import { Pie } from "react-chartjs-2";
 import { Chart as chartJS } from 'chart.js/auto';
 import plugin from "chartjs-plugin-datalabels";
@@ -293,6 +293,46 @@ export default function Circle(typeTime, Time,list,kindSearch,listConncerts,firs
                 },
             ],
         }
+        // let data2 = {
+        //     labels: ['بطون 300','بطون 400','دحوس','اسمنتيت','هربتسا','طينة مبلولة','طينة ناشفة'],
+        //     datasets: [
+        //         {
+        //             label: 'المواد النهائية',
+        //             data: SumAll,
+        //             backgroundColor:['#fecdd3']
+        //         },
+        //         {
+        //             label: 'المواد النهائية',
+        //             data: SumAll,
+        //             backgroundColor:['#f5d0fe']
+        //         },
+        //         {
+        //             label: 'المواد النهائية',
+        //             data: SumAll,
+        //             backgroundColor:['#ddd6fe']
+        //         },
+        //         {
+        //             label: 'المواد النهائية',
+        //             data: SumAll,
+        //             backgroundColor:['#bfdbfe']
+        //         },
+        //         {
+        //             label: 'المواد النهائية',
+        //             data: SumAll,
+        //             backgroundColor:['#a5f3fc']
+        //         },
+        //         {
+        //             label: 'المواد النهائية',
+        //             data: SumAll,
+        //             backgroundColor:['#a7f3d0']
+        //         },
+        //         {
+        //             label: 'المواد النهائية',
+        //             data: SumAll,
+        //             backgroundColor:['#d9f99d']
+        //         },
+        //     ],
+        // }
 
         // let data2 = {
         //     labels: ['بطون 300','بطون 400','دحوس','اسمنتيت','هربتسا','طينة مبلولة','طينة ناشفة'],

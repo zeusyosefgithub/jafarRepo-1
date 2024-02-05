@@ -259,7 +259,7 @@ export default function FormBoxReport(props) {
                                     }
                                 </table>
                                 {
-                                    kindReport === 'دائرة' || kindReport === "رسم بياني" && wichProcMath()
+                                    (kindReport === 'دائرة' || kindReport === "رسم بياني") && wichProcMath()
                                 }
                             </div>
                         </div>
