@@ -15,10 +15,11 @@ import { Pie } from "react-chartjs-2";
 
 import { Chart as chartJS } from 'chart.js/auto';
 import Circle from "../MathComponents/Circle";
+import RawMaterials from "../MathComponents/RawMaterials";
 
 export default function FormBoxReport(props) {
 
-    const endMaterials = ['بطون 400','طينة مبلولة','طينة ناشفة','دحوس','بطون 300','اسمنتيت','هربتسا'];
+    const endMaterials = ['بطون 400', 'طينة مبلولة', 'طينة ناشفة', 'دحوس', 'بطون 300', 'اسمنتيت', 'هربتسا'];
 
     var date = new Date();
     let year = date.getFullYear();
@@ -43,6 +44,7 @@ export default function FormBoxReport(props) {
     const Shipping = GetTrucks('shipping');
     const Reports = GetTrucks('ReportsChoises');
     const KindsConncert = GetTrucks('kinds concrete');
+    const RawsMaterials = GetTrucks('RawMaterials');
 
     const getJustMonth = (date) => {
         var conStr = date?.toString();
@@ -111,28 +113,89 @@ export default function FormBoxReport(props) {
         }
     }
 
+    const GetExpenses = (val4) => {
+        for (let index = 0; index < KindsConncert?.length; index++) {
+            if (val4 === 'طينة ناشفة' && KindsConncert[index]?.kinds_concrete_name === 'طينة') {
+                return KindsConncert[index]?.expenses;
+            }
+            else if (val4 === 'طينة مبلولة' && KindsConncert[index]?.kinds_concrete_name === 'طينة') {
+                return KindsConncert[index]?.expenses;
+            }
+            else if (KindsConncert[index]?.kinds_concrete_name === val4) {
+                return KindsConncert[index]?.expenses;
+
+            }
+        }
+    }
 
 
 
     const wichProcMath = () => {
-        if (kindReport === "رسم بياني"){
-            return Circle(mathTime, kindMathTime, Invoices, elements, KindsConncert, toDayState, acoToTo,false);
+        if (kindReport === "رسم بياني") {
+            if (elements === 'كمية المواد النهائية (كوب)' || elements === 'اسعار المواد النهائية') {
+                return Circle(mathTime, kindMathTime, Invoices, elements, KindsConncert, toDayState, acoToTo, false);
+            }
+            else if (elements === 'كمية المواد الخام الصلبة (كيلو)') {
+                return RawMaterials(mathTime, kindMathTime, Invoices, RawsMaterials, elements, false, 'kg');
+            }
+            else if (elements === 'كمية المواد الخام الصلبة (طن)') {
+                return RawMaterials(mathTime, kindMathTime, Invoices, RawsMaterials, elements, false, 'ton');
+            }
+            else if (elements === 'كمية المواد الخام السائلة (كوب)') {
+                return RawMaterials(mathTime, kindMathTime, Invoices, RawsMaterials, elements, false, 'kob');
+            }
+            else if (elements === 'كمية المواد الخام السائلة (لتر)') {
+                return RawMaterials(mathTime, kindMathTime, Invoices, RawsMaterials, elements, false, 'lter');
+            }
+            else if (elements === 'اسعار المواد الخام') {
+                return RawMaterials(mathTime, kindMathTime, Invoices, RawsMaterials, elements, false, '');
+            }
         }
         else if (kindReport === 'دائرة') {
-            return Circle(mathTime, kindMathTime, Invoices, elements, KindsConncert, toDayState, acoToTo,true);
+            if (elements === 'كمية المواد النهائية (كوب)' || elements === 'اسعار المواد النهائية') {
+                return Circle(mathTime, kindMathTime, Invoices, elements, KindsConncert, toDayState, acoToTo, true);
+            }
+            else if (elements === 'كمية المواد الخام الصلبة (كيلو)') {
+                return RawMaterials(mathTime, kindMathTime, Invoices, RawsMaterials, elements, true, 'kg');
+            }
+            else if (elements === 'كمية المواد الخام الصلبة (طن)') {
+                return RawMaterials(mathTime, kindMathTime, Invoices, RawsMaterials, elements, true, 'ton');
+            }
+            else if (elements === 'كمية المواد الخام السائلة (كوب)') {
+                return RawMaterials(mathTime, kindMathTime, Invoices, RawsMaterials, elements, true, 'kob');
+            }
+            else if (elements === 'كمية المواد الخام السائلة (لتر)') {
+                return RawMaterials(mathTime, kindMathTime, Invoices, RawsMaterials, elements, true, 'lter');
+            }
+            else if (elements === 'اسعار المواد الخام') {
+                return RawMaterials(mathTime, kindMathTime, Invoices, RawsMaterials, elements, true, '');
+            }
         }
         else if (kindReport === 'جدول') {
             if (elements === 'المواد النهائية') {
                 let resualt = [];
                 for (let index = 0; index < endMaterials?.length; index++) {
-                    resualt.push(QuantityPrice(mathTime, kindMathTime, Invoices, endMaterials[index], GetCurrentPrice(endMaterials[index]), toDayState, acoToTo, math,true));
+                    resualt.push(QuantityPrice(mathTime, kindMathTime, Invoices, endMaterials[index], GetCurrentPrice(endMaterials[index]), toDayState, acoToTo, math, true));
                 }
                 return resualt;
             }
-            else if(elements === 'المبيعات'){
+            else if (elements === 'المواد الخام') {
+                return RawMaterials(mathTime, kindMathTime, Invoices, RawsMaterials, elements, true, 'tabel', false);
+            }
+            else if (elements === 'المصروفات') {
+                return RawMaterials(mathTime, kindMathTime, Invoices, RawsMaterials, elements, true, 'tabel', true);
+            }
+            else if (elements === 'الارباح') {
                 let resualt = [];
                 for (let index = 0; index < endMaterials?.length; index++) {
-                    resualt.push(QuantityPrice(mathTime, kindMathTime, Invoices, endMaterials[index], GetCurrentPrice(endMaterials[index]), toDayState, acoToTo, math,false));
+                    resualt.push(QuantityPrice(mathTime, kindMathTime, Invoices, endMaterials[index], GetCurrentPrice(endMaterials[index]), toDayState, acoToTo, math, true, 'expenses',GetExpenses(endMaterials[index])));
+                }
+                return resualt;
+            }
+            else if (elements === 'المبيعات') {
+                let resualt = [];
+                for (let index = 0; index < endMaterials?.length; index++) {
+                    resualt.push(QuantityPrice(mathTime, kindMathTime, Invoices, endMaterials[index], GetCurrentPrice(endMaterials[index]), toDayState, acoToTo, math, false));
                 }
                 return resualt;
             }
@@ -172,17 +235,17 @@ export default function FormBoxReport(props) {
             type_time: kindMathTime,
             date: currentdate
         }
-        await addDoc(collection(firestore, "ReportsChoises"), Data);
+        // await addDoc(collection(firestore, "ReportsChoises"), Data);
+        // props.disable();
+    }
+
+    const updateReport = async () => {
         props.disable();
     }
 
-    const updateReport = async() => {
-        props.disable();
-    }
-
-    const deleteReport = async() => {
-        await deleteDoc(doc(firestore, "ReportsChoises", props.report.id));
-        props.disable();
+    const deleteReport = async () => {
+        // await deleteDoc(doc(firestore, "ReportsChoises", props.report.id));
+        // props.disable();
     }
 
     const GetTypeTimeCurrectArbic = (val) => {
@@ -258,9 +321,11 @@ export default function FormBoxReport(props) {
                                         </tbody>
                                     }
                                 </table>
-                                {
-                                    (kindReport === 'دائرة' || kindReport === "رسم بياني") && wichProcMath()
-                                }
+                                <div>
+                                    {
+                                        (kindReport === 'دائرة' || kindReport === "رسم بياني") && wichProcMath()
+                                    }
+                                </div>
                             </div>
                         </div>
                         <div className="w-full">
@@ -393,10 +458,10 @@ export default function FormBoxReport(props) {
                                         }}
                                     >
                                         <Radio value='المبيعات'>&nbsp;&nbsp;&nbsp;المبيعات</Radio>
-                                        <Radio isDisabled value='المصروفات'>&nbsp;&nbsp;&nbsp;المصروفات</Radio>
-                                        <Radio isDisabled value='الارباح'>&nbsp;&nbsp;&nbsp;الارباح</Radio>
+                                        <Radio value='المصروفات'>&nbsp;&nbsp;&nbsp;المصروفات</Radio>
+                                        <Radio value='الارباح'>&nbsp;&nbsp;&nbsp;الارباح</Radio>
                                         <Radio value='المواد النهائية'>&nbsp;&nbsp;&nbsp;المواد النهائية</Radio>
-                                        <Radio isDisabled value='المواد الخام'>&nbsp;&nbsp;&nbsp;المواد الخام</Radio>
+                                        <Radio value='المواد الخام'>&nbsp;&nbsp;&nbsp;المواد الخام</Radio>
                                     </RadioGroup>
                                 }
                                 {
@@ -426,12 +491,12 @@ export default function FormBoxReport(props) {
                                         }}
                                     >
                                         <Radio value='اسعار المواد النهائية'>&nbsp;&nbsp;&nbsp;اسعار المواد النهائية</Radio>
-                                        <Radio isDisabled value='اسعار المواد الخام'>&nbsp;&nbsp;&nbsp;اسعار المواد الخام</Radio>
+                                        <Radio value='اسعار المواد الخام'>&nbsp;&nbsp;&nbsp;اسعار المواد الخام</Radio>
                                         <Radio value='كمية المواد النهائية (كوب)'>&nbsp;&nbsp;&nbsp;كمية المواد النهائية (كوب)</Radio>
-                                        <Radio isDisabled value='كمية المواد الخام الصلبة (طن)'>&nbsp;&nbsp;&nbsp;كمية المواد الخام الصلبة (طن)</Radio>
-                                        <Radio isDisabled value='كمية المواد الخام الصلبة (كيلو)'>&nbsp;&nbsp;&nbsp;كمية المواد الخام الصلبة (كيلو)</Radio>
-                                        <Radio isDisabled value='كمية المواد الخام السائلة (كوب)'>&nbsp;&nbsp;&nbsp;كمية المواد الخام السائلة (كوب)</Radio>
-                                        <Radio isDisabled value='كمية المواد الخام السائلة (لتر)'>&nbsp;&nbsp;&nbsp;كمية المواد الخام السائلة (لتر)</Radio>
+                                        <Radio value='كمية المواد الخام الصلبة (طن)'>&nbsp;&nbsp;&nbsp;كمية المواد الخام الصلبة (طن)</Radio>
+                                        <Radio value='كمية المواد الخام الصلبة (كيلو)'>&nbsp;&nbsp;&nbsp;كمية المواد الخام الصلبة (كيلو)</Radio>
+                                        <Radio value='كمية المواد الخام السائلة (كوب)'>&nbsp;&nbsp;&nbsp;كمية المواد الخام السائلة (كوب)</Radio>
+                                        <Radio value='كمية المواد الخام السائلة (لتر)'>&nbsp;&nbsp;&nbsp;كمية المواد الخام السائلة (لتر)</Radio>
                                     </RadioGroup>
                                 }
                                 {
@@ -444,12 +509,12 @@ export default function FormBoxReport(props) {
                                         }}
                                     >
                                         <Radio value='اسعار المواد النهائية'>&nbsp;&nbsp;&nbsp;اسعار المواد النهائية</Radio>
-                                        <Radio isDisabled value='اسعار المواد الخام'>&nbsp;&nbsp;&nbsp;اسعار المواد الخام</Radio>
+                                        <Radio value='اسعار المواد الخام'>&nbsp;&nbsp;&nbsp;اسعار المواد الخام</Radio>
                                         <Radio value='كمية المواد النهائية (كوب)'>&nbsp;&nbsp;&nbsp;كمية المواد النهائية (كوب)</Radio>
-                                        <Radio isDisabled value='كمية المواد الخام الصلبة (طن)'>&nbsp;&nbsp;&nbsp;كمية المواد الخام الصلبة (طن)</Radio>
-                                        <Radio isDisabled value='كمية المواد الخام الصلبة (كيلو)'>&nbsp;&nbsp;&nbsp;كمية المواد الخام الصلبة (كيلو)</Radio>
-                                        <Radio isDisabled value='كمية المواد الخام السائلة (كوب)'>&nbsp;&nbsp;&nbsp;كمية المواد الخام السائلة (كوب)</Radio>
-                                        <Radio isDisabled value='كمية المواد الخام السائلة (لتر)'>&nbsp;&nbsp;&nbsp;كمية المواد الخام السائلة (لتر)</Radio>
+                                        <Radio value='كمية المواد الخام الصلبة (طن)'>&nbsp;&nbsp;&nbsp;كمية المواد الخام الصلبة (طن)</Radio>
+                                        <Radio value='كمية المواد الخام الصلبة (كيلو)'>&nbsp;&nbsp;&nbsp;كمية المواد الخام الصلبة (كيلو)</Radio>
+                                        <Radio value='كمية المواد الخام السائلة (كوب)'>&nbsp;&nbsp;&nbsp;كمية المواد الخام السائلة (كوب)</Radio>
+                                        <Radio value='كمية المواد الخام السائلة (لتر)'>&nbsp;&nbsp;&nbsp;كمية المواد الخام السائلة (لتر)</Radio>
                                     </RadioGroup>
                                 }
 

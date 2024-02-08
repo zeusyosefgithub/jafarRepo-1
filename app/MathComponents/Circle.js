@@ -207,7 +207,6 @@ export default function Circle(typeTime, Time,list,kindSearch,listConncerts,firs
                 for (let index = 0; index < types.length; index++) {
                     SumAll.push(GetSum(types[index]).month);
                 }
-                console.log(SumAll);
             }
             else if(typeTime === 'تلقائي' && Time === 'سنة'){
                 for (let index = 0; index < types.length; index++) {

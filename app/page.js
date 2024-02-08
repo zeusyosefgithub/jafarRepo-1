@@ -15,11 +15,13 @@ import { useReactToPrint } from "react-to-print";
 import Report from "./Componenets/report";
 import { Button } from "@nextui-org/button";
 import { Input } from "@nextui-org/react";
+import { data } from "autoprefixer";
 
 export default function Home() {
 
   const listInvoices = GetTrucks('invoices').sort(compareByAge);
   const listShippings = GetTrucks("shipping");
+  const listRaws = GetTrucks("RawMaterials");
 
   const [showInvoEdit, setShowInvoEdit] = useState(false);
   const [invData, setInvData] = useState();
@@ -186,6 +188,16 @@ export default function Home() {
     setErrorMessage("");
   }
 
+
+  const sendWhatsaap = () => {
+    var phoneNumber = "+972506742582";
+
+    var url = "https://wa.me/" + phoneNumber + "?text="
+    +"*Name :* " +"mahmod"+"%0a";
+
+    window.open(url, '_blank').focus();
+  }
+
   return (
     <div>
       {
@@ -196,6 +208,12 @@ export default function Home() {
       }
 
       <div className="flex pr-14 pl-14 pb-14">
+
+
+        {/* <div>
+          <Button onClick={sendWhatsaap}>Send</Button>
+        </div> */}
+
         <div className="w-1/2">
           <div className="flex items-start">
             <div className="w-1/2">

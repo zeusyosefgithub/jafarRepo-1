@@ -369,7 +369,7 @@ export const ComponentToPrint = React.forwardRef((props, ref) => {
                                     </tbody>
                                 </table>
                             </div>
-                            <div className="border-2 mr-3 ml-3 m-auto mt-4 h-32 border-[#a1a1aa]"></div>
+                            <div className="border-2 mr-2 ml-2 m-auto mt-4 h-32 border-[#a1a1aa]"></div>
                             <div className="invoic_propr">
                                 <table>
                                     <tbody>

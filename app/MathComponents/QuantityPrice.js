@@ -1,6 +1,6 @@
 'use client';
 
-export default function QuantityPrice(val1, val2, Invoices, val4, price, dateSearch, endDateSearch, QuanOrPrice,isForQuan) {
+export default function QuantityPrice(val1, val2, Invoices, val4, price, dateSearch, endDateSearch, QuanOrPrice,isForQuan,isExpenses,Expenses) {
 
     var date = new Date();
     let year = date.getFullYear();
@@ -550,25 +550,21 @@ export default function QuantityPrice(val1, val2, Invoices, val4, price, dateSea
         let sum, avg, min, max;
         if (val1 === 'تلقائي' && val2 === 'يوم') {
             sum = numberINvoINDay(sortedList, currentdate, null, null, val4);
-            console.log(sum)
             avg = GetAvgDay(sortedList, val4);
             max = GetMaxValueDay(sortedList, val4);
             min = GetMinValueDay(sortedList, val4);
-            return QuanOrPrice != 0 && GetLinesTables(sum,avg,max,min,price,val4);
         }
         else if (val1 === 'تلقائي' && val2 === 'شهر') {
             sum = numberINvoINmonth(sortedList, currentdate, val4);
             avg = GetAvgMonth(sortedList, val4);
             max = GetMaxValueMonth(sortedList, val4);
             min = GetMinValueMonth(sortedList, val4);
-            return QuanOrPrice != 0 && GetLinesTables(sum,avg,max,min,price,val4);
         }
         else if (val1 === 'تلقائي' && val2 === 'سنة') {
             sum = numberINvoINYear(sortedList, currentdate, val4);
             avg = GetAvgYear(sortedList, val4);
             max = GetMaxValueYear(sortedList, val4);
             min = GetMinValueYear(sortedList, val4);
-            return QuanOrPrice != 0 && GetLinesTables(sum, avg, max, min, price, val4);
         }
         else if (val1 === 'تلقائي' && val2 === "الزمن الكلي") {
             let sum = 0;
@@ -583,65 +579,27 @@ export default function QuantityPrice(val1, val2, Invoices, val4, price, dateSea
                     sum += parseFloat(sortedList[index]?.provide);
                 }
             }
-            return QuanOrPrice != 0 && (
-                <>
-                    {
-                        isForQuan && checkIfThereInList('الكمية') && <tr>
-                            <th>
-                                {sum}
-                            </th>
-                            <th>
-                                {sum}
-                            </th>
-                            <th>
-                                {sum}
-                            </th>
-                            <th>
-                                {sum}
-                            </th>
-                            <th>{val4}</th>
-                        </tr>
-                    }
-                    {
-                        !isForQuan && checkIfThereInList('السعر') && <tr>
-                            <th>
-                                {sum * price}
-                            </th>
-                            <th>
-                                {sum * price}
-                            </th>
-                            <th>
-                                {sum * price}
-                            </th>
-                            <th>
-                                {sum * price}
-                            </th>
-                            <th>{val4}</th>
-                        </tr>
-                    }
-                </>
-            )
+            avg = sum;
+            max = sum;
+            min = sum;
         }
         else if (val1 === 'محدد' && val2 === 'يوم') {
             let sum = numberINvoINDay(sortedList, dateSearch);
             let avg = GetAvgDay(sortedList, val4);
             let max = GetMaxValueDay(sortedList, val4);
             let min = GetMinValueDay(sortedList, val4);
-            return QuanOrPrice != 0 && GetLinesTables(sum, avg, max, min, price, val4);
         }
         else if (val1 === 'محدد' && val2 === 'شهر') {
             sum = numberINvoINmonth(sortedList, "1/" + dateSearch);
             avg = GetAvgMonth(sortedList, val4);
             max = GetMaxValueMonth(sortedList, val4);
             min = GetMinValueMonth(sortedList, val4);
-            return QuanOrPrice != 0 && GetLinesTables(sum, avg, max, min, price, val4);
         }
         else if (val1 === 'محدد' && val2 === 'سنة') {
             sum = numberINvoINYear(sortedList, "1/" + "1/" + dateSearch);
             avg = GetAvgYear(sortedList, val4);
             max = GetMaxValueYear(sortedList, val4);
             min = GetMinValueYear(sortedList, val4);
-            return QuanOrPrice != 0 && GetLinesTables(sum, avg, max, min, price, val4);
         }
         else if (val1 === 'محدد' && val2 === "من - الى") {
             let convStartDate = `${getAllPropDate(dateSearch).year}-${getAllPropDate(dateSearch).month}-${getAllPropDate(dateSearch).day}`;
@@ -651,8 +609,17 @@ export default function QuantityPrice(val1, val2, Invoices, val4, price, dateSea
             avg = GetAvgDay(sortedList, val4);
             max = GetMaxValueDay(sortedList, val4);
             min = GetMinValueDay(sortedList, val4);
-            return QuanOrPrice != 0 && GetLinesTables(sum, avg, max, min, price, val4);
+            
         }
+
+        console.log(Expenses)
+
+        if(isExpenses === 'expenses'){
+            let res = (sum * price - (sum * Expenses));
+            return GetLinesTables(res,0,0,0,0,val4);
+        }
+
+        return QuanOrPrice != 0 && GetLinesTables(sum, avg, max, min, price, val4);
     }
 
     return GetNumberInvoices();

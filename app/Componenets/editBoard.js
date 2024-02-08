@@ -9,9 +9,13 @@ import { ComponentToPrint } from "./toPrint";
 import GetDocum from "./getDocum";
 import GetTrucks from "./getDocs";
 import { FaTrash } from "react-icons/fa";
-
+import { Button } from "@nextui-org/button";
+import { FaWhatsapp } from "react-icons/fa";
+import rep2 from '../../images/rep2.jpg';
+import * as htmltoimage from 'html-to-image'
 
 export default function EditBoard(props) {
+
 
     const componentRef = useRef();
 
@@ -24,6 +28,8 @@ export default function EditBoard(props) {
 
     const [invoValueProp, setInvoValueProp] = useState({ ...props.data })
     const docInvo = GetDocum(props.data.id);
+
+    const [invoiceImage,setInvoiceImage] = useState(null);
 
 
     const [loading, setLoading] = useState(false);
@@ -83,13 +89,48 @@ export default function EditBoard(props) {
         //props.showInv();
     }
 
+    const sendWhatsaap = async(location, isLanguge, index, quan, shipp, Invoice, refV) => {
+        // var File = <ComponentToPrint
+        //     isLocated={location ? true : false}
+        //     languge={isLanguge}
+        //     currentTruck={index}
+        //     currentQuan={quan}
+        //     shippingList={shipp}
+        //     inewInv={Invoice}
+        //     ref={el => AllComponentsRefs.current[refV] = el} 
+        // />
+        var node = document.getElementById('imageee');
+        var imag = new Image();
+        htmltoimage.toPng(node).then(function (dataurl) {
+            imag.src = dataurl;
+            setInvoiceImage(imag);
+        })
+
+        const respon = await fetch("/api/",{
+            method:"POST",
+            headers:{
+                "content-type" : "application/json",
+            },
+            body:JSON.stringify({
+                gg : "123"
+            })
+        })
+
+        //console.log(respon.json());
+
+        // var phoneNumber = "+972506742582";
+        // var url = "https://wa.me/" + phoneNumber + "?text="
+        // + "werwerwer" +"%0a";
+        // ;
+        // window.open(url, '_blank').focus();
+    }
+
     const handlePrint = useReactToPrint({
         content: () => AllComponentsRefs.current[componentRef.current],
     });
 
     const getAllToPrints = () => {
         let shippingList = AllShippings;
-        console.log(shippingList);
         let countShipps1 = [];
         for (let index = 0; index < shippingList.length; index++) {
             if (shippingList[index]?.invoice_id === props.data.invoices_id) {
@@ -126,7 +167,9 @@ export default function EditBoard(props) {
                 <div className="mb-10">
                     <div className="text-center text-xl border-r-4 border-[#334155] bg-gray-200">{index + 1} الطلبية رقم</div>
                     <div className="border-r-4 border-[#334155] bg-gray-200 pb-3 respon_shipping_edit_borad">
+                        <div id="imageee">
                         <ComponentToPrint isLocated={countShipps[index]?.location ? true : false} languge={isLanguge} currentTruck={index + 1} currentQuan={countShipps[index].current_quantity} shippingList={countShipps[index]} inewInv={valuesProvide[index]} ref={el => AllComponentsRefs.current[index] = el} />
+                        </div>
                         <div className="flex justify-around mt-5 mb-5 items-center">
                             <div className="flex items-center">
                                 <label class="switch">
@@ -142,7 +185,10 @@ export default function EditBoard(props) {
                                 <button onClick={() => { componentRef.current = index, handlePrint(); }} className="px-4 ml-2 py-2 text-black border-2 border-black bg-white hover:text-white hover:bg-black text-2xl font-medium rounded-md">
                                     {props.setButtonName ? props.setButtonName : "طباعة"}
                                 </button>
-                            </div>                      
+                            </div>  
+                            <div>
+                                <Button isDisabled onClick={() => sendWhatsaap(countShipps[index]?.location,isLanguge,index + 1,countShipps[index].current_quantity,countShipps[index],valuesProvide[index],index)} color="success" variant="bordered" className="text-sm"><FaWhatsapp className="text-2xl"/> ارسال رسالة</Button>
+                            </div>                    
                         </div>
                     </div>
                 </div>

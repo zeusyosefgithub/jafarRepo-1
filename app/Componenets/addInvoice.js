@@ -137,7 +137,7 @@ export default function AddInvoice() {
             if (!customerIdRef.current.value || customerIdRef.current.value.length > 10) {
                 return setErrorCusId("!رقم الزبون اكثر من 10 ارقام او ليس لديه قيمة");
             }
-            if (!customerNameRef.current.value || customerNameRef.current.value.length > 16) {
+            if (!customerNameRef.current.value || customerNameRef.current.value.length > 25) {
                 return setErrorCusName("!اسم الزبون اكثر من 16 حرف او ليس لديه قيمة");
             }
             if (!customerStreetRef.current.value || customerStreetRef.current.value.length > 10) {
