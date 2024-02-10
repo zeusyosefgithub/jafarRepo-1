@@ -459,10 +459,8 @@ export default function AllLists(props) {
     }
 
     const getInvoices = () => {
-        const sortedList = theList;
-        console.log(theList)
+        const sortedList = theList.sort(compareByAgeTwo);
         let listinvo = [];
-
         if(valSearchInvoice3 === 'sort'){
             if(valSearchInvoice2 === 'invoice'){
                 if(valSearchInvoice === 'biggestSmall'){
@@ -758,52 +756,6 @@ export default function AllLists(props) {
         }
         return false;
     }
-
-    function SortListInvoicesByDate(list){
-        let listInvo = list;
-        
-        let newKistInvo = [];
-        let maxDay = 0;
-        let maxMonth = 0;
-        let maxYear = 0;
-        for (let index = 0; index < theList?.length; index++) {
-            for (let index1 = 0; index1 < listInvo?.length; index1++) {
-                if(!checkIfCurrentInList(newKistInvo,listInvo[index1])){
-                    maxYear = Math.max(maxYear,getAllPropDate(listInvo[index1]?.invoices_data).year);
-                }
-            }
-            for (let index2 = 0; index2 < listInvo?.length; index2++) {
-                if(getAllPropDate(listInvo[index2]?.invoices_data).year === maxYear){
-                    if(!checkIfCurrentInList(newKistInvo,listInvo[index2])){
-                        maxMonth = Math.max(maxMonth,getAllPropDate(listInvo[index2]?.invoices_data).month);
-                    }
-                }
-            }
-            for (let index3 = 0; index3 < listInvo?.length; index3++) {
-                if(getAllPropDate(listInvo[index3]?.invoices_data).year === maxYear &&
-                getAllPropDate(listInvo[index3]?.invoices_data).month === maxMonth){
-                    if(!checkIfCurrentInList(newKistInvo,listInvo[index3])){
-                        maxDay = Math.max(maxDay,getAllPropDate(listInvo[index3]?.invoices_data).day);
-                    }
-                }
-            }
-            for (let index4 = 0; index4 < listInvo?.length; index4++) {
-                if(getAllPropDate(listInvo[index4]?.invoices_data).year === maxYear &&
-                getAllPropDate(listInvo[index4]?.invoices_data).month === maxMonth &&
-                getAllPropDate(listInvo[index4]?.invoices_data).day === maxDay){
-                    if(!checkIfCurrentInList(newKistInvo,listInvo[index4])){
-                        newKistInvo.push(listInvo[index4]);
-                    }
-                }
-            }
-            maxDay = 0;
-            maxMonth = 0;
-            maxYear = 0;
-        }
-        console.log(newKistInvo);
-        return newKistInvo;
-    }
-
     
 
     return (
