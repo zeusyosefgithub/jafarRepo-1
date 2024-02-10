@@ -453,7 +453,8 @@ export default function AllLists(props) {
     }
 
     const getInvoices = () => {
-        const sortedList = SortListInvoicesByDate(theList);
+        const sortedList = theList;
+        console.log(theList)
         let listinvo = [];
 
         if(valSearchInvoice3 === 'sort'){
@@ -754,6 +755,7 @@ export default function AllLists(props) {
 
     function SortListInvoicesByDate(list){
         let listInvo = list;
+        
         let newKistInvo = [];
         let maxDay = 0;
         let maxMonth = 0;
@@ -792,6 +794,7 @@ export default function AllLists(props) {
             maxMonth = 0;
             maxYear = 0;
         }
+        console.log(newKistInvo);
         return newKistInvo;
     }
 

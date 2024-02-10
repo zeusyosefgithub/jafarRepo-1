@@ -260,6 +260,9 @@ export default function AddInvoice() {
                     showNewCus ? <FormBoxNewCus newCustomer={() => setIsNewCus(false)} getNewCus={getNewCus} showDisableNewCus={handelShowDisableNewCus} />
                         : null
             }
+            {
+                console.log(AllInvoices)
+            }
             <div className="max-w- mx-auto">
                 <div>
                     <div>
