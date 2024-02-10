@@ -76,7 +76,7 @@ export default function AllLists(props) {
     ]
 
     const theListRev = GetTrucks("invoices").sort(compareByAgeReverse);
-    const theList = GetTrucks("invoices").sort(compareByAgeTwo);
+    const theList = GetTrucks("invoices").sort(sortDateInvoice);
     
     const theList1 = GetTrucks("concert pumps");
     const theList2 = GetTrucks("drivers");
@@ -416,7 +416,7 @@ export default function AllLists(props) {
     }
 
 
-    const getAllPropDate = (date) => {
+    function getAllPropDate(date){
         let day = "";
         let month = "";
         let year = "";
@@ -450,6 +450,12 @@ export default function AllLists(props) {
             }
         }
         return {day : parseFloat(day),month : parseFloat(month),year : parseFloat(year)}
+    }
+
+    function sortDateInvoice(a,b) {
+        let bb = `${getAllPropDate(b.invoices_data)?.year}-${getAllPropDate(b.invoices_data)?.month}-${getAllPropDate(b.invoices_data)?.day}`;
+        let aa = `${getAllPropDate(a.invoices_data)?.year}-${getAllPropDate(a.invoices_data)?.month}-${getAllPropDate(a.invoices_data)?.day}`;
+        return new Date(bb) - new Date(aa);
     }
 
     const getInvoices = () => {
