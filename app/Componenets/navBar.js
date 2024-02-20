@@ -13,12 +13,6 @@ export default function NavBar() {
     return (
         <div className='items-center z-30 fixed top-0 w-full bg-[#334155] flex justify-between p-5'>
             <div className='flex justify-around w-3/6 test-fontt'>
-                <Link href="/processes" className='flex items-center bg-gray-300 hover:bg-gray-400 text-gray-800 text-xl font-bold py-2 px-4 rounded-xl'>
-                    <GrUserAdmin />
-                    <button className='ml-2'>
-                        ادارة
-                    </button>
-                </Link>
                 <Link href="/lists" className='flex items-center bg-gray-300 hover:bg-gray-400 text-gray-800 text-xl font-bold py-2 px-4 rounded-xl'>
                     <IoListSharp />
                     <button className='ml-2'>

@@ -13,6 +13,13 @@ import { Button } from "@nextui-org/button";
 import { FaWhatsapp } from "react-icons/fa";
 import rep2 from '../../images/rep2.jpg';
 import * as htmltoimage from 'html-to-image'
+import { CircularProgress, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Spinner, useDisclosure } from "@nextui-org/react";
+import { MdEditDocument } from "react-icons/md";
+import { NextResponse } from "next/server";
+import { deleteObject, ref, uploadBytes, uploadString } from "firebase/storage";
+import { storage } from "../FireBase/firebase";
+import { v4 } from "uuid";
+import html2canvas from "html2canvas";
 
 export default function EditBoard(props) {
 
@@ -21,15 +28,15 @@ export default function EditBoard(props) {
 
     const [type, setType] = useState();
     const [chooise, setChooise] = useState("رقم الزبون");
-    const [choVal, setChoVal] = useState(props.data.invoices_customer_id);
+    const [choVal, setChoVal] = useState(props.data?.invoices_customer_id);
     const inputRef = useRef();
     const AllComponentsRefs = useRef([]);
     const AllShippings = GetTrucks("shipping");
 
     const [invoValueProp, setInvoValueProp] = useState({ ...props.data })
-    const docInvo = GetDocum(props.data.id);
+    const docInvo = GetDocum(props.data?.id);
 
-    const [invoiceImage,setInvoiceImage] = useState(null);
+    const [invoiceImage, setInvoiceImage] = useState(null);
 
 
     const [loading, setLoading] = useState(false);
@@ -41,9 +48,9 @@ export default function EditBoard(props) {
     const deleteInvo = async () => {
         setLoading(true);
         try {
-            await deleteDoc(doc(firestore, "invoices", props.data.id));
+            await deleteDoc(doc(firestore, "invoices", props.data?.id));
             for (let index = 0; index < AllShippings.length; index++) {
-                if (AllShippings[index]?.invoice_id == props.data.invoices_id) {
+                if (AllShippings[index]?.invoice_id == props.data?.invoices_id) {
                     await deleteDoc(doc(firestore, "shipping", AllShippings[index]?.id))
                 }
             }
@@ -51,7 +58,7 @@ export default function EditBoard(props) {
         catch (e) {
             console.log(e);
         }
-        props.showInv();
+    //props.showInv();
         setLoading(false);
     }
 
@@ -77,7 +84,7 @@ export default function EditBoard(props) {
             invoices_pump: chooise == "المضخة" ? inputRef.current.value : invoValueProp.invoices_pump,
             invoices_data: chooise == "تاريخ الفاتورة" ? inputRef.current.value : invoValueProp.invoices_data
         }
-        const invId = doc(firestore, "invoices", props.data.id)
+        const invId = doc(firestore, "invoices", props.data?.id)
         setLoading(true);
         try {
             await updateDoc(invId, newData);
@@ -89,41 +96,59 @@ export default function EditBoard(props) {
         //props.showInv();
     }
 
-    const sendWhatsaap = async(location, isLanguge, index, quan, shipp, Invoice, refV) => {
-        // var File = <ComponentToPrint
-        //     isLocated={location ? true : false}
-        //     languge={isLanguge}
-        //     currentTruck={index}
-        //     currentQuan={quan}
-        //     shippingList={shipp}
-        //     inewInv={Invoice}
-        //     ref={el => AllComponentsRefs.current[refV] = el} 
-        // />
-        var node = document.getElementById('imageee');
-        var imag = new Image();
-        htmltoimage.toPng(node).then(function (dataurl) {
-            imag.src = dataurl;
-            setInvoiceImage(imag);
-        })
+    const refsImages = useRef([]);
 
-        const respon = await fetch("/api/",{
-            method:"POST",
-            headers:{
-                "content-type" : "application/json",
-            },
-            body:JSON.stringify({
-                gg : "123"
-            })
-        })
+
+    const sendWhatsaap = async (refImage,phone) => {
+
+        // let url;
+        // const one = await html2canvas(refImage).then((canvas) => {
+        //     url = canvas.toDataURL("image/png");
+        //     const loc = ref(storage,`files/test`);
+        //     uploadString(loc,url,'data_url');
+        // }) 
+        // // const respon = await fetch("/api/", {
+        // //     method: "GET",
+        // //     headers: {
+        // //         "content-type": "application/json",
+        // //     },
+        // // })
+        // // const data = await respon.json();
+        // // console.log(data);
+        // // return Response.json({data});
+        // try{
+        //     const res = await fetch("/api/", {
+        //         method: "POST",
+        //         body: JSON.stringify({"id": phone.substring(1)}),
+        //         headers: {
+        //             "content-type": "application/json",
+        //         },
+        //     })
+        //     console.log(res)
+        //     if (res.ok) {
+        //         console.log("Yeai!")
+        //     } else {
+        //         console.log("Oops! Something is wrong.")
+        //     }
+        // }
+        // catch(e){
+        //     console.log(e);
+        // }
+
+        
+        
 
         //console.log(respon.json());
+        
 
-        // var phoneNumber = "+972506742582";
-        // var url = "https://wa.me/" + phoneNumber + "?text="
-        // + "werwerwer" +"%0a";
-        // ;
-        // window.open(url, '_blank').focus();
+        var phoneNumber = "+972503209026";
+        var url = "https://wa.me/" + phoneNumber + "?text="
+        + encodeURIComponent('https://firebasestorage.googleapis.com/v0/b/jafar-test.appspot.com/o/files%2Ftest?alt=media&token=d43dbf66-2217-4f76-ada9-0ff68dfb6244.png') +"%0a";
+        ;
+        window.open(url, '_blank').focus();
     }
+
+
 
     const handlePrint = useReactToPrint({
         content: () => AllComponentsRefs.current[componentRef.current],
@@ -133,7 +158,7 @@ export default function EditBoard(props) {
         let shippingList = AllShippings;
         let countShipps1 = [];
         for (let index = 0; index < shippingList.length; index++) {
-            if (shippingList[index]?.invoice_id === props.data.invoices_id) {
+            if (shippingList[index]?.invoice_id === props.data?.invoices_id) {
                 countShipps1.push(shippingList[index]);
             }
         }
@@ -143,32 +168,32 @@ export default function EditBoard(props) {
         for (let index = 0; index < countShipps.length; index++) {
             currenvlaues += parseFloat(countShipps[index].current_quantity);
             valuesProvide.push({
-                id: props.data.id,
-                invoices_id: props.data.invoices_id,
-                invoices_customer_id: props.data.invoices_customer_id,
-                invoices_customer_name: props.data.invoices_customer_name,
-                invoices_customer_street: props.data.invoices_customer_street,
-                invoices_customer_city: props.data.invoices_customer_city,
-                invoices_quantity: props.data.invoices_quantity,
-                invoices_concretd_grade: props.data.invoices_concretd_grade,
-                invoices_kind_material: props.data.invoices_kind_material,
-                invoices_kind_type_of_concrete: props.data.invoices_kind_type_of_concrete,
-                invoices_kind_egree_of_Exposure: props.data.invoices_kind_egree_of_Exposure,
-                invoices_pump: props.data.invoices_pump,
+                id: props.data?.id,
+                invoices_id: props.data?.invoices_id,
+                invoices_customer_id: props.data?.invoices_customer_id,
+                invoices_customer_name: props.data?.invoices_customer_name,
+                invoices_customer_street: props.data?.invoices_customer_street,
+                invoices_customer_city: props.data?.invoices_customer_city,
+                invoices_quantity: props.data?.invoices_quantity,
+                invoices_concretd_grade: props.data?.invoices_concretd_grade,
+                invoices_kind_material: props.data?.invoices_kind_material,
+                invoices_kind_type_of_concrete: props.data?.invoices_kind_type_of_concrete,
+                invoices_kind_egree_of_Exposure: props.data?.invoices_kind_egree_of_Exposure,
+                invoices_pump: props.data?.invoices_pump,
                 provide: currenvlaues,
-                stayed: props.data.stayed,
-                invoices_data: props.data.invoices_data
+                stayed: props.data?.stayed,
+                invoices_data: props.data?.invoices_data
             })
 
         }
         let takeAllPrints = [];
         for (let index = 0; index < countShipps.length; index++) {
             takeAllPrints.push(
-                <div className="mb-10">
+                <div className="mb-10 w-full">
                     <div className="text-center text-xl border-r-4 border-[#334155] bg-gray-200">{index + 1} الطلبية رقم</div>
                     <div className="border-r-4 border-[#334155] bg-gray-200 pb-3 respon_shipping_edit_borad">
-                        <div id="imageee">
-                        <ComponentToPrint isLocated={countShipps[index]?.location ? true : false} languge={isLanguge} currentTruck={index + 1} currentQuan={countShipps[index].current_quantity} shippingList={countShipps[index]} inewInv={valuesProvide[index]} ref={el => AllComponentsRefs.current[index] = el} />
+                        <div ref={el => refsImages.current[index] = el}>
+                            <ComponentToPrint isLocated={countShipps[index]?.location ? true : false} languge={isLanguge} currentTruck={index + 1} currentQuan={countShipps[index].current_quantity} shippingList={countShipps[index]} inewInv={valuesProvide[index]} ref={el => AllComponentsRefs.current[index] = el} />
                         </div>
                         <div className="flex justify-around mt-5 mb-5 items-center">
                             <div className="flex items-center">
@@ -179,16 +204,16 @@ export default function EditBoard(props) {
                                 <div className="ml-2">تحويل بالعربي</div>
                             </div>
                             <div>
-                                <button onClick={() => {deleteMyShipp(index)}} className="px-4 ml-2 py-2 text-black border-2 border-black bg-white hover:text-white hover:bg-[#dc2626] text-2xl font-medium rounded-md">حذف</button>
+                                <button onClick={() => { deleteMyShipp(index) }} className="px-4 ml-2 py-2 text-black border-2 border-black bg-white hover:text-white hover:bg-[#dc2626] text-2xl font-medium rounded-md">حذف</button>
                             </div>
                             <div>
                                 <button onClick={() => { componentRef.current = index, handlePrint(); }} className="px-4 ml-2 py-2 text-black border-2 border-black bg-white hover:text-white hover:bg-black text-2xl font-medium rounded-md">
                                     {props.setButtonName ? props.setButtonName : "طباعة"}
                                 </button>
-                            </div>  
+                            </div>
                             <div>
-                                <Button isDisabled onClick={() => sendWhatsaap(countShipps[index]?.location,isLanguge,index + 1,countShipps[index].current_quantity,countShipps[index],valuesProvide[index],index)} color="success" variant="bordered" className="text-sm"><FaWhatsapp className="text-2xl"/> ارسال رسالة</Button>
-                            </div>                    
+                                <Button isDisabled onClick={() => sendWhatsaap(refsImages.current[index],valuesProvide[index].invoices_customer_id)} color="success" variant="bordered" className="text-sm"><FaWhatsapp className="text-2xl" /> ارسال رسالة</Button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -209,7 +234,7 @@ export default function EditBoard(props) {
     }
 
     const statusinvoice = () => {
-        if ((props.data.invoices_quantity - props.data.provide) == 0) {
+        if ((props.data?.invoices_quantity - props.data?.provide) == 0) {
             return <div className="text-xl text-[#dc2626]">مغلقة</div>
         }
         else {
@@ -238,23 +263,23 @@ export default function EditBoard(props) {
     }
 
     const deleteMyShipp = async (num) => {
-        const invId = doc(firestore, "invoices", props.data.id);
+        const invId = doc(firestore, "invoices", props.data?.id);
         const newInvo = {
-            id: props.data.id,
-            invoices_id: props.data.invoices_id,
-            invoices_customer_id: props.data.invoices_customer_id,
-            invoices_customer_name: props.data.invoices_customer_name,
-            invoices_customer_street: props.data.invoices_customer_street,
-            invoices_customer_city: props.data.invoices_customer_city,
-            invoices_quantity: props.data.invoices_quantity,
-            invoices_concretd_grade: props.data.invoices_concretd_grade,
-            invoices_kind_material: props.data.invoices_kind_material,
-            invoices_kind_type_of_concrete: props.data.invoices_kind_type_of_concrete,
-            invoices_kind_egree_of_Exposure: props.data.invoices_kind_egree_of_Exposure,
-            invoices_pump: props.data.invoices_pump,
+            id: props.data?.id,
+            invoices_id: props.data?.invoices_id,
+            invoices_customer_id: props.data?.invoices_customer_id,
+            invoices_customer_name: props.data?.invoices_customer_name,
+            invoices_customer_street: props.data?.invoices_customer_street,
+            invoices_customer_city: props.data?.invoices_customer_city,
+            invoices_quantity: props.data?.invoices_quantity,
+            invoices_concretd_grade: props.data?.invoices_concretd_grade,
+            invoices_kind_material: props.data?.invoices_kind_material,
+            invoices_kind_type_of_concrete: props.data?.invoices_kind_type_of_concrete,
+            invoices_kind_egree_of_Exposure: props.data?.invoices_kind_egree_of_Exposure,
+            invoices_pump: props.data?.invoices_pump,
             provide: (props.data.provide -= getAllPropByNumber(num)?.current_quantity),
-            stayed: props.data.stayed,
-            invoices_data: props.data.invoices_data
+            stayed: props.data?.stayed,
+            invoices_data: props.data?.invoices_data
         }
         try {
             await updateDoc(invId, newInvo);
@@ -265,118 +290,128 @@ export default function EditBoard(props) {
         }
     }
 
+    const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
     return (
         <>
-            <div className="w-full md:w-1/2 mx-auto fixed z-10 top-32 right-0 left-0 border-2 border-[#334155] rounded-xl">
-                <div className="flex flex-col p-5 rounded-lg shadow bg-[#f5f5f5]">
-                    <div className="flex flex-col items-center text-center">
-                        <h2 className="mt-2 font-semibold text-black text-2xl">الفاتورة رقم {props.data.invoices_id}</h2>
-                        <div dir="rtl" className="flex w-full items-center">
-                            <div className="ml-1 text-black leading-relaxed text-right text-xl">حالة الفاتورة :</div>
-                            {
-                                statusinvoice()
-                            }
-                        </div>
-                    </div>
-                    {loading && <LoadingSpinner />}
-                    <div className="m-1 p-5 bg-white rounded-xl overflow-auto highting_edit_Board">
-                        <table className="w-full text-center">
-                            <tbody>
-                                <tr className="border-2 border-[#334155]">
-                                    <th><div className="text-xl">المضخة</div></th>
-                                    <th><div className="text-xl">الشارع</div></th>
-                                    <th><div className="text-xl">اسم الزبون</div></th>
-                                    <th><div className="text-xl">رقم الزبون</div></th>
-                                    <th><div className="text-xl">تاريخ الفتورة</div></th>
-                                </tr>
-                                <tr className="">
-                                    <th className="lins_edit_board" onClick={() => { setChooise("المضخة"); setChoVal(invoValueProp.invoices_pump); setType("number") }}><div className="text-lg pt-2 pb-2">{docInvo.invoices_pump}</div><FaEdit className="m-auto text-xl" /></th>
-                                    <th className="lins_edit_board" onClick={() => { setChooise("الشارع"); setChoVal(invoValueProp.invoices_customer_street); setType("text") }}><div className="text-lg pt-2 pb-2">{docInvo.invoices_customer_street}</div><FaEdit className="m-auto text-xl" /></th>
-                                    <th className="lins_edit_board" onClick={() => { setChooise("اسم الزبون"); setChoVal(invoValueProp.invoices_customer_name); setType("text") }}><div className="text-lg pt-2 pb-2">{docInvo.invoices_customer_name}</div><FaEdit className="m-auto text-xl" /></th>
-                                    <th className="lins_edit_board" onClick={() => { setChooise("رقم الزبون"); setChoVal(invoValueProp.invoices_customer_id); setType("number") }}><div className="text-lg pt-2 pb-2">{docInvo.invoices_customer_id}</div><FaEdit className="m-auto text-xl" /></th>
-                                    <th className="lins_edit_board" onClick={() => { setChooise("تاريخ الفاتورة"); setChoVal(invoValueProp.invoices_data); setType("text") }}><div className="text-lg pt-2 pb-2">{docInvo.invoices_data}</div><FaEdit className="m-auto text-xl" /></th>
-                                </tr>
-                                <tr className="border-2 border-[#334155]">
-                                    <th><div className="text-xl">كثافة الخرسانة</div></th>
-                                    <th><div className="text-xl">درجة الضغط</div></th>
-                                    <th><div className="text-xl">نوع الخرسانة</div></th>
-                                    <th><div className="text-xl">نوع الخرسانة</div></th>
-                                    <th><div className="text-xl">الكمية</div></th>
-                                </tr>
-                                <tr>
-                                    <th className="lins_edit_board" onClick={() => { setChooise("كثافة الخرسانة"); setChoVal(invoValueProp.invoices_concretd_grade); setType("number") }}><div className="text-lg pt-2 pb-2">{docInvo.invoices_concretd_grade}</div><FaEdit className="m-auto text-xl" /></th>
-                                    <th className="lins_edit_board" onClick={() => { setChooise("درجة الضغط"); setChoVal(invoValueProp.invoices_kind_egree_of_Exposure); setType("number") }}><div className="text-lg pt-2 pb-2">{docInvo.invoices_kind_egree_of_Exposure}</div><FaEdit className="m-auto text-xl" /></th>
-                                    <th className="lins_edit_board" onClick={() => { setChooise("نوع الخرسانة1"); setChoVal(invoValueProp.invoices_kind_type_of_concrete); setType("text") }}><div className="text-lg pt-2 pb-2">{docInvo.invoices_kind_type_of_concrete}</div><FaEdit className="m-auto text-xl" /></th>
-                                    <th className="lins_edit_board" onClick={() => { setChooise("نوع الخرسانة2"); setChoVal(invoValueProp.invoices_kind_material); setType("text") }}><div className="text-lg pt-2 pb-2">{docInvo.invoices_kind_material}</div><FaEdit className="m-auto text-xl" /></th>
-                                    <th className="lins_edit_board" onClick={() => { setChooise("الكمية"); setChoVal(invoValueProp.invoices_quantity); setType("number") }}><div className="text-lg pt-2 pb-2">{docInvo.invoices_quantity}</div><FaEdit className="m-auto text-xl" /></th>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <div className="bg-[#334155] h-1 mt-10 mb-10"></div>
-                        <div>
-                            <div dir="rtl" className="mb-2 text-xl">تم اختيار تعديل : {chooise}</div>
-                            <div className="flex justify-between items-center">
-                                <div className="m-auto mr-20">
-                                    <button onClick={editInvo} className="px-4 ml-2 py-2 text-black border-2 border-black bg-white hover:text-white hover:bg-black text-2xl font-medium rounded-md">
-                                        تعديل
-                                    </button>
+            <Button size="sm" onPress={onOpen} color="primary" variant="light" className="w-1/2"><MdEditDocument className="m-auto text-xl" /></Button>
+            <Modal className="test-fontt" backdrop={"blur"} size="5xl" isOpen={isOpen} onOpenChange={onOpenChange}>
+                <ModalContent>
+                    {(onClose) => (
+                        <>
+                            <ModalHeader className="flex justify-center">الفاتورة رقم {props.data?.invoices_id}</ModalHeader>
+                            <ModalBody>
+                            {loading && <Spinner  className="fixed left-1/2 top-1/2 z-50" size="lg" />}
+                                <div className="flex flex-col items-center text-center">
+                                    <div dir="rtl" className="flex w-full items-center">
+                                        <div className="ml-1 text-black leading-relaxed text-right text-xl">حالة الفاتورة :</div>
+                                        {
+                                            statusinvoice()
+                                        }
+                                    </div>
                                 </div>
-                                <div className="w-full">
-                                    <input onChange={(e) => setChoVal(e.target.value)} value={choVal} ref={inputRef} dir="rtl" type={type} className="block py-2.5 px-0 w-full text-xl text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-black peer" placeholder={chooise} required />
-                                </div>
+                                <div className="m-1 p-5 bg-white rounded-xl overflow-auto highting_edit_Board">
 
-                            </div>
-                        </div>
-                        {
-                            getListShipps().length > 0 && <>
-                                <div className="bg-[#334155] h-1 mt-10 mb-10"></div>
-                                <div className="flex justify-center text-xl">جميع الطلبيات</div>
-                                <div dir="rtl" className="mb-3">عدد الطلبيات الكلي : {getNumberShipps()}</div>
-                                <div className="bg-[#334155] h-1 mt-10 mb-10"></div>
-                                <div dir='rtl' className="mb-10">
-                                    <table dir="rtl" className="w-full">
-                                        <tbody>
-                                            <tr>
-                                                <th className="text-xl"></th>
-                                                <th className="text-xl">الارسالية رقم</th>
-                                                <th className="text-xl">الطلب الاجمالي</th>
-                                                <th className="text-xl">الذي تم تزويدة</th>
-                                                <th className="text-xl">الطلب الحالي</th>
-                                            </tr>
-                                            {
-                                                getListShipps().map((shipp, i) => {
-                                                    return <tr className="items-center mt-3">
-                                                        <th onClick={() => { deleteMyShipp(i) }} className="cursor-pointer text-base p-4 hover:text-white hover:bg-[#dc2626]"><div className="flex justify-center items-center">حذف <FaTrash className="mr-2 text-xl" /></div></th>
-                                                        <th className="text-base p-4">{i + 1}</th>
-                                                        <th className="text-base p-4">{getAllPropByNumber(i)?.current_quantity}</th>
-                                                        <th className="text-base p-4">{getAllPropByNumber(i)?.current_quantity}</th>
-                                                        <th className="text-base p-4">{getAllPropByNumber(i)?.current_quantity}</th>
-                                                    </tr>
-                                                })
-                                            }
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div className="bg-[#334155] h-1 mt-10 mb-10"></div>
-                                <div className="w-9/12 m-auto">
+                                    <div className="bg-slate-200 p-7 pr-10 rounded-tl-xl rounded-bl-xl border-r-5 border-[#334155]">
+                                        <table className="w-full text-center">
+                                            <tbody>
+                                                <tr className="border-2 border-[#334155]">
+                                                    <th><div className="text-xl">المضخة</div></th>
+                                                    <th><div className="text-xl">الشارع</div></th>
+                                                    <th><div className="text-xl">اسم الزبون</div></th>
+                                                    <th><div className="text-xl">رقم الزبون</div></th>
+                                                    <th><div className="text-xl">تاريخ الفتورة</div></th>
+                                                </tr>
+                                                <tr className="">
+                                                    <th className="lins_edit_board" onClick={() => { setChooise("المضخة"); setChoVal(invoValueProp.invoices_pump); setType("number") }}><div className="text-lg pt-2 pb-2">{docInvo.invoices_pump}</div><FaEdit className="m-auto text-xl" /></th>
+                                                    <th className="lins_edit_board" onClick={() => { setChooise("الشارع"); setChoVal(invoValueProp.invoices_customer_street); setType("text") }}><div className="text-lg pt-2 pb-2">{docInvo.invoices_customer_street}</div><FaEdit className="m-auto text-xl" /></th>
+                                                    <th className="lins_edit_board" onClick={() => { setChooise("اسم الزبون"); setChoVal(invoValueProp.invoices_customer_name); setType("text") }}><div className="text-lg pt-2 pb-2">{docInvo.invoices_customer_name}</div><FaEdit className="m-auto text-xl" /></th>
+                                                    <th className="lins_edit_board" onClick={() => { setChooise("رقم الزبون"); setChoVal(invoValueProp.invoices_customer_id); setType("number") }}><div className="text-lg pt-2 pb-2">{docInvo.invoices_customer_id}</div><FaEdit className="m-auto text-xl" /></th>
+                                                    <th className="lins_edit_board" onClick={() => { setChooise("تاريخ الفاتورة"); setChoVal(invoValueProp.invoices_data); setType("text") }}><div className="text-lg pt-2 pb-2">{docInvo.invoices_data}</div><FaEdit className="m-auto text-xl" /></th>
+                                                </tr>
+                                                <tr className="border-2 border-[#334155]">
+                                                    <th><div className="text-xl">كثافة الخرسانة</div></th>
+                                                    <th><div className="text-xl">درجة الضغط</div></th>
+                                                    <th><div className="text-xl">نوع الخرسانة</div></th>
+                                                    <th><div className="text-xl">نوع الخرسانة</div></th>
+                                                    <th><div className="text-xl">الكمية</div></th>
+                                                </tr>
+                                                <tr>
+                                                    <th className="lins_edit_board" onClick={() => { setChooise("كثافة الخرسانة"); setChoVal(invoValueProp.invoices_concretd_grade); setType("number") }}><div className="text-lg pt-2 pb-2">{docInvo.invoices_concretd_grade}</div><FaEdit className="m-auto text-xl" /></th>
+                                                    <th className="lins_edit_board" onClick={() => { setChooise("درجة الضغط"); setChoVal(invoValueProp.invoices_kind_egree_of_Exposure); setType("number") }}><div className="text-lg pt-2 pb-2">{docInvo.invoices_kind_egree_of_Exposure}</div><FaEdit className="m-auto text-xl" /></th>
+                                                    <th className="lins_edit_board" onClick={() => { setChooise("نوع الخرسانة1"); setChoVal(invoValueProp.invoices_kind_type_of_concrete); setType("text") }}><div className="text-lg pt-2 pb-2">{docInvo.invoices_kind_type_of_concrete}</div><FaEdit className="m-auto text-xl" /></th>
+                                                    <th className="lins_edit_board" onClick={() => { setChooise("نوع الخرسانة2"); setChoVal(invoValueProp.invoices_kind_material); setType("text") }}><div className="text-lg pt-2 pb-2">{docInvo.invoices_kind_material}</div><FaEdit className="m-auto text-xl" /></th>
+                                                    <th className="lins_edit_board" onClick={() => { setChooise("الكمية"); setChoVal(invoValueProp.invoices_quantity); setType("number") }}><div className="text-lg pt-2 pb-2">{docInvo.invoices_quantity}</div><FaEdit className="m-auto text-xl" /></th>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div className="mt-10 mb-10"></div>
+                                    <div className="bg-slate-200 p-7 pr-10 rounded-tl-xl rounded-bl-xl border-r-5 border-[#334155]">
+                                        <div dir="rtl" className="mb-2 text-xl">تم اختيار تعديل : {chooise}</div>
+                                        <div className="flex justify-between items-center">
+                                            <div className="m-auto mr-20">
+                                                <button onClick={editInvo} className="px-4 ml-2 py-2 text-black border-2 border-black bg-white hover:text-white hover:bg-black text-2xl font-medium rounded-md">
+                                                    تعديل
+                                                </button>
+                                            </div>
+                                            <div className="w-full">
+                                                <Input onChange={(e) => setChoVal(e.target.value)} value={choVal} ref={inputRef} dir="rtl" type={type} />
+                                            </div>
+                                        </div>
+                                    </div>
                                     {
-                                        getAllToPrints()
+                                        getListShipps().length > 0 && <>
+                                            <div className="bg-[#334155] h-1 mt-10 mb-10"></div>
+                                            <div className="flex justify-center text-xl">جميع الطلبيات</div>
+                                            <div dir="rtl" className="mb-3">عدد الطلبيات الكلي : {getNumberShipps()}</div>
+                                            <div className="mt-10 mb-10"></div>
+                                            <div dir='rtl' className="mb-10">
+                                                <table dir="rtl" className="w-full">
+                                                    <tbody>
+                                                        <tr>
+                                                            <th className="text-xl"></th>
+                                                            <th className="text-xl">الارسالية رقم</th>
+                                                            <th className="text-xl">الطلب الاجمالي</th>
+                                                            <th className="text-xl">الذي تم تزويدة</th>
+                                                            <th className="text-xl">الطلب الحالي</th>
+                                                        </tr>
+                                                        {
+                                                            getListShipps().map((shipp, i) => {
+                                                                return <tr className="items-center mt-3">
+                                                                    <th onClick={() => { deleteMyShipp(i) }} className="cursor-pointer text-base p-4 hover:text-white hover:bg-[#dc2626]"><div className="flex justify-center items-center">حذف <FaTrash className="mr-2 text-xl" /></div></th>
+                                                                    <th className="text-base p-4">{i + 1}</th>
+                                                                    <th className="text-base p-4">{getAllPropByNumber(i)?.current_quantity}</th>
+                                                                    <th className="text-base p-4">{getAllPropByNumber(i)?.current_quantity}</th>
+                                                                    <th className="text-base p-4">{getAllPropByNumber(i)?.current_quantity}</th>
+                                                                </tr>
+                                                            })
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div className="bg-[#334155] h-1 mt-10 mb-10"></div>
+                                            <div className="w-full m-auto">
+                                                {
+                                                    getAllToPrints()
+                                                }
+                                            </div>
+                                        </>
                                     }
                                 </div>
-                            </>
-                        }
-                    </div>
-
-                    <div className="flex items-center mt-3">
-                        <button onClick={deleteInvo} className="flex-1 px-4 mr-2 py-2 bg-[#334155] hover:bg-[#b91c1c] text-white text-2xl font-medium rounded-md">
-                            حذف الفتورة
-                        </button>
-                        <button onClick={() => props.showInv()} className="flex-1 px-4 ml-2 py-2 bg-[#334155] hover:bg-yellow-600 text-white text-2xl font-medium rounded-md">
-                            خروج
-                        </button>
-                    </div>
-                </div>
-            </div>
+                            </ModalBody>
+                            <ModalFooter className="flex justify-between">
+                                <Button size="lg" onClick={deleteInvo} color="danger" variant="light" onPress={onClose}>
+                                    حذف الفاتورة
+                                </Button>
+                                <Button size="lg" color="primary" onPress={onClose}>
+                                    اغلاق
+                                </Button>
+                            </ModalFooter>
+                        </>
+                    )}
+                </ModalContent>
+            </Modal>
         </>
     )
 }

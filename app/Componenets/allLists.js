@@ -76,7 +76,7 @@ export default function AllLists(props) {
     ]
 
     const theListRev = GetTrucks("invoices").sort(compareByAgeReverse);
-    const theList = GetTrucks("invoices").sort(sortDateInvoice);
+    const theList = GetTrucks("invoices").sort(compareByAgeTwo).sort(sortDateInvoice);
     
     const theList1 = GetTrucks("concert pumps");
     const theList2 = GetTrucks("drivers");
@@ -388,7 +388,7 @@ export default function AllLists(props) {
 
     const getTheInvoRowList = (theList, index,day,countDays) => {
         if(day === 'day' && ReacurrentDate === theList[index]?.invoices_data){
-            return <tr onClick={() => { setShowInvoEdit(true); setInvData(theList[index]) }} className="styling_lines_lists bordering_list1">
+            return <tr className="styling_lines_lists bordering_list2">
             <th className="text-base">{theList[index]?.invoices_concretd_grade}</th>
             <th className="text-base">{theList[index]?.invoices_kind_egree_of_Exposure}</th>
             <th className="text-base">{theList[index]?.invoices_kind_material}</th>
@@ -399,9 +399,11 @@ export default function AllLists(props) {
             <th className="text-base">{theList[index]?.invoices_quantity}</th>
             <th className="text-base"><div className="flex justify-around"><div>{theList[index]?.invoices_id} : الفاتورة</div><div>{countDays - index}</div></div></th>
             {statusinvoice(theList[index],theList[index]?.invoices_quantity - theList[index]?.provide)}
+            <th className="bg-slate-100"><EditBoard tr data={theList[index]} /></th>
         </tr>
+        //<EditBoard countDays={countDays} day={day} index={index} tr status={statusinvoice(theList[index],theList[index]?.invoices_quantity - theList[index]?.provide)} data={theList[index]} />
         }
-        return <tr onClick={() => { setShowInvoEdit(true); setInvData(theList[index]) }} className="styling_lines_lists bordering_list1">
+        return <tr className="styling_lines_lists bordering_list2">
             <th className="text-base">{theList[index]?.invoices_concretd_grade}</th>
             <th className="text-base">{theList[index]?.invoices_kind_egree_of_Exposure}</th>
             <th className="text-base">{theList[index]?.invoices_kind_material}</th>
@@ -412,6 +414,7 @@ export default function AllLists(props) {
             <th className="text-base">{theList[index]?.invoices_quantity}</th>
             <th className="text-base">{theList[index]?.invoices_id}</th>
             {statusinvoice(theList[index],theList[index]?.invoices_quantity - theList[index]?.provide)}
+            <th className="bg-slate-100"><EditBoard tr data={theList[index]} /></th>
         </tr>
     }
 
@@ -459,7 +462,7 @@ export default function AllLists(props) {
     }
 
     const getInvoices = () => {
-        const sortedList = theList.sort(compareByAgeTwo);
+        const sortedList = theList;
         let listinvo = [];
         if(valSearchInvoice3 === 'sort'){
             if(valSearchInvoice2 === 'invoice'){
@@ -599,7 +602,7 @@ export default function AllLists(props) {
                 let currentDate = sortedList[0]?.invoices_data;
                 listinvo.push(
                     <tr>
-                        <th colSpan={10}>
+                        <th colSpan={11}>
                             <div className="p-3 rounded text-2xl flex justify-around m-4 bg-gray-300 border-r-4 border-[#334155]">
                                 <div>التاريخ : {currentDate}</div>
                                 <div>الشهر : {getMonthInArbic(currentDate)}</div>
@@ -618,7 +621,7 @@ export default function AllLists(props) {
                             currentDate = sortedList[index]?.invoices_data;
                             listinvo.push(
                                 <tr>
-                                <th colSpan={10}>
+                                <th colSpan={11}>
                                     <div className="p-3 rounded text-2xl flex justify-around m-4 bg-gray-300 border-r-4 border-[#334155]">
                                         <div>التاريخ : {currentDate}</div>
                                         <div>الشهر : {getMonthInArbic(currentDate)}</div>
@@ -639,7 +642,7 @@ export default function AllLists(props) {
                     let currentDate = getJustMonth(sortedList[0]?.invoices_data);
                     listinvo.push(
                         <tr>
-                        <th colSpan={10}>
+                        <th colSpan={11}>
                             <div className="p-3 rounded text-2xl flex justify-around m-4 bg-gray-300 border-r-4 border-[#334155]">
                                 <div>التاريخ : {currentDate}</div>
                                 <div>الشهر : {getJustMonthInArbic(currentDate)}</div>
@@ -657,7 +660,7 @@ export default function AllLists(props) {
                             currentDate = getJustMonth(sortedList[index]?.invoices_data);
                             listinvo.push(
                             <tr>
-                                <th colSpan={10}>
+                                <th colSpan={11}>
                                     <div className="p-3 rounded text-2xl flex justify-around m-4 bg-gray-300 border-r-4 border-[#334155]">
                                         <div>التاريخ : {currentDate}</div>
                                         <div>الشهر : {getJustMonthInArbic(currentDate)}</div>
@@ -677,7 +680,7 @@ export default function AllLists(props) {
                 let currentDate = getJustYear(sortedList[0]?.invoices_data);
                 listinvo.push(
                     <tr>
-                        <th colSpan={10}>
+                        <th colSpan={11}>
                             <div className="p-3 rounded text-2xl flex justify-around m-4 bg-gray-300 border-r-4 border-[#334155]">
                                 <div>السنة : {currentDate}</div>
                             </div>
@@ -759,7 +762,7 @@ export default function AllLists(props) {
     
 
     return (
-        <div className="rounded-3xl bg-[#f5f5f5] border-2 border-[#334155] p-10">
+        <div className="rounded-3xl bg-gray-100 p-10 w-full shadow-2xl">
             {
                 props.wichList == "invoices" ?
                     <div>
@@ -794,12 +797,10 @@ export default function AllLists(props) {
                                                 <th className="text-xl">اجمالي الطلب</th>
                                                 <th className="text-xl">رقم الفتورة</th>
                                                 <th className="text-xl">حالة الفاتورة</th>
+                                                <th className="text-xl">تعديل</th>
                                             </tr>
                                             {
                                                 getInvoices()
-                                            }
-                                            {
-                                                showInvoEdit ? <EditBoard showInv={() => setShowInvoEdit(false)} data={invData} /> : null
                                             }
                                         </tbody>
                                     </table>

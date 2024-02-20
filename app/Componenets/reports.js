@@ -36,7 +36,7 @@ export default function Reports(props) {
             </div>
 
             <div>
-                <div className="overflow-auto max-h-96 border-2 border-black">
+                <div className="overflow-auto max-h-96">
                     <table className="w-full">
                         <tbody>
                             <tr>

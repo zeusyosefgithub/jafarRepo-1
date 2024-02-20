@@ -9,15 +9,17 @@ import Charts from "./Componenets/charts";
 import FormBoxDriver from "./Componenets/formBoxDriver";
 import FormBox from "./Componenets/formBox";
 import { firestore } from "./FireBase/firebase";
-import { addDoc, collection, updateDoc, doc } from "firebase/firestore";
+import { addDoc, collection, updateDoc, doc, deleteDoc } from "firebase/firestore";
 import { ComponentToPrint } from "./Componenets/toPrint";
 import { useReactToPrint } from "react-to-print";
 import Report from "./Componenets/report";
 import { Button } from "@nextui-org/button";
-import { Input } from "@nextui-org/react";
+import { Input, Spinner } from "@nextui-org/react";
 import { data } from "autoprefixer";
 
 export default function Home() {
+
+  const [loading,setLoading] = useState(false);
 
   const listInvoices = GetTrucks('invoices').sort(compareByAge);
   const listShippings = GetTrucks("shipping");
@@ -48,6 +50,8 @@ export default function Home() {
   const [currentRepoCir, setCurrentRepoCir] = useState(null);
   const [currentRepoBar, setCurrentRepoBar] = useState(null);
 
+  const PreventMultipleClickAddShipp = useRef(null);
+  const PreventMultipleClickPrint = useRef(null);
 
   const [isLocated, setIsLocated] = useState(false);
   const [locationVal, setLocationVal] = useState('');
@@ -77,6 +81,18 @@ export default function Home() {
   }
 
   const setClickedData = (invo, i) => {
+    setCheckClickedInv(true);
+    if (shwoHidePrint) {
+      setShowHidePrint(false);
+      setDriver(false);
+      setTruck(false);
+      setShowHidePrint(false);
+      setIsLocated(false);
+      setLocationVal(null);
+      clearColorData();
+      setCurrentQuantity(currentQuantityRef.current?.value)
+      currentQuantityRef.current && currentQuantityRef.current.value == "";
+    }
     for (let index = 0; index < styleTabelLinsRefs.current?.length; index++) {
       if (styleTabelLinsRefs.current[index] === "bordering_list") {
         styleTabelLinsRefs.current[index] = "";
@@ -98,6 +114,8 @@ export default function Home() {
   }
 
   const handelAddPrint = async () => {
+    setLoading(true);
+    PreventMultipleClickPrint.current.disabled = true;
     let sumAllCurrentQuant2 = 0;
     let sumSameShippings1 = 1;
     for (let index = 0; index < listShippings?.length; index++) {
@@ -142,6 +160,7 @@ export default function Home() {
     clearColorData();
     setCurrentQuantity(currentQuantityRef.current?.value)
     currentQuantityRef.current && currentQuantityRef.current.value == "";
+    setLoading(false);
   }
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
@@ -156,6 +175,7 @@ export default function Home() {
   }
 
   const handelAddShpping = async () => {
+    setLoading(true);
     let counterShipps = currectShippId();
     setErrorMessageDriverTruck("");
     if (!truck || !driver) {
@@ -166,6 +186,7 @@ export default function Home() {
       if (currentQuantityRef.current.value > (invData?.invoices_quantity - invData?.provide)) {
         return setErrorMessage("خطاء,الكمية المزودة اعلى من الطلب الاجمالي!")
       }
+      PreventMultipleClickAddShipp.current.disabled = true;
       let shippingData = {
         shipp_id: counterShipps,
         current_quantity: currentQuantityRef.current.value,
@@ -185,7 +206,9 @@ export default function Home() {
       }
     }
     setShowHidePrint(true);
+    
     setErrorMessage("");
+    setLoading(false);
   }
 
 
@@ -200,12 +223,13 @@ export default function Home() {
 
   return (
     <div>
-      {
+      {loading && <Spinner  className="fixed left-1/2 top-1/2 z-50" size="lg" />}
+      {/* {
         showTruck && <FormBox getTruck={(truck) => setTruck(truck)} showDisable={() => setShowTruck(false)} />
       }
       {
         showDriver && <FormBoxDriver getDriver={(driver) => setDriver(driver)} showDisableDriver={() => setShowDriver(false)} />
-      }
+      } */}
 
       <div className="flex pr-14 pl-14 pb-14">
 
@@ -268,7 +292,7 @@ export default function Home() {
         <div className="w-1/2">
           <div className="bg-slate-100 shadow-xl p-7 rounded-xl">
             <div className="bg-gray-400 p-3 text-center rounded-lg text-xl">الطلبيات المفتوحة</div>
-            <div className="border-2 border-black">
+            <div className="">
               {
                 checkClickedInv && shwoHidePrint ?
                   <div>
@@ -281,7 +305,7 @@ export default function Home() {
                         </label>
                         <div className="text-xl ml-4"> انشاء باللغة العربية</div>
                       </div>
-                      <button onClick={handelAddPrint} className="text-white bg-black hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-full w-full sm:w-auto px-14 py-3 text-xl text-center dark:bg-black dark:hover:bg-blue-700 dark:focus:ring-black-800">طباعة</button>
+                      <button ref={PreventMultipleClickPrint} onClick={handelAddPrint} className="text-white bg-black hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-full w-full sm:w-auto px-14 py-3 text-xl text-center dark:bg-black dark:hover:bg-blue-700 dark:focus:ring-black-800">طباعة</button>
                     </div>
                   </div>
                   :
@@ -330,15 +354,9 @@ export default function Home() {
                                 </div>
                                 :
                                 <div className="">
-                                  <Button size="lg" onClick={() => { setShowDriver(true); setShowTruck(false); }}>
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                                    </svg>
-                                    <div className="text-xl font-bold">اختر سائق</div>
-                                  </Button>
+                                  <FormBoxDriver getDriver={(driver) => setDriver(driver)}/>
                                 </div>
                             }
-
                           </div>
                           <div className="">
                             {
@@ -361,12 +379,7 @@ export default function Home() {
                                 </div>
                                 :
                                 <div className="">
-                                  <Button size="lg" onClick={() => { setShowTruck(true); setShowDriver(false); }}>
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                                    </svg>
-                                    <div className="text-xl font-bold">اختر الخلاطه</div>
-                                  </Button>
+                                  <FormBox getTruck={(truck) => setTruck(truck)}/>
                                 </div>
                             }
                           </div>
@@ -388,7 +401,7 @@ export default function Home() {
                           </div>
                         }
                         <div className="flex justify-center mt-8 mb-8" dir="rtl">
-                          <button onClick={handelAddShpping} className="text-white bg-black hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-full w-full sm:w-auto px-14 py-3 text-xl text-center dark:bg-black dark:hover:bg-blue-700 dark:focus:ring-black-800">ادخال</button>
+                          <button ref={PreventMultipleClickAddShipp} onClick={handelAddShpping} className="text-white bg-black hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-full w-full sm:w-auto px-14 py-3 text-xl text-center dark:bg-black dark:hover:bg-blue-700 dark:focus:ring-black-800">ادخال</button>
                         </div>
                       </div>
                     </div>
@@ -408,17 +421,14 @@ export default function Home() {
                     </tr>
                     {
                       listInvoices.map((invo, i) => {
-                        return invo.invoices_quantity - invo.provide > 0 && <tr onClick={() => { setClickedData(invo, i); setCheckClickedInv(true) }} className={`hover:bg-[#334155] hover:text-white cursor-pointer ${styleTabelLinsRefs.current[i]}`}>{/*bordering_list*/}
+                        return invo.invoices_quantity - invo.provide > 0 && <tr onClick={() => { setClickedData(invo, i); }} className={`hover:bg-[#334155] hover:text-white cursor-pointer ${styleTabelLinsRefs.current[i]}`}>{/*bordering_list*/}
                           <th className="text-base">{invo.invoices_quantity - invo.provide}</th>
                           <th className="text-base">{invo.invoices_quantity}</th>
                           <th className="text-base">{invo.invoices_customer_name}</th>
                           <th className="text-base">{invo.invoices_id}</th>
-                          <th className="hover:bg-[#ef4444] hover:text-white" onClick={() => setShowInvoEdit(true)}><MdEditDocument className="m-auto text-xl" /></th>
+                          <th className="bg-slate-100"><EditBoard data={invo}/></th>
                         </tr>
                       })
-                    }
-                    {
-                      showInvoEdit ? <EditBoard showInv={() => setShowInvoEdit(false)} data={invData} /> : null
                     }
                   </tbody>
                 </table>

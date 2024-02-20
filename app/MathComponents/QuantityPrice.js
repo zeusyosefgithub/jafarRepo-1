@@ -611,9 +611,6 @@ export default function QuantityPrice(val1, val2, Invoices, val4, price, dateSea
             min = GetMinValueDay(sortedList, val4);
             
         }
-
-        console.log(Expenses)
-
         if(isExpenses === 'expenses'){
             let res = (sum * price - (sum * Expenses));
             return GetLinesTables(res,0,0,0,0,val4);

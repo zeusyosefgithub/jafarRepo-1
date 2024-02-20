@@ -7,6 +7,8 @@ import GetTrucks from "./getDocs";
 
 export default function AddKindConcrete() {
 
+    const [loading,setLoading] = useState(false);
+
     const [showElement, setShowElement] = useState(false);
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -21,6 +23,7 @@ export default function AddKindConcrete() {
 
 
     const handelAddPrint = async() =>{
+        setLoading(true);
         setErrorConName("");
         if(!kindsConcreteNameRef.current.value){
             return setErrorConName("!لا يوجد قيمة لاسم النوع");
@@ -39,9 +42,13 @@ export default function AddKindConcrete() {
         }
         kindsConcreteNameRef.current.value = "";
         setShowElement(true);
+        setLoading(false);
     }
     return (
         <div className="rounded-3xl bg-[#f5f5f5] border-2 border-[#334155] p-10">
+            {
+                loading && <Spinner className="fixed left-1/2 top-1/2 z-50" size="lg" />
+            }
             <div className="relative z-0 w-full mt-10 mb-10 group">
                 <input ref={kindsConcreteNameRef} dir="rtl" type="text" name="kindsConcreteName" id="kindsConcreteName" className="block py-2.5 px-0 w-full text-xl text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-black peer" placeholder="نوع البطون" required />
                 <label dir="rtl" htmlFor="kindsConcreteName" className="peer-focus:font-medium absolute text-2xl text-black dark:text-gray-400 duration-300 transform -translate-y-0 scale-75 top-0 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-black peer-focus:dark:text-black peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-10 text-right w-full" />

@@ -1,13 +1,13 @@
 'use client';
 import { useEffect, useRef, useState } from "react";
-import { addDoc, collection} from "firebase/firestore";
+import { addDoc, collection } from "firebase/firestore";
 import { firestore } from "../FireBase/firebase";
 import FormBoxConcertPump from "./formBoxConcertPump";
 import FormBoxNewCus from "./formBoxNewCus";
 import GetTrucks from "./getDocs";
 import { Button } from "@nextui-org/button";
 import { IoMdArrowForward } from "react-icons/io";
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Input } from "@nextui-org/react";
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Input, Spinner } from "@nextui-org/react";
 import { CiCircleMinus } from "react-icons/ci";
 import { CiCirclePlus } from "react-icons/ci";
 
@@ -15,11 +15,11 @@ import { CiCirclePlus } from "react-icons/ci";
 
 export default function AddInvoice() {
 
+    const [loading, setLoading] = useState(false);
+
     const [invData, setInvData] = useState();
     const theList5 = GetTrucks("kinds rocks").sort(compareByAge);
     const theList6 = GetTrucks("kinds concrete").sort(compareByAge);
-    const [showPump, setShowPump] = useState(false);
-    const [showNewCus, setShowNewCus] = useState(false);
     const [isNewCus, setIsNewCus] = useState(true);
     const customerIdRef = useRef();
     const [errorCusId, setErrorCusId] = useState("");
@@ -43,20 +43,16 @@ export default function AddInvoice() {
     const AllCustomers = GetTrucks("customers");
 
 
-    const [disableByTypeCon,setDisableByTypeCon] = useState(false);
-    const [disableJustPump,setDisableJustPump] = useState(false);
-    const [isAutoDate,setIsAutoDate] = useState(false);
-    const [autoDateVal,setAutoDateVal] = useState('');
+    const [disableByTypeCon, setDisableByTypeCon] = useState(false);
+    const [disableJustPump, setDisableJustPump] = useState(false);
+    const [isAutoDate, setIsAutoDate] = useState(false);
+    const [autoDateVal, setAutoDateVal] = useState('');
+    const [errorManuelDate, setErrorManuelDate] = useState('');
 
-    const [isWithPump,setIsWithPump] = useState(false);
 
-    function handelShowDisablePump(isShow) {
-        setShowPump(isShow)
-    }
+    const PreventMultipleClickAddInfo = useRef(null);
+    const [isWithPump, setIsWithPump] = useState(false);
 
-    function handelShowDisableNewCus(isShow) {
-        setShowNewCus(isShow)
-    }
     const [pump, setPump] = useState();
     const getPump = (truck_id) => {
         setPump(truck_id);
@@ -99,9 +95,20 @@ export default function AddInvoice() {
         }
         return false;
     }
-    const handelAddInfo = async () => {
+    const handelAddInfo = async () => { 
+        PreventMultipleClickAddInfo.current.disabled = true;
         let counterInvoices = currectInvoiceId();
+        let regex = /(0?[1-9]|1[0-2])\/(0?[1-9]|1[0-9]|2[0-9]|3(0|1))\/\d{4}$/;
         let newData = {};
+
+        if (isAutoDate) {
+            setErrorManuelDate("");
+            if (!regex.test(autoDateVal)) {
+                return setErrorManuelDate('التاريخ الذي تم ادخالة غير صحيح !')
+            }
+            setErrorManuelDate("");
+        }
+
         if (isNewCus) {
             setErrorNewCus("");
             if (!newCus) {
@@ -122,7 +129,7 @@ export default function AddInvoice() {
                 invoices_pump: disableJustPump ? '---' : pump,
                 provide: 0,
                 stayed: quantityRef.current.value - 0,
-                invoices_data: isAutoDate ? autoDateVal : currentdate
+                invoices_data: isAutoDate ? autoDateVal.replace(/\b0/g, '') : currentdate
             };
         }
         else {
@@ -151,7 +158,6 @@ export default function AddInvoice() {
             setErrorCusName("");
             setErrorCusStreet("");
             setErrorCusCity("");
-
             newData = {
                 invoices_id: counterInvoices,
                 invoices_customer_id: customerIdRef.current.value,
@@ -166,9 +172,10 @@ export default function AddInvoice() {
                 invoices_pump: disableJustPump ? '---' : pump,
                 provide: 0,
                 stayed: quantityRef.current.value - 0,
-                invoices_data: isAutoDate ? autoDateVal : currentdate
+                invoices_data: isAutoDate ? autoDateVal.replace(/\b0/g, '') : currentdate
             };
         }
+
         setErrorCusQuant("");
         setErrorCusConGrade("");
         setErrorCusDegExp("");
@@ -176,11 +183,9 @@ export default function AddInvoice() {
         setErrorKindCon("");
         if (!quantityRef.current.value) {
             return setErrorCusQuant("!لم يتم ادخال للطلب الاجمالي قيمة");
-
         }
         if (!concretdGradeRef.current.value) {
             return setErrorCusConGrade("!لم يتم ادخال لمستوى الماء قيمة");
-
         }
         if (!degreeOfExposureRef.current.value) {
             return setErrorCusDegExp("!لم يتم ادخال ضغط البطون قيمة");
@@ -200,6 +205,7 @@ export default function AddInvoice() {
         setErrorPump("");
         setErrorKindCon("");
         setInvData(newData);
+        setLoading(true);
         let NewcustomersList = {
             customer_id: customerIdRef.current?.value,
             customer_name: customerNameRef.current?.value,
@@ -213,16 +219,19 @@ export default function AddInvoice() {
         catch (e) {
             console.log(e);
         }
+        concretdGradeRef.current.value = null;
+        degreeOfExposureRef.current.value = null;
+        quantityRef.current.value = null;
         setPump(null);
+        setAutoDateVal('');
+        setIsAutoDate(false);
         setNewCus(null);
         setCustomer(null);
         setIsNewCus(true);
         setDropValue1(null);
         setDropValue2(null);
         setDisableByTypeCon(false);
-        concretdGradeRef.current.value = "";
-        degreeOfExposureRef.current.value = "";
-        quantityRef.current.value = "";
+        setLoading(false);
     }
     function compareByAge(a, b) {
         return b.invoices_id - a.invoices_id;
@@ -233,20 +242,20 @@ export default function AddInvoice() {
 
 
     const checkToDisable = (val) => {
-        if(val === 'طينة' || val === 'اسمنتيت' || val === 'هربتسا'){
+        if (val === 'طينة' || val === 'اسمنتيت' || val === 'هربتسا') {
             setDisableByTypeCon(true);
             setPump(null);
             setDisableJustPump(true);
             setDropValue1(null);
             setIsWithPump(false);
         }
-        else{
+        else {
             setDisableByTypeCon(false);
-            if(isWithPump && dropValue2){
+            if (isWithPump && dropValue2) {
                 setDisableJustPump(false);
                 setIsWithPump(false);
             }
-            else if(!isWithPump && dropValue2){
+            else if (!isWithPump && dropValue2) {
                 setDisableJustPump(true);
                 setIsWithPump(true);
             }
@@ -254,30 +263,33 @@ export default function AddInvoice() {
     }
 
     return (
-        <div className="rounded-3xl bg-[#f5f5f5] border-2 border-[#334155] p-10">
+        <div className="rounded-3xl bg-gray-100 p-10 w-full shadow-2xl">
             {
+                loading && <Spinner className="fixed left-1/2 top-1/2 z-50" size="lg" />
+            }
+            {/* {
                 showPump ? <FormBoxConcertPump getPump={getPump} showDisableCon={handelShowDisablePump} /> :
                     showNewCus ? <FormBoxNewCus newCustomer={() => setIsNewCus(false)} getNewCus={getNewCus} showDisableNewCus={handelShowDisableNewCus} />
                         : null
-            }
-            {
-                console.log(AllInvoices)
-            }
-            <div className="max-w- mx-auto">
+            } */}
+            <div className="">
                 <div>
                     <div>
                         <div dir="rtl">
                             {
                                 isAutoDate ?
-                                <Button onClick={() => setIsAutoDate(false)}>تاريخ يدوي</Button> :
-                                <Button onClick={() => setIsAutoDate(true)}>تاريخ تلقائي</Button>
+                                    <Button onClick={() => setIsAutoDate(false)}>تاريخ يدوي</Button> :
+                                    <Button onClick={() => setIsAutoDate(true)}>تاريخ تلقائي</Button>
                             }
                             {
-                                isAutoDate && 
+                                isAutoDate &&
                                 <div className="flex items-center">
-                                    <Input value={autoDateVal} onValueChange={(val) => {setAutoDateVal(val)}} color="primary" size="lg" className="w-1/4 m-5" label="تاريخ يدوي"/>
+                                    <Input value={autoDateVal} onValueChange={(val) => { setAutoDateVal(val) }} color="primary" size="lg" className="w-1/4 m-5 z-0" label="تاريخ يدوي" />
                                     <div>تنبيه !! : التاريخ يجب ان يكون بدون اصفار في بداية الارقام مثال ({currentdate})</div>
                                 </div>
+                            }
+                            {
+                                errorManuelDate && <div dir="rtl" className="text-[#dc2626] text-base">{errorManuelDate}</div>
                             }
                         </div>
                         <div className="flex justify-end text-3xl mb-6 border-r-4 border-[#334155] bg-gray-300 p-3 mt-3 rounded-lg">المشتري</div>
@@ -312,12 +324,7 @@ export default function AddInvoice() {
                                     :
                                     <div>
                                         <div className="flex justify-center mb-7">
-                                            <Button size="lg" onClick={() => {setShowPump(false); setShowNewCus(true); }}>
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                                                </svg>
-                                                <div className="text-xl font-bold">اختر زبون</div>
-                                            </Button>
+                                            <FormBoxNewCus newCustomer={() => setIsNewCus(false)} getNewCus={getNewCus} />
                                         </div>
                                         {
                                             errorNewCus && <div dir="rtl" className="text-[#dc2626] text-base">{errorNewCus}</div>
@@ -325,25 +332,29 @@ export default function AddInvoice() {
                                     </div>
                                 :
                                 <div>
-                                    <div className="grid md:grid-cols-2 md:gap-6">
-                                        <div className="relative z-0 w-full  mb-10 group">
+                                    <div dir="rtl" className="grid md:grid-cols-2 md:gap-6">
+                                        <Input variant="bordered" className="m-3" type="number" ref={customerIdRef} label="رقم المشتري" />
+                                        <Input variant="bordered" className="m-3" type="text" ref={customerNameRef} label="اسم المشتري الكامل" />
+                                        {/* <div className="relative z-0 w-full  mb-10 group">
                                             <input ref={customerIdRef} dir="rtl" type="number" name="customerId" id="customerId" className="block py-2.5 px-0 w-full text-xl text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-black peer" placeholder="رقم المشتري" required />
                                             <label dir="rtl" htmlFor="customerId" className="peer-focus:font-medium absolute text-2xl text-black dark:text-gray-400 duration-300 transform -translate-y-0 scale-75 top-0 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-black peer-focus:dark:text-black peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-10 text-right w-full" />
                                         </div>
                                         <div className="relative z-0 w-full  mb-10 group">
                                             <input ref={customerNameRef} dir="rtl" type="text" name="customerName" id="customerName" className="block py-2.5 px-0 w-full text-xl text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-black peer" placeholder="اسم المشتري الكامل" required />
                                             <label dir="rtl" htmlFor="customerName" className="peer-focus:font-medium absolute text-2xl text-black dark:text-gray-400 duration-300 transform -translate-y-0 scale-75 top-0 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-black peer-focus:dark:text-black peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-10 text-right w-full" />
-                                        </div>
+                                        </div> */}
                                     </div>
-                                    <div className="grid md:grid-cols-2 md:gap-6 border-b-gray">
-                                        <div className="relative z-0 w-full  mb-10 group">
+                                    <div dir="rtl" className="grid md:grid-cols-2 md:gap-6 border-b-gray">
+                                        <Input variant="bordered" className="m-3" type="text" ref={customerStreetRef} label="الشارع" />
+                                        <Input variant="bordered" className="m-3" type="text" ref={customerCityRef} label="البلد" />
+                                        {/* <div className="relative z-0 w-full  mb-10 group">
                                             <input ref={customerStreetRef} dir="rtl" type="text" name="customerStreet" id="customerStreet" className="block py-2.5 px-0 w-full text-xl text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-black peer" placeholder="الشارع" required />
                                             <label dir="rtl" htmlFor="customerStreet" className="peer-focus:font-medium absolute text-2xl text-black dark:text-gray-400 duration-300 transform -translate-y-0 scale-75 top-0 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-black peer-focus:dark:text-black peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-10 text-right w-full" />
                                         </div>
                                         <div className="relative z-0 w-full  mb-10 group">
                                             <input ref={customerCityRef} dir="rtl" type="text" name="customerCity" id="customerCity" className="block py-2.5 px-0 w-full text-xl text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-black peer" placeholder="البلد" required />
                                             <label dir="rtl" htmlFor="customerCity" className="peer-focus:font-medium absolute text-2xl text-black dark:text-gray-400 duration-300 transform -translate-y-0 scale-75 top-0 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-black peer-focus:dark:text-black peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-10 text-right w-full" />
-                                        </div>
+                                        </div> */}
                                     </div>
                                     {
                                         errorSameNameCus && <div dir="rtl" className="text-[#dc2626] text-base">{errorSameNameCus}</div>
@@ -365,19 +376,66 @@ export default function AddInvoice() {
                         <div className="flex justify-end text-3xl mt-10 border-r-4 border-[#334155] bg-gray-300 p-3 mb-3 rounded-lg">الطلب</div>
                         <div className="grid md:grid-cols-3 md:gap-6 mb-8 mt-10">
                             <div dir="rtl">
-                                <label dir="rtl" for="concretdGrade" className="">مستوى الماء : </label>
-                                <input ref={concretdGradeRef} dir="rtl" type="number" name="concretdGrade" id="concretdGrade" className="block py-2.5 px-0 w-full text-xl text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-black peer" required />
+                                <Input variant="bordered" ref={concretdGradeRef} type="number" label="مستوى الماء :" />
                             </div>
                             <div dir="rtl">
-                                <label dir="rtl" for="degreeOfExposure" className="">ضغط البطون : </label>
-                                <input ref={degreeOfExposureRef} dir="rtl" type="number" name="degreeOfExposure" id="degreeOfExposure" className="block py-2.5 px-0 w-full text-xl text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-black peer" required />
+                                <Input variant="bordered" ref={degreeOfExposureRef} type="number" label="ضغط البطون :" />
                             </div>
                             <div dir="rtl">
-                                <label dir="rtl" for="quantity" className="">الطلب الاجمالي : </label>
-                                <input ref={quantityRef} dir="rtl" type="text" name="quantity" id="quantity" className="block py-2.5 px-0 w-full text-xl text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-black peer" required />
+                                <Input variant="bordered" ref={quantityRef} type="text" label="الطلب الاجمالي :" />
                             </div>
                         </div>
-                        <div className="flex w-full justify-around items-center">
+                        <div dir="rtl" className="flex w-full justify-around items-center mt-10 mb-10">
+
+
+                            <Dropdown dir="rtl" className="test-fontt">
+                                <DropdownTrigger>
+                                    <Button
+                                        size="lg"
+                                        className="z-0 capitalize"
+                                    >
+                                        نوع البطون : {dropValue2?.arbic}
+                                    </Button>
+                                </DropdownTrigger>
+                                <DropdownMenu
+                                    aria-label="Single selection example"
+                                    variant="flat"
+                                    disallowEmptySelection
+                                    selectionMode="single"
+                                >
+                                    {
+                                        theList6.map(list => {
+                                            return <DropdownItem onClick={() => { setDropValue2(list); checkToDisable(list.kinds_concrete_name); }} key={list.arbic}>{list.arbic}</DropdownItem>
+                                        })
+                                    }
+                                </DropdownMenu>
+                            </Dropdown>
+
+                            <Dropdown dir="rtl" className="test-fontt">
+                                <DropdownTrigger>
+                                    <Button
+                                        isDisabled={disableByTypeCon}
+                                        size="lg"
+                                        className="z-0 capitalize"
+                                    >
+                                        نوع الصرار : {dropValue1?.arbic}
+                                    </Button>
+                                </DropdownTrigger>
+                                <DropdownMenu
+                                    aria-label="Single selection example"
+                                    variant="flat"
+                                    disallowEmptySelection
+                                    selectionMode="single"
+                                >
+                                    {
+                                        theList5.map(list => {
+                                            return <DropdownItem onClick={() => { setDropValue1(list) }} key={list.arbic}>{list.arbic}</DropdownItem>
+                                        })
+                                    }
+                                </DropdownMenu>
+                            </Dropdown>
+
+
                             <div>
                                 <div className="">
                                     {
@@ -404,73 +462,22 @@ export default function AddInvoice() {
                                             <div className="items-center">
                                                 <div className="flex justify-center">
                                                     {
-                                                        isWithPump && dropValue2 ? 
-                                                        <CiCirclePlus onClick={() => {setIsWithPump(false);checkToDisable(dropValue2.kinds_concrete_name);}} className="text-[#84cc16] text-4xl rounded-none cursor-pointer" />
-                                                        :
-                                                        !isWithPump && dropValue2 ? 
-                                                        <CiCircleMinus onClick={() => {setIsWithPump(true);checkToDisable(dropValue2.kinds_concrete_name);}} className="text-[#ef4444] text-4xl rounded-none cursor-pointer" />
-                                                        : 
-                                                        null
+                                                        isWithPump && dropValue2 ?
+                                                            <CiCirclePlus onClick={() => { setIsWithPump(false); checkToDisable(dropValue2.kinds_concrete_name); }} className="text-[#84cc16] text-4xl rounded-none cursor-pointer" />
+                                                            :
+                                                            !isWithPump && dropValue2 ?
+                                                                <CiCircleMinus onClick={() => { setIsWithPump(true); checkToDisable(dropValue2.kinds_concrete_name); }} className="text-[#ef4444] text-4xl rounded-none cursor-pointer" />
+                                                                :
+                                                                null
                                                     }
                                                 </div>
                                                 <div className="flex justify-center">
-                                                    <Button isDisabled={disableJustPump} size="lg" onClick={() => { setShowPump(true); setShowNewCus(false); }}>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                                                        </svg>
-                                                        <div className="font-bold">اختر مضخة</div>
-                                                    </Button>
+                                                    <FormBoxConcertPump disableButton={disableJustPump} getPump={getPump} />
                                                 </div>
                                             </div>
                                     }
                                 </div>
                             </div>
-                            <Dropdown dir="rtl" className="test-fontt">
-                                <DropdownTrigger>
-                                    <Button
-                                        isDisabled={disableByTypeCon}
-                                        size="lg"
-                                        className="z-0 capitalize"
-                                    >
-                                        نوع الصرار : {dropValue1?.arbic}
-                                    </Button>
-                                </DropdownTrigger>
-                                <DropdownMenu
-                                    aria-label="Single selection example"
-                                    variant="flat"
-                                    disallowEmptySelection
-                                    selectionMode="single"
-                                >
-                                    {
-                                        theList5.map(list => {
-                                            return <DropdownItem onClick={() => {setDropValue1(list) }} key={list.arbic}>{list.arbic}</DropdownItem>
-                                        })
-                                    }
-                                </DropdownMenu>
-                            </Dropdown>
-
-                            <Dropdown dir="rtl" className="test-fontt">
-                                <DropdownTrigger>
-                                    <Button
-                                        size="lg"
-                                        className="z-0 capitalize"
-                                    >
-                                        نوع البطون : {dropValue2?.arbic}
-                                    </Button>
-                                </DropdownTrigger>
-                                <DropdownMenu
-                                    aria-label="Single selection example"
-                                    variant="flat"
-                                    disallowEmptySelection
-                                    selectionMode="single"
-                                >
-                                    {
-                                        theList6.map(list => {
-                                            return <DropdownItem onClick={() => {setDropValue2(list);checkToDisable(list.kinds_concrete_name);}} key={list.arbic}>{list.arbic}</DropdownItem>
-                                        })
-                                    }
-                                </DropdownMenu>
-                            </Dropdown>
                         </div>
 
                         {
@@ -489,7 +496,7 @@ export default function AddInvoice() {
                             errorKindCon && <div dir="rtl" className="text-[#dc2626] text-base">{errorKindCon}</div>
                         }
                         <div className="flex justify-center mb-5 mt-8">
-                            <button onClick={handelAddInfo} className="text-white bg-black hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-full w-full sm:w-auto px-14 py-3 text-xl text-center dark:bg-black dark:hover:bg-blue-700 dark:focus:ring-black-800">ادخال</button>
+                            <button ref={PreventMultipleClickAddInfo} onClick={handelAddInfo} className="text-white bg-black hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-full w-full sm:w-auto px-14 py-3 text-xl text-center dark:bg-black dark:hover:bg-blue-700 dark:focus:ring-black-800">ادخال</button>
                         </div>
                     </div>
                 </div>

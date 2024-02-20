@@ -159,7 +159,6 @@ export default function Circle(typeTime, Time,list,kindSearch,listConncerts,firs
                     sumM += parseFloat(list[index]?.provide);
                 }
                 else if (val4 === 'طينة مبلولة' && gradeCon != 0 && list[index]?.invoices_kind_type_of_concrete === 'طينة'){
-                    console.log(1);
                     sumM += parseFloat(list[index]?.provide);
                 }  
                 else if (val4 === 'طينة ناشفة' && gradeCon == 0 && list[index]?.invoices_kind_type_of_concrete === 'طينة'){

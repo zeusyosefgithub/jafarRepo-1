@@ -298,7 +298,6 @@ export default function RawMaterials(typeTime, Time, listInvoices, listRaws,kind
             for (let index = 0; index < values.length; index++) {
                 listtables.push(GetLinesTables(values[index],0,0,0,values[index] * listRaws[index]?.price,listRaws[index]?.name));
             }
-            console.log(listtables)
             return listtables;
         }
         // else if(typeElemet === 'kg'){

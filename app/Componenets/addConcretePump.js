@@ -1,8 +1,11 @@
 import { addDoc, collection } from "firebase/firestore";
 import { firestore } from "../FireBase/firebase";
 import { useRef, useState, useEffect } from "react";
+import { Input, Spinner } from "@nextui-org/react";
 
 export default function AddConcretePump() {
+
+    const [loading,setLoading] = useState(false);
 
     const [showElement, setShowElement] = useState(false);
     useEffect(() => {
@@ -12,23 +15,26 @@ export default function AddConcretePump() {
         return () => clearTimeout(timer);
     }, []);
 
-    const collec = collection(firestore, "concert pumps");
+    const PreventMultipleClick = useRef();
 
-    const pumpIdRef = useRef();
+    const collec = collection(firestore, "concert pumps");
     const [errorPumpId, setErrorPumpId] = useState("");
-    const pumpDNameRef = useRef();
-    const pumpDiscRef = useRef();
+    const [pumpId,setPumpId] = useState('');
+    const [pumpDNam,setPumpDNam] = useState('');
+    const [pumpDisc,setPumpDisc] = useState('');
 
     const handelAddPrint = async () => {
+        setLoading(true);
         setErrorPumpId("");
-        if (!pumpIdRef.current.value || pumpIdRef.current.value > 8) {
+        if (!pumpId || pumpId.length > 8) {
             setErrorPumpId("!رقم المضخة اكثر من 8 ارقام او لا يوجد لديه قيمة");
         }
         setErrorPumpId("");
+        PreventMultipleClick.current.disabled = true;
         let newData = {
-            pump_id: pumpIdRef.current.value,
-            pump_d_name: pumpDNameRef.current.value,
-            pump_disc: pumpDiscRef.current.value
+            pump_id: pumpId,
+            pump_d_name: pumpDNam,
+            pump_disc: pumpDisc
         };
         try {
             await addDoc(collec, newData);
@@ -36,32 +42,27 @@ export default function AddConcretePump() {
         catch (e) {
             console.log(e);
         }
-        resetAll();
+        setPumpId('');
+        setPumpDNam('');
+        setPumpDisc('');
         setShowElement(true);
+        setLoading(false);
     }
-
-    const resetAll = () => {
-        pumpIdRef.current.value = "";
-        pumpDNameRef.current.value = "";
-        pumpDiscRef.current.value = "";
-    }
-
 
     return (
-        <div className="rounded-3xl bg-[#f5f5f5] border-2 border-[#334155] p-10">
-
-            <div className="max-w- mx-auto">
+        <div dir="rtl" className="rounded-3xl bg-gray-100 p-10 w-full shadow-2xl">
+            {
+                loading && <Spinner className="fixed left-1/2 top-1/2 z-50" size="lg" />
+            }
+            <div className="max-w- mx-auto">             
                 <div className="relative z-0 w-full mt-10 mb-10 group">
-                    <input ref={pumpIdRef} dir="rtl" type="number" name="pumpId" id="pumpId" className="block py-2.5 px-0 w-full text-xl text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-black peer" placeholder="رقم المضخة" required />
-                    <label dir="rtl" htmlFor="pumpId" className="peer-focus:font-medium absolute text-2xl text-black dark:text-gray-400 duration-300 transform -translate-y-0 scale-75 top-0 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-black peer-focus:dark:text-black peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-10 text-right w-full" />
+                    <Input errorMessage={errorPumpId} type="number" variant="bordered" value={pumpId} onValueChange={(value) => {setPumpId(value)}} label="رقم المضخة"/>
                 </div>
                 <div className="relative z-0 w-full mt-10 mb-10 group">
-                    <input ref={pumpDNameRef} dir="rtl" type="text" name="pumpDName" id="pumpDName" className="block py-2.5 px-0 w-full text-xl text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-black peer" placeholder="اسم سائق المضخة (غير اجباري)" />
-                    <label dir="rtl" htmlFor="pumpDName" className="peer-focus:font-medium absolute text-2xl text-black dark:text-gray-400 duration-300 transform -translate-y-0 scale-75 top-0 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-black peer-focus:dark:text-black peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-12 peer-focus:text-2xl text-right w-full" />
+                    <Input type="text" variant="bordered" value={pumpDNam} onValueChange={(value) => {setPumpDNam(value)}} label="اسم سائق المضخة (غير اجباري)"/>
                 </div>
                 <div className="relative z-0 w-full mt-10 mb-10 group">
-                    <input ref={pumpDiscRef} dir="rtl" type="text" name="pumpDisc" id="pumpDisc" className="block py-2.5 px-0 w-full text-xl text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-black peer" placeholder="ملاحظات اخرى (غير اجباري)" />
-                    <label dir="rtl" htmlFor="pumpDisc" className="peer-focus:font-medium absolute text-2xl text-black dark:text-gray-400 duration-300 transform -translate-y-0 scale-75 top-0 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-black peer-focus:dark:text-black peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-12 peer-focus:text-2xl text-right w-full" />
+                    <Input type="text" variant="bordered" value={pumpDisc} onValueChange={(value) => {setPumpDisc(value)}} label="ملاحظات اخرى (غير اجباري)"/>
                 </div>
 
                 {
@@ -71,12 +72,8 @@ export default function AddConcretePump() {
                         null
                 }
 
-                {
-                    errorPumpId && <div dir="rtl" className="text-[#dc2626] text-base">{errorPumpId}</div>
-                }
-
                 <div className="flex justify-around w-full mt-20 p-3 items-center">
-                    <button onClick={handelAddPrint} className="text-white bg-[#334155] hover:bg-black focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-full w-full sm:w-auto px-14 py-3 text-xl text-center dark:bg-black dark:hover:bg-blue-700 dark:focus:ring-black-800">اضافة</button>
+                    <button ref={PreventMultipleClick} onClick={handelAddPrint} className="text-white bg-[#334155] hover:bg-black focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-full w-full sm:w-auto px-14 py-3 text-xl text-center dark:bg-black dark:hover:bg-blue-700 dark:focus:ring-black-800">اضافة</button>
                 </div>
             </div>
 

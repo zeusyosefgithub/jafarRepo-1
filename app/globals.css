@@ -238,6 +238,11 @@ body {
   cursor: pointer;
 }
 
+.bordering_list2:hover{
+  background-color: #334155;
+  color: white;
+}
+
 
 @keyframes spinner {
   0% {
@@ -417,4 +422,8 @@ body {
 
 .highting_boxes_tabel_cir{
   height: 32rem;
+}
+
+.styling_Margin_From_Side_Nav{
+  margin-left: 2rem;
 }
