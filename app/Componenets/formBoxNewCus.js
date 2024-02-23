@@ -77,7 +77,7 @@ export default function FormBoxNewCus(props) {
                         <ModalBody>
                             <div dir="rtl" className="m-7 flex">
                                 <div className="w-1/3 flex items-center">
-                                    <Input ref={searchCustomer} onChange={GetSearchVal} label="الاسم :" />
+                                    <Input ref={searchCustomer} onChange={GetSearchVal} label="ابحث :" />
                                 </div>
                                 {
                                     !listCus?.length && searchCustomer.current?.value && <div className="m-5">
