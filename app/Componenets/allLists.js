@@ -10,6 +10,7 @@ import { firestore } from "../FireBase/firebase";
 import SortLists from "./sortLists";
 import { ComponentToPrintInvoList } from "./toPrintListInvo";
 import { useReactToPrint } from "react-to-print";
+import { useDisclosure } from "@nextui-org/react";
 
 export default function AllLists(props) {
 
@@ -388,7 +389,7 @@ export default function AllLists(props) {
 
     const getTheInvoRowList = (theList, index,day,countDays) => {
         if(day === 'day' && ReacurrentDate === theList[index]?.invoices_data){
-            return <tr className="styling_lines_lists bordering_list2">
+            return <tr className="styling_lines_lists bordering_list2 cursor-pointer" onClick={() => {setInvData(theList[index]);setShowInvoEdit(true)}}>
             <th className="text-base">{theList[index]?.invoices_concretd_grade}</th>
             <th className="text-base">{theList[index]?.invoices_kind_egree_of_Exposure}</th>
             <th className="text-base">{theList[index]?.invoices_kind_material}</th>
@@ -399,11 +400,11 @@ export default function AllLists(props) {
             <th className="text-base">{theList[index]?.invoices_quantity}</th>
             <th className="text-base"><div className="flex justify-around"><div>{theList[index]?.invoices_id} : الفاتورة</div><div>{countDays - index}</div></div></th>
             {statusinvoice(theList[index],theList[index]?.invoices_quantity - theList[index]?.provide)}
-            <th className="bg-slate-100"><EditBoard tr data={theList[index]} /></th>
+           
         </tr>
         //<EditBoard countDays={countDays} day={day} index={index} tr status={statusinvoice(theList[index],theList[index]?.invoices_quantity - theList[index]?.provide)} data={theList[index]} />
         }
-        return <tr className="styling_lines_lists bordering_list2">
+        return <tr className="styling_lines_lists bordering_list2 cursor-pointer" onClick={() => {setInvData(theList[index]);setShowInvoEdit(true)}}>
             <th className="text-base">{theList[index]?.invoices_concretd_grade}</th>
             <th className="text-base">{theList[index]?.invoices_kind_egree_of_Exposure}</th>
             <th className="text-base">{theList[index]?.invoices_kind_material}</th>
@@ -414,7 +415,7 @@ export default function AllLists(props) {
             <th className="text-base">{theList[index]?.invoices_quantity}</th>
             <th className="text-base">{theList[index]?.invoices_id}</th>
             {statusinvoice(theList[index],theList[index]?.invoices_quantity - theList[index]?.provide)}
-            <th className="bg-slate-100"><EditBoard tr data={theList[index]} /></th>
+            
         </tr>
     }
 
@@ -759,10 +760,12 @@ export default function AllLists(props) {
         }
         return false;
     }
-    
 
     return (
         <div className="rounded-3xl bg-gray-100 p-10 w-full shadow-2xl">
+            {
+                showInvoEdit && <EditBoard data={invData} showInvoEdit={showInvoEdit} disable={() => setShowInvoEdit(false)}/>
+            }
             {
                 props.wichList == "invoices" ?
                     <div>
@@ -797,7 +800,6 @@ export default function AllLists(props) {
                                                 <th className="text-xl">اجمالي الطلب</th>
                                                 <th className="text-xl">رقم الفتورة</th>
                                                 <th className="text-xl">حالة الفاتورة</th>
-                                                <th className="text-xl">تعديل</th>
                                             </tr>
                                             {
                                                 getInvoices()

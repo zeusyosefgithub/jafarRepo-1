@@ -10,6 +10,7 @@ import { IoMdArrowForward } from "react-icons/io";
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Input, Spinner } from "@nextui-org/react";
 import { CiCircleMinus } from "react-icons/ci";
 import { CiCirclePlus } from "react-icons/ci";
+import { AiOutlinePlus } from "react-icons/ai";
 
 
 
@@ -21,26 +22,29 @@ export default function AddInvoice() {
     const theList5 = GetTrucks("kinds rocks").sort(compareByAge);
     const theList6 = GetTrucks("kinds concrete").sort(compareByAge);
     const [isNewCus, setIsNewCus] = useState(true);
-    const customerIdRef = useRef();
     const [errorCusId, setErrorCusId] = useState("");
     const [errorSameNameCus, setErrorSameNameCus] = useState("");
-    const customerNameRef = useRef();
     const [errorCusName, setErrorCusName] = useState("");
-    const customerStreetRef = useRef();
     const [errorCusStreet, setErrorCusStreet] = useState("");
-    const customerCityRef = useRef();
     const [errorCusCity, setErrorCusCity] = useState("");
-    const quantityRef = useRef();
     const [errorCusQuant, setErrorCusQuant] = useState("");
-    const concretdGradeRef = useRef();
     const [errorCusConGrade, setErrorCusConGrade] = useState("");
-    const degreeOfExposureRef = useRef();
     const [errorCusDegExp, setErrorCusDegExp] = useState("");
     const [errorPump, setErrorPump] = useState("");
     const [errorNewCus, setErrorNewCus] = useState("");
     const [errorKindCon, setErrorKindCon] = useState("");
     const collec = collection(firestore, "invoices");
     const AllCustomers = GetTrucks("customers");
+
+
+    const [customerId,setCustomerId] = useState('');
+    const [customerName,setCustomerName] = useState('');
+    const [customerStreet,setCustomerStreet] = useState('');
+    const [customerCity,setCustomerCity] = useState('');
+
+    const [concretdGrade,setConcretdGrade] = useState('');
+    const [degreeOfExposure,setDegreeOfExposure] = useState('');
+    const [quantity,setQuantity] = useState('');
 
 
     const [disableByTypeCon, setDisableByTypeCon] = useState(false);
@@ -52,6 +56,9 @@ export default function AddInvoice() {
 
     const PreventMultipleClickAddInfo = useRef(null);
     const [isWithPump, setIsWithPump] = useState(false);
+
+    const [showDrop1,setShowDrop1] = useState(false);
+    const [showDrop2,setShowDrop2] = useState(false);
 
     const [pump, setPump] = useState();
     const getPump = (truck_id) => {
@@ -121,14 +128,14 @@ export default function AddInvoice() {
                 invoices_customer_name: customer.customer_name,
                 invoices_customer_street: customer.customer_street,
                 invoices_customer_city: customer.customer_city,
-                invoices_quantity: quantityRef.current.value,
-                invoices_concretd_grade: concretdGradeRef.current.value,
+                invoices_quantity: quantity,
+                invoices_concretd_grade: concretdGrade,
                 invoices_kind_material: disableByTypeCon ? '---' : dropValue1.kinds_rocks_name,
                 invoices_kind_type_of_concrete: dropValue2.kinds_concrete_name,
-                invoices_kind_egree_of_Exposure: degreeOfExposureRef.current.value,
+                invoices_kind_egree_of_Exposure: degreeOfExposure,
                 invoices_pump: disableJustPump ? '---' : pump,
                 provide: 0,
-                stayed: quantityRef.current.value - 0,
+                stayed: quantity - 0,
                 invoices_data: isAutoDate ? autoDateVal.replace(/\b0/g, '') : currentdate
             };
         }
@@ -138,19 +145,19 @@ export default function AddInvoice() {
             setErrorCusName("");
             setErrorCusStreet("");
             setErrorCusCity("");
-            if (checkIfIsEqualCustomer(customerIdRef.current?.value, customerNameRef.current?.value)) {
+            if (checkIfIsEqualCustomer(customerId, customerName)) {
                 return setErrorSameNameCus("الزبون الذي تم ادخالة موجود بالفعل !");
             }
-            if (!customerIdRef.current.value || customerIdRef.current.value.length > 10) {
+            if (!customerId || customerId.length > 10) {
                 return setErrorCusId("!رقم الزبون اكثر من 10 ارقام او ليس لديه قيمة");
             }
-            if (!customerNameRef.current.value || customerNameRef.current.value.length > 25) {
+            if (!customerName || customerName.length > 25) {
                 return setErrorCusName("!اسم الزبون اكثر من 16 حرف او ليس لديه قيمة");
             }
-            if (!customerStreetRef.current.value || customerStreetRef.current.value.length > 10) {
+            if (!customerStreet || customerStreet.length > 10) {
                 return setErrorCusStreet("!اسم الشارع اكثر من 10 حرف او ليس لديه قيمة");
             }
-            if (!customerCityRef.current.value || customerCityRef.current.value.length > 10) {
+            if (!customerCity || customerCity.length > 10) {
                 return setErrorCusCity("!اسم البلد اكثر من 10 حرف او ليس لديه قيمة");
             }
             setErrorSameNameCus("");
@@ -160,18 +167,18 @@ export default function AddInvoice() {
             setErrorCusCity("");
             newData = {
                 invoices_id: counterInvoices,
-                invoices_customer_id: customerIdRef.current.value,
-                invoices_customer_name: customerNameRef.current.value,
-                invoices_customer_street: customerStreetRef.current.value,
-                invoices_customer_city: customerCityRef.current.value,
-                invoices_quantity: quantityRef.current.value,
-                invoices_concretd_grade: concretdGradeRef.current.value,
+                invoices_customer_id: customerId,
+                invoices_customer_name: customerName,
+                invoices_customer_street: customerStreet,
+                invoices_customer_city: customerCity,
+                invoices_quantity: quantity,
+                invoices_concretd_grade: concretdGrade,
                 invoices_kind_material: disableByTypeCon ? '---' : dropValue1.kinds_rocks_name,
                 invoices_kind_type_of_concrete: dropValue2.kinds_concrete_name,
-                invoices_kind_egree_of_Exposure: degreeOfExposureRef.current.value,
+                invoices_kind_egree_of_Exposure: degreeOfExposure,
                 invoices_pump: disableJustPump ? '---' : pump,
                 provide: 0,
-                stayed: quantityRef.current.value - 0,
+                stayed: quantity - 0,
                 invoices_data: isAutoDate ? autoDateVal.replace(/\b0/g, '') : currentdate
             };
         }
@@ -181,13 +188,13 @@ export default function AddInvoice() {
         setErrorCusDegExp("");
         setErrorPump("");
         setErrorKindCon("");
-        if (!quantityRef.current.value) {
+        if (!quantity) {
             return setErrorCusQuant("!لم يتم ادخال للطلب الاجمالي قيمة");
         }
-        if (!concretdGradeRef.current.value) {
+        if (!concretdGrade) {
             return setErrorCusConGrade("!لم يتم ادخال لمستوى الماء قيمة");
         }
-        if (!degreeOfExposureRef.current.value) {
+        if (!degreeOfExposure) {
             return setErrorCusDegExp("!لم يتم ادخال ضغط البطون قيمة");
         }
         if (!pump && !disableByTypeCon && !disableJustPump) {
@@ -207,10 +214,10 @@ export default function AddInvoice() {
         setInvData(newData);
         setLoading(true);
         let NewcustomersList = {
-            customer_id: customerIdRef.current?.value,
-            customer_name: customerNameRef.current?.value,
-            customer_street: customerStreetRef.current?.value,
-            customer_city: customerCityRef.current?.value
+            customer_id: customerId,
+            customer_name: customerName,
+            customer_street: customerStreet,
+            customer_city: customerCity
         }
         try {
             await addDoc(collec, newData);
@@ -219,9 +226,9 @@ export default function AddInvoice() {
         catch (e) {
             console.log(e);
         }
-        concretdGradeRef.current.value = null;
-        degreeOfExposureRef.current.value = null;
-        quantityRef.current.value = null;
+        setConcretdGrade('');
+        setDegreeOfExposure('');
+        setQuantity('');
         setPump(null);
         setAutoDateVal('');
         setIsAutoDate(false);
@@ -262,8 +269,104 @@ export default function AddInvoice() {
         }
     }
 
+    const quantityRef = useRef();
+    const dgreeExpRef = useRef();
+    const ConcertGradeRef = useRef();
+    const KindConncertRef = useRef();
+    const kindRockRef = useRef();
+    const AddRemoveAddCon = useRef();
+    const Pump = useRef();
+
+    const checkIfEnterQuantity = (value) => {
+        if (value.keyCode === 13 || value.keyCode === 37) {
+            dgreeExpRef.current.focus();
+        }
+    }
+    const checkIfEnterDgree = (value) => {
+        if (value.keyCode === 13 || value.keyCode === 37) {
+            ConcertGradeRef.current.focus();
+        }
+        if(value.keyCode === 39){
+            quantityRef.current.focus();
+        }
+    }
+    const checkIfEnterGrade = (value) => {
+        if (value.keyCode === 13 || value.keyCode === 37) {
+            KindConncertRef.current.click();
+        }
+        if(value.keyCode === 39){
+            dgreeExpRef.current.focus();
+        }
+    }
+    const checkIfEnterDrop1 = (value,list) => {
+        if (value.keyCode === 13) {
+            setDropValue2(list); checkToDisable(list.kinds_concrete_name);
+        }
+        
+    }
+    const vcheckIfEnterDrop11 = (v) => {
+        if(v.keyCode === 37){
+            kindRockRef.current.focus();
+        }
+        if(v.keyCode === 39){
+            ConcertGradeRef.current.focus();
+        }
+        if(v.keyCode === 40){
+            PreventMultipleClickAddInfo.current.focus();
+        }
+    }
+    const checkIfEnterDrop2 = (value,list) => {
+        if (value.keyCode === 13) {
+            setDropValue1(list);
+        }
+        
+    }
+    const vcheckIfEnterDrop22 = (v) => {
+        if(v.keyCode === 37){
+            Pump.current.focus();
+        }
+        if(v.keyCode === 39){
+            KindConncertRef.current.focus();
+        }
+        if(v.keyCode === 40){
+            PreventMultipleClickAddInfo.current.focus();
+        }
+    }
+    const checkIfEnterPump = (v) => {
+        if(v.keyCode === 38){
+            
+        }
+        if (v.keyCode === 13) {
+            Pump.current.click();
+        }
+        if(v.keyCode === 39){
+            kindRockRef.current.focus();
+        }
+        if(v.keyCode === 40){
+            PreventMultipleClickAddInfo.current.focus();
+        }
+    }
+    const checkIfEnterSubmit = (v) => {
+        if(v.keyCode === 38){
+            if(disableJustPump){
+                KindConncertRef.current.focus();
+            }
+            else{
+                Pump.current.focus();
+            }
+        }
+
+    }
+    
+
     return (
         <div className="rounded-3xl bg-gray-100 p-10 w-full shadow-2xl">
+            {
+                showDrop1 && <FormBoxConcertPump showPump={showDrop1} disable={() => setShowDrop1(false)} getPump={getPump} />
+            }
+            {
+                showDrop2 && <FormBoxNewCus showCustomer={showDrop2} disable={() => setShowDrop2(false)} newCustomer={() => setIsNewCus(false)} getNewCus={getNewCus} />
+            }
             {
                 loading && <Spinner className="fixed left-1/2 top-1/2 z-50" size="lg" />
             }
@@ -279,7 +382,7 @@ export default function AddInvoice() {
                             {
                                 isAutoDate ?
                                     <Button onClick={() => setIsAutoDate(false)}>تاريخ يدوي</Button> :
-                                    <Button onClick={() => setIsAutoDate(true)}>تاريخ تلقائي</Button>
+                                    <Button autoFocus onClick={() => setIsAutoDate(true)}>تاريخ تلقائي</Button>
                             }
                             {
                                 isAutoDate &&
@@ -307,7 +410,7 @@ export default function AddInvoice() {
                                         <div className="text-center mr-2 flex items-center border-r-4 border-[#334155] bg-gray-200 p-2">
                                             <div>
                                                 {
-                                                    newCus
+                                                    customer.customer_name
                                                 }
                                                 &nbsp;
                                             </div>
@@ -324,7 +427,8 @@ export default function AddInvoice() {
                                     :
                                     <div>
                                         <div className="flex justify-center mb-7">
-                                            <FormBoxNewCus newCustomer={() => setIsNewCus(false)} getNewCus={getNewCus} />
+                                        <Button autoFocus dir="rtl" size="lg" onClick={() => setShowDrop2(true)}>اختر زبون<AiOutlinePlus/></Button>
+                                            
                                         </div>
                                         {
                                             errorNewCus && <div dir="rtl" className="text-[#dc2626] text-base">{errorNewCus}</div>
@@ -333,71 +437,45 @@ export default function AddInvoice() {
                                 :
                                 <div>
                                     <div dir="rtl" className="grid md:grid-cols-2 md:gap-6">
-                                        <Input variant="bordered" className="m-3" type="number" ref={customerIdRef} label="رقم المشتري" />
-                                        <Input variant="bordered" className="m-3" type="text" ref={customerNameRef} label="اسم المشتري الكامل" />
-                                        {/* <div className="relative z-0 w-full  mb-10 group">
-                                            <input ref={customerIdRef} dir="rtl" type="number" name="customerId" id="customerId" className="block py-2.5 px-0 w-full text-xl text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-black peer" placeholder="رقم المشتري" required />
-                                            <label dir="rtl" htmlFor="customerId" className="peer-focus:font-medium absolute text-2xl text-black dark:text-gray-400 duration-300 transform -translate-y-0 scale-75 top-0 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-black peer-focus:dark:text-black peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-10 text-right w-full" />
-                                        </div>
-                                        <div className="relative z-0 w-full  mb-10 group">
-                                            <input ref={customerNameRef} dir="rtl" type="text" name="customerName" id="customerName" className="block py-2.5 px-0 w-full text-xl text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-black peer" placeholder="اسم المشتري الكامل" required />
-                                            <label dir="rtl" htmlFor="customerName" className="peer-focus:font-medium absolute text-2xl text-black dark:text-gray-400 duration-300 transform -translate-y-0 scale-75 top-0 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-black peer-focus:dark:text-black peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-10 text-right w-full" />
-                                        </div> */}
+                                        <Input errorMessage={errorCusId} value={customerId} onValueChange={(value) => setCustomerId(value)} variant="bordered" className="m-3" type="number" label="رقم المشتري" />
+                                        <Input errorMessage={errorCusName} value={customerName} onValueChange={(value) => setCustomerName(value)} variant="bordered" className="m-3" type="text" label="اسم المشتري الكامل" />
                                     </div>
                                     <div dir="rtl" className="grid md:grid-cols-2 md:gap-6 border-b-gray">
-                                        <Input variant="bordered" className="m-3" type="text" ref={customerStreetRef} label="الشارع" />
-                                        <Input variant="bordered" className="m-3" type="text" ref={customerCityRef} label="البلد" />
-                                        {/* <div className="relative z-0 w-full  mb-10 group">
-                                            <input ref={customerStreetRef} dir="rtl" type="text" name="customerStreet" id="customerStreet" className="block py-2.5 px-0 w-full text-xl text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-black peer" placeholder="الشارع" required />
-                                            <label dir="rtl" htmlFor="customerStreet" className="peer-focus:font-medium absolute text-2xl text-black dark:text-gray-400 duration-300 transform -translate-y-0 scale-75 top-0 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-black peer-focus:dark:text-black peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-10 text-right w-full" />
-                                        </div>
-                                        <div className="relative z-0 w-full  mb-10 group">
-                                            <input ref={customerCityRef} dir="rtl" type="text" name="customerCity" id="customerCity" className="block py-2.5 px-0 w-full text-xl text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-black peer" placeholder="البلد" required />
-                                            <label dir="rtl" htmlFor="customerCity" className="peer-focus:font-medium absolute text-2xl text-black dark:text-gray-400 duration-300 transform -translate-y-0 scale-75 top-0 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-black peer-focus:dark:text-black peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-10 text-right w-full" />
-                                        </div> */}
+                                        <Input errorMessage={errorCusStreet} value={customerStreet} onValueChange={(value) => setCustomerStreet(value)} variant="bordered" className="m-3" type="text" label="الشارع" />
+                                        <Input errorMessage={errorCusCity} value={customerCity} onValueChange={(value) => setCustomerCity(value)} variant="bordered" className="m-3" type="text" label="البلد" />
                                     </div>
                                     {
                                         errorSameNameCus && <div dir="rtl" className="text-[#dc2626] text-base">{errorSameNameCus}</div>
-                                    }
-                                    {
-                                        errorCusId && <div dir="rtl" className="text-[#dc2626] text-base">{errorCusId}</div>
-                                    }
-                                    {
-                                        errorCusName && <div dir="rtl" className="text-[#dc2626] text-base">{errorCusName}</div>
-                                    }
-                                    {
-                                        errorCusStreet && <div dir="rtl" className="text-[#dc2626] text-base">{errorCusStreet}</div>
-                                    }
-                                    {
-                                        errorCusCity && <div dir="rtl" className="text-[#dc2626] text-base">{errorCusCity}</div>
                                     }
                                 </div>
                         }
                         <div className="flex justify-end text-3xl mt-10 border-r-4 border-[#334155] bg-gray-300 p-3 mb-3 rounded-lg">الطلب</div>
                         <div className="grid md:grid-cols-3 md:gap-6 mb-8 mt-10">
                             <div dir="rtl">
-                                <Input variant="bordered" ref={concretdGradeRef} type="number" label="مستوى الماء :" />
+                                <Input ref={ConcertGradeRef} onKeyDown={(e) => checkIfEnterGrade(e)} errorMessage={errorCusConGrade} value={concretdGrade} onValueChange={(value) => setConcretdGrade(value)} variant="bordered" type="number" label="مستوى الماء :" />
                             </div>
                             <div dir="rtl">
-                                <Input variant="bordered" ref={degreeOfExposureRef} type="number" label="ضغط البطون :" />
+                                <Input ref={dgreeExpRef} onKeyDown={(e) => checkIfEnterDgree(e)} errorMessage={errorCusDegExp} value={degreeOfExposure} onValueChange={(value) => setDegreeOfExposure(value)} variant="bordered" type="number" label="ضغط البطون :" />
                             </div>
                             <div dir="rtl">
-                                <Input variant="bordered" ref={quantityRef} type="text" label="الطلب الاجمالي :" />
+                                <Input ref={quantityRef} onKeyDown={(e) => checkIfEnterQuantity(e)} errorMessage={errorCusQuant} value={quantity} onValueChange={(value) => {setQuantity(value)}} variant="bordered" type="text" label="الطلب الاجمالي :" />
                             </div>
                         </div>
                         <div dir="rtl" className="flex w-full justify-around items-center mt-10 mb-10">
 
 
-                            <Dropdown dir="rtl" className="test-fontt">
-                                <DropdownTrigger>
-                                    <Button
+                            <Dropdown dir="rtl"  className="test-fontt">
+                                <DropdownTrigger onKeyDown={(e) => vcheckIfEnterDrop11(e)}>
+                                    <Button                      
+                                        ref={KindConncertRef}
                                         size="lg"
                                         className="z-0 capitalize"
+                                        aria-label="Single selection example"
                                     >
                                         نوع البطون : {dropValue2?.arbic}
                                     </Button>
                                 </DropdownTrigger>
-                                <DropdownMenu
+                                <DropdownMenu 
                                     aria-label="Single selection example"
                                     variant="flat"
                                     disallowEmptySelection
@@ -405,15 +483,16 @@ export default function AddInvoice() {
                                 >
                                     {
                                         theList6.map(list => {
-                                            return <DropdownItem onClick={() => { setDropValue2(list); checkToDisable(list.kinds_concrete_name); }} key={list.arbic}>{list.arbic}</DropdownItem>
+                                            return <DropdownItem autoFocus onKeyDown={(e) => checkIfEnterDrop1(e,list)} onClick={() => { setDropValue2(list); checkToDisable(list.kinds_concrete_name); }} key={list.arbic}>{list.arbic}</DropdownItem>
                                         })
                                     }
                                 </DropdownMenu>
                             </Dropdown>
 
                             <Dropdown dir="rtl" className="test-fontt">
-                                <DropdownTrigger>
+                                <DropdownTrigger onKeyDown={(e) => vcheckIfEnterDrop22(e)}>
                                     <Button
+                                        ref={kindRockRef}
                                         isDisabled={disableByTypeCon}
                                         size="lg"
                                         className="z-0 capitalize"
@@ -429,7 +508,7 @@ export default function AddInvoice() {
                                 >
                                     {
                                         theList5.map(list => {
-                                            return <DropdownItem onClick={() => { setDropValue1(list) }} key={list.arbic}>{list.arbic}</DropdownItem>
+                                            return <DropdownItem autoFocus onKeyDown={(e) => checkIfEnterDrop2(e,list)} onClick={() => { setDropValue1(list) }} key={list.arbic}>{list.arbic}</DropdownItem>
                                         })
                                     }
                                 </DropdownMenu>
@@ -472,23 +551,13 @@ export default function AddInvoice() {
                                                     }
                                                 </div>
                                                 <div className="flex justify-center">
-                                                    <FormBoxConcertPump disableButton={disableJustPump} getPump={getPump} />
+                                                    <Button isDisabled={disableJustPump} ref={Pump} onKeyDown={(e) => checkIfEnterPump(e)} size="lg" onClick={() => setShowDrop1(true)}>اختر مضخة<AiOutlinePlus/></Button>                                                  
                                                 </div>
                                             </div>
                                     }
                                 </div>
                             </div>
                         </div>
-
-                        {
-                            errorCusQuant && <div dir="rtl" className="text-[#dc2626] text-base">{errorCusQuant}</div>
-                        }
-                        {
-                            errorCusConGrade && <div dir="rtl" className="text-[#dc2626] text-base">{errorCusConGrade}</div>
-                        }
-                        {
-                            errorCusDegExp && <div dir="rtl" className="text-[#dc2626] text-base">{errorCusDegExp}</div>
-                        }
                         {
                             errorPump && <div dir="rtl" className="text-[#dc2626] text-base">{errorPump}</div>
                         }
@@ -496,7 +565,7 @@ export default function AddInvoice() {
                             errorKindCon && <div dir="rtl" className="text-[#dc2626] text-base">{errorKindCon}</div>
                         }
                         <div className="flex justify-center mb-5 mt-8">
-                            <button ref={PreventMultipleClickAddInfo} onClick={handelAddInfo} className="text-white bg-black hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-full w-full sm:w-auto px-14 py-3 text-xl text-center dark:bg-black dark:hover:bg-blue-700 dark:focus:ring-black-800">ادخال</button>
+                            <button onKeyDown={(e) => checkIfEnterSubmit(e)} ref={PreventMultipleClickAddInfo} onClick={handelAddInfo} className="text-white bg-black hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-full w-full sm:w-auto px-14 py-3 text-xl text-center dark:bg-black dark:hover:bg-blue-700 dark:focus:ring-black-800">ادخال</button>
                         </div>
                     </div>
                 </div>

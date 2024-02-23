@@ -8,15 +8,12 @@ export default function FormBoxConcertPump(props) {
     let trucks = GetTrucks("concert pumps");
     let count = 1;
 
-    const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
     return (
         <>
-            <Button isDisabled={props.disableButton} size="lg" onPress={onOpen}>اختر مضخة<AiOutlinePlus/></Button>
-            <Modal className="test-fontt" backdrop={"blur"} size="5xl" isOpen={isOpen} onOpenChange={onOpenChange}>
+            
+            <Modal className="test-fontt" backdrop={"blur"} size="5xl" isOpen={props.showPump} onClose={props.disable}>
                 <ModalContent>
-                    {(onClose) => (
-                        <>
+                <>
                             <ModalHeader className="flex justify-center">قائمة المضخات (משאבות)</ModalHeader>
                             <ModalBody>
                                 <div className="m-1 pr-5 pl-5 pb-5 bg-white rounded-xl overflow-auto h-72">
@@ -29,7 +26,7 @@ export default function FormBoxConcertPump(props) {
                                             </tr>
                                             {
                                                 trucks.map(doc => {
-                                                    return <tr onClick={() => { props.getPump(doc.pump_id);}} onPress={onClose} className="border-b-2 border-black text-lg margining_table">
+                                                    return <tr onClick={() => { props.disable();props.getPump(doc.pump_id);}} className="border-b-2 border-black text-lg margining_table">
                                                         <th className="text-lg">{doc.pump_disc}</th>
                                                         <th className="text-lg">{doc.pump_d_name}</th>
                                                         <th className="text-lg">{doc.pump_id}</th>
@@ -43,12 +40,11 @@ export default function FormBoxConcertPump(props) {
 
                             </ModalBody>
                             <ModalFooter>
-                                <Button size="lg" color="primary" onPress={onClose}>
+                                <Button size="lg" color="primary" onClick={props.disable}>
                                     اغلاق
                                 </Button>
                             </ModalFooter>
                         </>
-                    )}
                 </ModalContent>
             </Modal>
         </>

@@ -11,12 +11,10 @@ export default function FormBoxDriver(props) {
     let drivers = GetTrucks("drivers");
     let count = 1;
 
-    const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
     return (
         <>
-            <Button size="lg" onPress={onOpen}><AiOutlinePlus />اختر سائق</Button>
-            <Modal className="test-fontt" backdrop={"blur"} size="5xl" isOpen={isOpen} onOpenChange={onOpenChange}>
+            
+            <Modal className="test-fontt" backdrop={"blur"} size="5xl" isOpen={props.showDriver} onClose={props.disable}>
                 <ModalContent>
                     {(onClose) => (
                         <>
@@ -32,7 +30,7 @@ export default function FormBoxDriver(props) {
                                             </tr>
                                             {
                                                 drivers.map(doc => {
-                                                    return <tr onClick={() => { props.getDriver(doc.driver_name);}} onPress={onClose} className="border-b-2 border-black text-lg margining_table">
+                                                    return <tr onClick={() => { props.getDriver(doc.driver_name);props.disable();}} className="border-b-2 border-black text-lg margining_table">
                                                         <th className="text-lg">{doc.driver_disc}</th>
                                                         <th className="text-lg">{doc.driver_name}</th>
                                                         <th className="text-lg">{doc.driver_id}</th>
@@ -46,7 +44,7 @@ export default function FormBoxDriver(props) {
 
                             </ModalBody>
                             <ModalFooter>
-                                <Button size="lg" color="primary" onPress={onClose}>
+                                <Button size="lg" color="primary" onClick={props.disable}>
                                     اغلاق
                                 </Button>
                             </ModalFooter>

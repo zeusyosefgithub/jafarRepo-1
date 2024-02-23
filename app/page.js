@@ -16,6 +16,7 @@ import Report from "./Componenets/report";
 import { Button } from "@nextui-org/button";
 import { Input, Spinner } from "@nextui-org/react";
 import { data } from "autoprefixer";
+import { AiOutlinePlus } from "react-icons/ai";
 
 export default function Home() {
 
@@ -216,14 +217,24 @@ export default function Home() {
     var phoneNumber = "+972506742582";
 
     var url = "https://wa.me/" + phoneNumber + "?text="
-    +"*Name :* " +"mahmod"+"%0a";
+      + "*Name :* " + "mahmod" + "%0a";
 
     window.open(url, '_blank').focus();
   }
 
   return (
     <div>
-      {loading && <Spinner  className="fixed left-1/2 top-1/2 z-50" size="lg" />}
+      {
+        showDriver && <FormBoxDriver showDriver={showDriver} disable={() => setShowDriver(false)} getDriver={(driver) => setDriver(driver)} />
+      }
+      {
+        showTruck && <FormBox showTruck={showTruck} disable={() => setShowTruck(false)} getTruck={(truck) => setTruck(truck)} />
+      }
+      {
+        showInvoEdit && <EditBoard data={invData} showInvoEdit={showInvoEdit} disable={() => setShowInvoEdit(false)} />
+      }
+
+      {loading && <Spinner className="fixed left-1/2 top-1/2 z-50" size="lg" />}
       {/* {
         showTruck && <FormBox getTruck={(truck) => setTruck(truck)} showDisable={() => setShowTruck(false)} />
       }
@@ -354,7 +365,8 @@ export default function Home() {
                                 </div>
                                 :
                                 <div className="">
-                                  <FormBoxDriver getDriver={(driver) => setDriver(driver)}/>
+                                  <Button size="lg" onClick={() => setShowDriver(true)}><AiOutlinePlus />اختر سائق</Button>
+                                 
                                 </div>
                             }
                           </div>
@@ -379,7 +391,7 @@ export default function Home() {
                                 </div>
                                 :
                                 <div className="">
-                                  <FormBox getTruck={(truck) => setTruck(truck)}/>
+                                  <Button size="lg" onClick={() => setShowTruck(true)}><AiOutlinePlus/>اختر الخلاطه</Button>
                                 </div>
                             }
                           </div>
@@ -426,7 +438,7 @@ export default function Home() {
                           <th className="text-base">{invo.invoices_quantity}</th>
                           <th className="text-base">{invo.invoices_customer_name}</th>
                           <th className="text-base">{invo.invoices_id}</th>
-                          <th className="bg-slate-100"><EditBoard data={invo}/></th>
+                          <th className="bg-slate-100"><Button color="primary" onClick={() => {setInvData(invo);setShowInvoEdit(true)}}>تعديل</Button></th>
                         </tr>
                       })
                     }
