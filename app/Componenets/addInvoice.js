@@ -103,11 +103,10 @@ export default function AddInvoice() {
         return false;
     }
     const handelAddInfo = async () => { 
-        PreventMultipleClickAddInfo.current.disabled = true;
+
         let counterInvoices = currectInvoiceId();
         let regex = /(0?[1-9]|1[0-2])\/(0?[1-9]|1[0-9]|2[0-9]|3(0|1))\/\d{4}$/;
         let newData = {};
-
         if (isAutoDate) {
             setErrorManuelDate("");
             if (!regex.test(autoDateVal)) {
@@ -211,6 +210,7 @@ export default function AddInvoice() {
         setErrorCusDegExp("");
         setErrorPump("");
         setErrorKindCon("");
+        PreventMultipleClickAddInfo.current.disabled = true;
         setInvData(newData);
         setLoading(true);
         let NewcustomersList = {
@@ -239,6 +239,7 @@ export default function AddInvoice() {
         setDropValue2(null);
         setDisableByTypeCon(false);
         setLoading(false);
+        PreventMultipleClickAddInfo.current.disabled = false;
     }
     function compareByAge(a, b) {
         return b.invoices_id - a.invoices_id;

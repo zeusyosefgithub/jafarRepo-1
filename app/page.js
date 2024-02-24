@@ -162,6 +162,7 @@ export default function Home() {
     setCurrentQuantity(currentQuantityRef.current?.value)
     currentQuantityRef.current && currentQuantityRef.current.value == "";
     setLoading(false);
+    PreventMultipleClickPrint.current.disabled = false;
   }
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
@@ -176,7 +177,6 @@ export default function Home() {
   }
 
   const handelAddShpping = async () => {
-    setLoading(true);
     let counterShipps = currectShippId();
     setErrorMessageDriverTruck("");
     if (!truck || !driver) {
@@ -187,6 +187,7 @@ export default function Home() {
       if (currentQuantityRef.current.value > (invData?.invoices_quantity - invData?.provide)) {
         return setErrorMessage("خطاء,الكمية المزودة اعلى من الطلب الاجمالي!")
       }
+      setLoading(true);
       PreventMultipleClickAddShipp.current.disabled = true;
       let shippingData = {
         shipp_id: counterShipps,
@@ -207,9 +208,9 @@ export default function Home() {
       }
     }
     setShowHidePrint(true);
-    
     setErrorMessage("");
     setLoading(false);
+    PreventMultipleClickAddShipp.current.disabled = false;
   }
 
 
