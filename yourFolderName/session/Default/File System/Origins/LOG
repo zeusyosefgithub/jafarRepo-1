@@ -1,0 +1,4 @@
+2024/02/28-01:11:42.467 23f0 Log #3: 3 ops saved to Table #4 OK
+2024/02/28-01:11:43.480 23f0 Archiving C:\Users\Yosef\Desktop\jafar-projet-main\jafar-projet-main\yourFolderName\session\Default\File System\Origins/000003.log: IO error: C:\Users\Yosef\Desktop\jafar-projet-main\jafar-projet-main\yourFolderName\session\Default\File System\Origins/000003.log: Could not rename file: File currently in use. (ChromeMethodBFE: 14::RenameFile::2)
+2024/02/28-01:11:43.480 23f0 Table #4: 3 entries OK
+2024/02/28-01:11:44.493 23f0 Archiving C:\Users\Yosef\Desktop\jafar-projet-main\jafar-projet-main\yourFolderName\session\Default\File System\Origins/MANIFEST-000001: IO error: C:\Users\Yosef\Desktop\jafar-projet-main\jafar-projet-main\yourFolderName\session\Default\File System\Origins/MANIFEST-000001: Could not rename file: File currently in use. (ChromeMethodBFE: 14::RenameFile::2)
