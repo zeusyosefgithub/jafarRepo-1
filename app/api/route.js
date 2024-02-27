@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import twilio from 'twilio';
 
+
 export async function GET(request) {
     const sid = "AC3451171da11a280e5ec14ca0e4e55dc2";
     const token = "7d7a414312714900bec9e4c6832ebe99";
@@ -34,64 +35,51 @@ export async function GET(request) {
 
 
 export async function POST(request) {
-    // const sid = "AC3451171da11a280e5ec14ca0e4e55dc2";
-    // const token = "7cca95c720728c32ea203aa3079fa810";
-    // const client = require('twilio')(sid,token);
-
-    // const firebaseConfig = {
-    //     apiKey: "AIzaSyCfkkaERgAZphA_rqe9jOLNJxSXsmk2hEI",
-    //     authDomain: "jafar-test.firebaseapp.com",
-    //     projectId: "jafar-test",
-    //     storageBucket: "jafar-test.appspot.com",
-    //     messagingSenderId: "152756947668",
-    //     appId: "1:152756947668:web:4965c9e95185f07f86c941",
-    //     measurementId: "G-GRC408D5BL"
-    // };
-
-    // const firebase = require('firebase/app');
-    // const admiin = require('firebase-admin');
+    const {Client, LocalAuth,MessageMedia} = require('whatsapp-web.js');
     
-    // const service = require('../../jafar-test-firebase-adminsdk-negpv-f3a86b59dc.json');
-    // firebase.initializeApp({firebaseConfig,storageBucket:firebaseConfig.storageBucket});
-    
-    // const {getStorage,ref,getDownloadURL} = require('firebase/storage');
+    //const express = require('express');
+    //const app = express();
+    //const port = 3001;
 
-    // const storage = getStorage();
+    // app.listen(port, () => {
+    //     console.log('server runnig');
+    // })
+    const data = await request.json();
 
-    // const url = await getDownloadURL(ref(storage,'files/test'));
+    const client = new Client({
+        puppeteer: { headless: false, }, authStrategy: new LocalAuth({
+            clientId: "YourClientId"
+        }),
+    });
 
-    // const data = await request.json();
-    // const message = await client.messages
-    //     .create({
-    //         from: 'whatsapp:+14155238886',
-    //         mediaUrl: url,
-    //         to: `whatsapp:+972${data.id}`
-    //     });
+    client.on('qr', (qr) => {
+        console.log("QR RECEVED", qr);
+    })
 
+    client.on("ready", async () => {
+        console.log('Client is ready!');
 
-    // const qrcode = require('qrcode-terminal');
+        // Number where you want to send the message.
+        const number = "+972506742582";
+        const image = await new MessageMedia("image/jpeg", data.url, "image.jpg");
 
-    // const { Client } = require('whatsapp-web.js');
-    // const client = new Client();
-    
-    // client.on('qr', (qr) => {
-    //     qrcode.generate(qr, { small: true });
-    // });
-    
-    // client.on('ready', () => {
-    //     console.log('Client is ready!');
-    // });
-    
-    // client.initialize();
-     
-     
+        //        // Getting chatId from the number.
+        // // we have to delete "+" from the beginning and add "@c.us" at the end of the number.
+        const chatId = number.substring(1) + "@c.us";
 
-    
+        // // Sending message.
+        await client.sendMessage(chatId, image, { caption: "فاتورة "+data.name }); 
+    })
 
+    try {
+        client.initialize();
+    }
+    catch(e){
+        console.log(e)
+    }
+
+    //client.initialize();
     return NextResponse.json({ response: Response });
-
-    return NextResponse.json({message:"suc134543543cess"},{status:200});
-
-
+    //return NextResponse.json({message:"suc134543543cess"},{status:200});
 }
 

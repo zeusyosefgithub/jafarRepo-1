@@ -20,6 +20,7 @@ import { deleteObject, ref, uploadBytes, uploadString } from "firebase/storage";
 import { storage } from "../FireBase/firebase";
 import { v4 } from "uuid";
 import html2canvas from "html2canvas";
+import { WhatsappIcon, WhatsappShareButton } from "react-share";
 
 export default function EditBoard(props) {
 
@@ -101,53 +102,55 @@ export default function EditBoard(props) {
     const refsImages = useRef([]);
 
 
-    const sendWhatsaap = async (refImage, phone) => {
+    const sendWhatsaap = async (refImage, phone,name) => {
+        setLoading(true);
+        let url;
+        const one = await html2canvas(refImage).then((canvas) => {
+            url = canvas.toDataURL("image/png");
+            //const loc = ref(storage,`files/test`);
+            //uploadString(loc,url,'data_url');
+        }) 
+        // const respon = await fetch("/api/", {
+        //     method: "GET",
+        //     headers: {
+        //         "content-type": "application/json",
+        //     },
+        // })
+        // const data = await respon.json();
+        // console.log(data);
+        // return Response.json({data});
 
-        // let url;
-        // const one = await html2canvas(refImage).then((canvas) => {
-        //     url = canvas.toDataURL("image/png");
-        //     const loc = ref(storage,`files/test`);
-        //     uploadString(loc,url,'data_url');
-        // }) 
-        // // const respon = await fetch("/api/", {
-        // //     method: "GET",
-        // //     headers: {
-        // //         "content-type": "application/json",
-        // //     },
-        // // })
-        // // const data = await respon.json();
-        // // console.log(data);
-        // // return Response.json({data});
-        // try{
-        //     const res = await fetch("/api/", {
-        //         method: "POST",
-        //         body: JSON.stringify({"id": phone.substring(1)}),
-        //         headers: {
-        //             "content-type": "application/json",
-        //         },
-        //     })
-        //     console.log(res)
-        //     if (res.ok) {
-        //         console.log("Yeai!")
-        //     } else {
-        //         console.log("Oops! Something is wrong.")
-        //     }
-        // }
-        // catch(e){
-        //     console.log(e);
-        // }
+        const newUrl = url.split(",").pop();
 
-
-
-
-        //console.log(respon.json());
+        try{
+            const res = await fetch("/api/", {
+                method: "POST",
+                body: JSON.stringify({"id": phone.substring(1),"url": newUrl,"name" : name}),
+                headers: {
+                    "content-type": "application/json",
+                },
+            })
+            if (res.ok) {
+                console.log("Yeai!")
+            } else {
+                console.log("Oops! Something is wrong.")
+            }
+        }
+        catch(e){
+            console.log(e);
+        }
+        setLoading(false);
 
 
-        var phoneNumber = "+972503209026";
-        var url = "https://wa.me/" + phoneNumber + "?text="
-            + encodeURIComponent('https://firebasestorage.googleapis.com/v0/b/jafar-test.appspot.com/o/files%2Ftest?alt=media&token=d43dbf66-2217-4f76-ada9-0ff68dfb6244.png') + "%0a";
-        ;
-        window.open(url, '_blank').focus();
+
+
+
+
+        // var phoneNumber = "+972503209026";
+        // var url = "https://wa.me/" + phoneNumber + "?text="
+        //     + encodeURIComponent('https://firebasestorage.googleapis.com/v0/b/jafar-test.appspot.com/o/files%2Ftest?alt=media&token=d43dbf66-2217-4f76-ada9-0ff68dfb6244.png') + "%0a";
+        // ;
+        // window.open(url, '_blank').focus();
     }
 
 
@@ -214,7 +217,7 @@ export default function EditBoard(props) {
                                 </button>
                             </div>
                             <div>
-                                <Button isDisabled onClick={() => sendWhatsaap(refsImages.current[index], valuesProvide[index].invoices_customer_id)} color="success" variant="bordered" className="text-sm"><FaWhatsapp className="text-2xl" /> ارسال رسالة</Button>
+                                <Button onClick={() => sendWhatsaap(refsImages.current[index], valuesProvide[index].invoices_customer_id,valuesProvide[index].invoices_customer_name)} color="success" variant="bordered" className="text-sm"><FaWhatsapp className="text-2xl" /> ارسال رسالة</Button>
                             </div>
                         </div>
                     </div>

@@ -1,0 +1,27 @@
+2024/02/27-02:32:19.538 818 Reusing MANIFEST C:\Users\Yosef\Desktop\jafar-projet-main\jafar-projet-main\.wwebjs_auth\session-YourClientId\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2024/02/27-02:32:19.538 818 Recovering log #557
+2024/02/27-02:32:19.585 818 Reusing old log C:\Users\Yosef\Desktop\jafar-projet-main\jafar-projet-main\.wwebjs_auth\session-YourClientId\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000557.log 
+2024/02/27-02:32:20.067 34bc Level-0 table #569: started
+2024/02/27-02:32:20.078 34bc Level-0 table #569: 588705 bytes OK
+2024/02/27-02:32:20.079 34bc Delete type=0 #557
+2024/02/27-02:32:20.080 34bc Manual compaction at level-0 from '\x00P\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00Q\x00\x00\x00' @ 0 : 0; will stop at (end)
+2024/02/27-02:32:21.122 a08 Compacting 1@1 + 8@2 files
+2024/02/27-02:32:21.201 a08 Generated table #570@1: 64696 keys, 2228945 bytes
+2024/02/27-02:32:21.218 a08 Generated table #571@1: 2379 keys, 2142539 bytes
+2024/02/27-02:32:21.235 a08 Generated table #572@1: 2580 keys, 2145504 bytes
+2024/02/27-02:32:21.277 a08 Generated table #573@1: 25124 keys, 2228076 bytes
+2024/02/27-02:32:21.302 a08 Generated table #574@1: 15030 keys, 2145329 bytes
+2024/02/27-02:32:21.382 a08 Generated table #575@1: 101366 keys, 2251452 bytes
+2024/02/27-02:32:21.459 a08 Generated table #576@1: 105255 keys, 2256123 bytes
+2024/02/27-02:32:21.494 a08 Generated table #577@1: 36489 keys, 784693 bytes
+2024/02/27-02:32:21.494 a08 Compacted 1@1 + 8@2 files => 16182661 bytes
+2024/02/27-02:32:21.495 a08 compacted to: files[ 0 0 8 0 0 0 0 ]
+2024/02/27-02:32:21.495 a08 Delete type=2 #559
+2024/02/27-02:32:21.495 a08 Delete type=2 #560
+2024/02/27-02:32:21.495 a08 Delete type=2 #561
+2024/02/27-02:32:21.495 a08 Delete type=2 #562
+2024/02/27-02:32:21.495 a08 Delete type=2 #563
+2024/02/27-02:32:21.495 a08 Delete type=2 #564
+2024/02/27-02:32:21.495 a08 Delete type=2 #565
+2024/02/27-02:32:21.495 a08 Delete type=2 #566
+2024/02/27-02:32:21.496 a08 Delete type=2 #569

@@ -1,6 +1,12 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {images: {unoptimized: true},
-webpack: (config, { isServer }) => {
+const nextConfig = {
+  images: { unoptimized: true },
+  webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
+    config.plugins.push(
+      new webpack.DefinePlugin({
+        'process.env.FLUENTFFMPEG_COV': false
+      })
+    )
     if (!isServer) {
       config.resolve = {
         ...config.resolve,
@@ -9,7 +15,7 @@ webpack: (config, { isServer }) => {
           net: false,
           dns: false,
           tls: false,
-          fs:false,
+          fs: false,
           assert: false,
           // fixes sentry dependencies
           process: false
