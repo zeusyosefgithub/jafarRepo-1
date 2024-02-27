@@ -110,36 +110,36 @@ export default function EditBoard(props) {
             //const loc = ref(storage,`files/test`);
             //uploadString(loc,url,'data_url');
         }) 
-        // const respon = await fetch("/api/", {
-        //     method: "GET",
-        //     headers: {
-        //         "content-type": "application/json",
-        //     },
-        // })
-        // const data = await respon.json();
-        // console.log(data);
-        // return Response.json({data});
+        const respon = await fetch("/api/", {
+            method: "GET",
+            headers: {
+                "content-type": "application/json",
+            },
+        })
+        const data = await respon.json();
+        console.log(data);
+        return Response.json({data});
 
         const newUrl = url.split(",").pop();
 
-        try{
-            const res = await fetch("/api/", {
-                method: "POST",
-                body: JSON.stringify({"id": phone.substring(1),"url": newUrl,"name" : name}),
-                headers: {
-                    "content-type": "application/json",
-                },
-            })
-            if (res.ok) {
-                console.log("Yeai!")
-            } else {
-                console.log("Oops! Something is wrong.")
-            }
-        }
-        catch(e){
-            console.log(e);
-        }
-        setLoading(false);
+        // try{
+        //     const res = await fetch("/api/", {
+        //         method: "POST",
+        //         body: JSON.stringify({"id": phone.substring(1),"url": newUrl,"name" : name}),
+        //         headers: {
+        //             "content-type": "application/json",
+        //         },
+        //     })
+        //     if (res.ok) {
+        //         console.log("Yeai!")
+        //     } else {
+        //         console.log("Oops! Something is wrong.")
+        //     }
+        // }
+        // catch(e){
+        //     console.log(e);
+        // }
+        // setLoading(false);
 
 
 
