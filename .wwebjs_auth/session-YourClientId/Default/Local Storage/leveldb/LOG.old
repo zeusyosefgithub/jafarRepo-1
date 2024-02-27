@@ -1,3 +1,5 @@
-2024/02/27-02:32:18.983 1ac0 Reusing MANIFEST C:\Users\Yosef\Desktop\jafar-projet-main\jafar-projet-main\.wwebjs_auth\session-YourClientId\Default\Local Storage\leveldb/MANIFEST-000001
-2024/02/27-02:32:18.984 1ac0 Recovering log #13
-2024/02/27-02:32:18.984 1ac0 Reusing old log C:\Users\Yosef\Desktop\jafar-projet-main\jafar-projet-main\.wwebjs_auth\session-YourClientId\Default\Local Storage\leveldb/000013.log 
+2024/02/27-14:21:54.902 244 Reusing MANIFEST C:\Users\Yosef\Desktop\jafar-projet-main\jafar-projet-main\.wwebjs_auth\session-YourClientId\Default\Local Storage\leveldb/MANIFEST-000001
+2024/02/27-14:21:54.903 244 Recovering log #13
+2024/02/27-14:21:54.904 244 Level-0 table #16: started
+2024/02/27-14:21:54.909 244 Level-0 table #16: 13864 bytes OK
+2024/02/27-14:21:54.912 244 Delete type=0 #13

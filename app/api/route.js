@@ -35,7 +35,15 @@ export async function GET(request) {
 
 
 export async function POST(request) {
-    const {Client, LocalAuth,MessageMedia} = require('whatsapp-web.js');
+    const {Client, LocalAuth,MessageMedia, RemoteAuth} = require('whatsapp-web.js'); 
+    const {AwsS3Store} = require('wwebjs-aws-s3');
+    const {
+        S3Client,
+        PutObjectCommand,
+        HeadObjectCommand,
+        GetObjectCommand,
+        DeleteObjectCommand
+    } = require('@a');
     
     //const express = require('express');
     //const app = express();
@@ -46,11 +54,13 @@ export async function POST(request) {
     // })
     const data = await request.json();
 
-    const client = new Client({
-        puppeteer: { headless: false, }, authStrategy: new LocalAuth({
-            clientId: "YourClientId"
-        }),
-    });
+    // const client = new Client({
+    //     puppeteer: { headless: false, }, authStrategy: new LocalAuth({
+    //         clientId: "YourClientId"
+    //     }),
+    // });
+
+    const client = new Client();
 
     client.on('qr', (qr) => {
         console.log("QR RECEVED", qr);

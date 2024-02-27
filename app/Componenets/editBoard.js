@@ -21,6 +21,7 @@ import { storage } from "../FireBase/firebase";
 import { v4 } from "uuid";
 import html2canvas from "html2canvas";
 import { WhatsappIcon, WhatsappShareButton } from "react-share";
+import { useQRCode } from "next-qrcode";
 
 export default function EditBoard(props) {
 
@@ -155,6 +156,7 @@ export default function EditBoard(props) {
 
 
 
+
     const handlePrint = useReactToPrint({
         content: () => AllComponentsRefs.current[componentRef.current],
     });
@@ -217,7 +219,7 @@ export default function EditBoard(props) {
                                 </button>
                             </div>
                             <div>
-                                <Button isDisabled onClick={() => sendWhatsaap(refsImages.current[index], valuesProvide[index].invoices_customer_id,valuesProvide[index].invoices_customer_name)} color="success" variant="bordered" className="text-sm"><FaWhatsapp className="text-2xl" /> ارسال رسالة</Button>
+                                <Button onClick={() => sendWhatsaap(refsImages.current[index], valuesProvide[index].invoices_customer_id,valuesProvide[index].invoices_customer_name)} color="success" variant="bordered" className="text-sm"><FaWhatsapp className="text-2xl" /> ارسال رسالة</Button>
                             </div>
                         </div>
                     </div>

@@ -22,6 +22,7 @@
     "@nextui-org/react": "^2.2.9",
     "@nextui-org/system": "^2.0.15",
     "@nextui-org/theme": "^2.1.17",
+    "@yudiel/react-qr-scanner": "^1.2.10",
     "ba64": "^3.0.9",
     "chart.js": "^4.4.1",
     "chartjs-plugin-datalabels": "^2.2.0",
@@ -37,7 +38,10 @@
     "html-to-text": "^9.0.5",
     "html2canvas": "^1.4.1",
     "jspdf": "^2.5.1",
+    "mongodb": "^6.3.0",
+    "mongoose": "^8.2.0",
     "next": "14.0.4",
+    "next-qrcode": "^2.5.1",
     "next-share": "^0.27.0",
     "print-js": "^1.6.0",
     "qrcode-terminal": "^0.12.0",
@@ -47,6 +51,7 @@
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18",
     "react-icons": "^4.12.0",
+    "react-qr-code": "^2.0.12",
     "react-share": "^5.1.0",
     "react-to-print": "^2.14.15",
     "replace-in-files-cli": "^2.2.0",
@@ -55,7 +60,9 @@
     "twilio": "^4.21.0",
     "uuid": "^9.0.1",
     "wait-on": "^7.2.0",
-    "whatsapp-web.js": "^1.23.0"
+    "whatsapp-web.js": "^1.23.0",
+    "wwebjs-aws-s3": "^1.0.2",
+    "wwebjs-mongo": "^1.1.0"
   },
   "devDependencies": {
     "@electron-forge/cli": "^7.2.0",

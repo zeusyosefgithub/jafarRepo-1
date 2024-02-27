@@ -1,27 +1,27 @@
-2024/02/27-02:34:55.273 6144 Reusing MANIFEST C:\Users\Yosef\Desktop\jafar-projet-main\jafar-projet-main\.wwebjs_auth\session-YourClientId\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
-2024/02/27-02:34:55.273 6144 Recovering log #568
-2024/02/27-02:34:55.340 6144 Reusing old log C:\Users\Yosef\Desktop\jafar-projet-main\jafar-projet-main\.wwebjs_auth\session-YourClientId\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000568.log 
-2024/02/27-02:34:55.808 4684 Level-0 table #580: started
-2024/02/27-02:34:55.822 4684 Level-0 table #580: 892098 bytes OK
-2024/02/27-02:34:55.823 4684 Delete type=0 #568
-2024/02/27-02:34:55.823 4684 Manual compaction at level-0 from '\x00Q\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00R\x00\x00\x00' @ 0 : 0; will stop at (end)
-2024/02/27-02:34:56.922 5b30 Compacting 1@1 + 8@2 files
-2024/02/27-02:34:56.996 5b30 Generated table #581@1: 66819 keys, 2231963 bytes
-2024/02/27-02:34:57.012 5b30 Generated table #582@1: 2372 keys, 2142399 bytes
-2024/02/27-02:34:57.029 5b30 Generated table #583@1: 2605 keys, 2148527 bytes
-2024/02/27-02:34:57.068 5b30 Generated table #584@1: 24221 keys, 2224937 bytes
-2024/02/27-02:34:57.097 5b30 Generated table #585@1: 15789 keys, 2152989 bytes
-2024/02/27-02:34:57.173 5b30 Generated table #586@1: 97813 keys, 2246186 bytes
-2024/02/27-02:34:57.255 5b30 Generated table #587@1: 105287 keys, 2255730 bytes
-2024/02/27-02:34:57.282 5b30 Generated table #588@1: 40466 keys, 869958 bytes
-2024/02/27-02:34:57.282 5b30 Compacted 1@1 + 8@2 files => 16272689 bytes
-2024/02/27-02:34:57.283 5b30 compacted to: files[ 0 0 8 0 0 0 0 ]
-2024/02/27-02:34:57.283 5b30 Delete type=2 #570
-2024/02/27-02:34:57.283 5b30 Delete type=2 #571
-2024/02/27-02:34:57.283 5b30 Delete type=2 #572
-2024/02/27-02:34:57.283 5b30 Delete type=2 #573
-2024/02/27-02:34:57.283 5b30 Delete type=2 #574
-2024/02/27-02:34:57.283 5b30 Delete type=2 #575
-2024/02/27-02:34:57.283 5b30 Delete type=2 #576
-2024/02/27-02:34:57.283 5b30 Delete type=2 #577
-2024/02/27-02:34:57.283 5b30 Delete type=2 #580
+2024/02/27-14:25:33.331 4130 Reusing MANIFEST C:\Users\Yosef\Desktop\jafar-projet-main\jafar-projet-main\.wwebjs_auth\session-YourClientId\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2024/02/27-14:25:33.331 4130 Recovering log #590
+2024/02/27-14:25:33.418 4130 Reusing old log C:\Users\Yosef\Desktop\jafar-projet-main\jafar-projet-main\.wwebjs_auth\session-YourClientId\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000590.log 
+2024/02/27-14:25:33.908 1900 Level-0 table #602: started
+2024/02/27-14:25:33.933 1900 Level-0 table #602: 1116038 bytes OK
+2024/02/27-14:25:33.934 1900 Delete type=0 #590
+2024/02/27-14:25:33.934 1900 Manual compaction at level-0 from '\x00S\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00T\x00\x00\x00' @ 0 : 0; will stop at (end)
+2024/02/27-14:25:35.066 49dc Compacting 1@1 + 8@2 files
+2024/02/27-14:25:35.143 49dc Generated table #603@1: 70048 keys, 2232938 bytes
+2024/02/27-14:25:35.162 49dc Generated table #604@1: 3292 keys, 2144982 bytes
+2024/02/27-14:25:35.182 49dc Generated table #605@1: 2506 keys, 2146285 bytes
+2024/02/27-14:25:35.223 49dc Generated table #606@1: 22242 keys, 2219803 bytes
+2024/02/27-14:25:35.254 49dc Generated table #607@1: 17483 keys, 2158218 bytes
+2024/02/27-14:25:35.325 49dc Generated table #608@1: 90976 keys, 2238990 bytes
+2024/02/27-14:25:35.420 49dc Generated table #609@1: 105307 keys, 2255833 bytes
+2024/02/27-14:25:35.463 49dc Generated table #610@1: 48054 keys, 1034323 bytes
+2024/02/27-14:25:35.463 49dc Compacted 1@1 + 8@2 files => 16431372 bytes
+2024/02/27-14:25:35.464 49dc compacted to: files[ 0 0 8 0 0 0 0 ]
+2024/02/27-14:25:35.464 49dc Delete type=2 #592
+2024/02/27-14:25:35.464 49dc Delete type=2 #593
+2024/02/27-14:25:35.464 49dc Delete type=2 #594
+2024/02/27-14:25:35.464 49dc Delete type=2 #595
+2024/02/27-14:25:35.464 49dc Delete type=2 #596
+2024/02/27-14:25:35.464 49dc Delete type=2 #597
+2024/02/27-14:25:35.464 49dc Delete type=2 #598
+2024/02/27-14:25:35.464 49dc Delete type=2 #599
+2024/02/27-14:25:35.464 49dc Delete type=2 #602
