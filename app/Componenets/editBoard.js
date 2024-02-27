@@ -217,7 +217,7 @@ export default function EditBoard(props) {
                                 </button>
                             </div>
                             <div>
-                                <Button onClick={() => sendWhatsaap(refsImages.current[index], valuesProvide[index].invoices_customer_id,valuesProvide[index].invoices_customer_name)} color="success" variant="bordered" className="text-sm"><FaWhatsapp className="text-2xl" /> ارسال رسالة</Button>
+                                <Button isDisabled onClick={() => sendWhatsaap(refsImages.current[index], valuesProvide[index].invoices_customer_id,valuesProvide[index].invoices_customer_name)} color="success" variant="bordered" className="text-sm"><FaWhatsapp className="text-2xl" /> ارسال رسالة</Button>
                             </div>
                         </div>
                     </div>
