@@ -46,37 +46,38 @@ export async function POST(request) {
     // })
     const data = await request.json();
 
-    const client = new Client({
-        puppeteer: { headless: false, }, authStrategy: new LocalAuth({
-            clientId: "YourClientId"
-        }),
-    });
+    // const client = new Client({
+    //     puppeteer: { headless: false, }, authStrategy: new LocalAuth({
+    //         clientId: "YourClientId"
+    //     }),
+    // });
 
-    client.on('qr', (qr) => {
-        console.log("QR RECEVED", qr);
-    })
+    // client.on('qr', (qr) => {
+    //     console.log("QR RECEVED", qr);
+    // })
 
-    client.on("ready", async () => {
-        console.log('Client is ready!');
+    // client.on("ready", async () => {
+    //     console.log('Client is ready!');
 
-        // Number where you want to send the message.
-        const number = "+972506742582";
-        const image = await new MessageMedia("image/jpeg", data.url, "image.jpg");
+    //     // Number where you want to send the message.
+    //     const number = "+972506742582";
+    //     const image = await new MessageMedia("image/jpeg", data.url, "image.jpg");
 
-        //        // Getting chatId from the number.
-        // // we have to delete "+" from the beginning and add "@c.us" at the end of the number.
-        const chatId = number.substring(1) + "@c.us";
+    //     //        // Getting chatId from the number.
+    //     // // we have to delete "+" from the beginning and add "@c.us" at the end of the number.
+    //     const chatId = number.substring(1) + "@c.us";
 
-        // // Sending message.
-        await client.sendMessage(chatId, image, { caption: "فاتورة "+data.name }); 
-    })
+    //     // // Sending message.
+    //     await client.sendMessage(chatId, image, { caption: "فاتورة "+data.name }); 
+    // })
+    console.log(data)
 
-    try {
-        client.initialize();
-    }
-    catch(e){
-        console.log(e)
-    }
+    // try {
+    //     client.initialize();
+    // }
+    // catch(e){
+    //     console.log(e)
+    // }
 
     //client.initialize();
     return NextResponse.json({ response: Response });
