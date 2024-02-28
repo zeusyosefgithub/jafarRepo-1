@@ -18,7 +18,7 @@ export async function POST(request) {
     const conniction = "mongodb+srv://yosefmidlig20:UooPUUjoXgvbiSKM@cluster0.7tvt3ji.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
 
-    mongoose.connect(conniction).then(() => {
+    await mongoose.connect(conniction).then(() => {
         console.log('hellow from mongo db');
         const store = new MongoStore({ mongoose: mongoose });
         const client = new Client({
