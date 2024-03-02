@@ -22,6 +22,7 @@ import { v4 } from "uuid";
 import html2canvas from "html2canvas";
 import { WhatsappIcon, WhatsappShareButton } from "react-share";
 import { useQRCode } from "next-qrcode";
+import QRCode from "react-qr-code";
 
 export default function EditBoard(props) {
 
@@ -131,6 +132,7 @@ export default function EditBoard(props) {
                     "content-type": "application/json",
                 },
             })
+            console.log(await res.json())
             if (res.ok) {
                 console.log("Yeai!")
             } else {
@@ -219,7 +221,10 @@ export default function EditBoard(props) {
                                 </button>
                             </div>
                             <div>
-                                <Button isDisabled onClick={() => {sendWhatsaap(refsImages.current[index], valuesProvide[index].invoices_customer_id,valuesProvide[index].invoices_customer_name);}} color="success" variant="bordered" className="text-sm"><FaWhatsapp className="text-2xl" /> ارسال رسالة</Button>
+                                <Button onClick={() => {sendWhatsaap(refsImages.current[index], valuesProvide[index].invoices_customer_id,valuesProvide[index].invoices_customer_name);}} color="success" variant="bordered" className="text-sm"><FaWhatsapp className="text-2xl" /> ارسال رسالة</Button>
+                            </div>
+                            <div>
+                                <QRCode value="2@u7dvkiFyEX54Km2qE95tw1qnASt0YX4dghMjQid8qb6wYRVjPWyxe82MaEq9/9ZSnuU5pWSMVRAc7w==,fd8Rf1JkfoRj7XJ5VdJn1rSrbuLTHmEIi184ARKElk0=,eMOLN5/HgX/JVcap2O7NGzaWoaAWfHcvLZG/bUPEB3c=,t4vwbEupEo/VoY5dGELhFWmO+06t88XJYQZXzmio4I0=,1"/>
                             </div>
                         </div>
                     </div>
