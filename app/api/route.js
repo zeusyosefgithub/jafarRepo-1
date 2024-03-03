@@ -41,6 +41,7 @@ export async function POST(request) {
 
     const client = new Client({
         puppeteer: {
+            headless:false,
             args: ['--no-sandbox'],
         },
         authStrategy: new LocalAuth()
