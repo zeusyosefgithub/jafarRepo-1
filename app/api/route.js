@@ -17,29 +17,30 @@ export async function POST(request) {
 
     const conniction = "mongodb+srv://yosefmidlig20:UooPUUjoXgvbiSKM@cluster0.7tvt3ji.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
     //123
-    console.log(1);
     await mongoose.connect(conniction).then(() => {
         console.log('hellow from mongo db');
         const store = new MongoStore({ mongoose: mongoose });
         const client = new Client({
-            puppeteer: { headless: false,args: ['--no-sandbox'] },
             authStrategy: new RemoteAuth({
                 store: store,
                 backupSyncIntervalMs: 300000
             }),
+            puppeteer: {
+                args: ['--no-sandbox',
+                    '--disable-setuid-sandbox'
+                ],
+                headless: 'new',
+            }
         });
-        client.on('remote_session_saved', (qr) => {
-            console.log("QR RECEVED");
+        client.on('qr', (qr) => {
+            console.log("QR RECEVED", qr);
         })
-        // client.on('qr', (qr) => {
-        //     console.log("QR RECEVED", qr);
-        // })
-        // client.on("ready", async () => {
-        //     const number = "+972506742582";
-        //     const image = await new MessageMedia("image/jpeg", data.url, "image.jpg");
-        //     const chatId = number.substring(1) + "@c.us";
-        //     await client.sendMessage(chatId, image, { caption: "فاتورة " + data.name });
-        // })
+        client.on("ready", async () => {
+            const number = "+972506742582";
+            const image = await new MessageMedia("image/jpeg", data.url, "image.jpg");
+            const chatId = number.substring(1) + "@c.us";
+            await client.sendMessage(chatId, image, { caption: "فاتورة " + data.name });
+        })
         client.initialize();
     })
 
