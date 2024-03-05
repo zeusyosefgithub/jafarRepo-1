@@ -23,13 +23,12 @@ export async function POST(request) {
         const client = new Client({
             authStrategy: new RemoteAuth({
                 store: store,
-                backupSyncIntervalMs: 300000
+                backupSyncIntervalMs: 600000,
+                clientId:'yosef'
             }),
             puppeteer: {
-                args: ['--no-sandbox',
-                    '--disable-setuid-sandbox'
-                ],
-                headless: 'new',
+                
+                headless: true,
             }
         });
         client.on('qr', (qr) => {
