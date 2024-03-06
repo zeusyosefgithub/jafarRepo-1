@@ -17,7 +17,7 @@ export async function POST(request) {
 
     const conniction = "mongodb+srv://yosefmidlig20:UooPUUjoXgvbiSKM@cluster0.7tvt3ji.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
     //123
-    await mongoose.connect(conniction).then(() => {
+    await mongoose.connect(conniction).then(async() => {
         console.log('hellow from mongo db');
         const store = new MongoStore({ mongoose: mongoose });
         const client = new Client({
@@ -27,10 +27,6 @@ export async function POST(request) {
             }),
             puppeteer: {
                 headless: true,
-                args: [
-                    '--no-sandbox',
-                    '--disable-setuid-sandbox'
-                ]
             }
         });
         client.on("authenticated", () => {
@@ -48,8 +44,6 @@ export async function POST(request) {
             const chatId = number.substring(1) + "@c.us";
             await client.sendMessage(chatId, image, { caption: "فاتورة " + data.name });
         })
-        store.extract()
-        store.save({session : 'yosef'})
         client.initialize();
     })
 

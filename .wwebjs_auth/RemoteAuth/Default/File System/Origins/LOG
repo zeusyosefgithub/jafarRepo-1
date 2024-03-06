@@ -1,0 +1,4 @@
+2024/03/06-22:40:29.744 444c Log #3: 3 ops saved to Table #4 OK
+2024/03/06-22:40:30.752 444c Archiving C:\Users\Yosef\Desktop\jafar-projet-main\jafar-projet-main\.wwebjs_auth\RemoteAuth\Default\File System\Origins/000003.log: IO error: C:\Users\Yosef\Desktop\jafar-projet-main\jafar-projet-main\.wwebjs_auth\RemoteAuth\Default\File System\Origins/000003.log: Could not rename file: File currently in use. (ChromeMethodBFE: 14::RenameFile::2)
+2024/03/06-22:40:30.752 444c Table #4: 3 entries OK
+2024/03/06-22:40:31.759 444c Archiving C:\Users\Yosef\Desktop\jafar-projet-main\jafar-projet-main\.wwebjs_auth\RemoteAuth\Default\File System\Origins/MANIFEST-000001: IO error: C:\Users\Yosef\Desktop\jafar-projet-main\jafar-projet-main\.wwebjs_auth\RemoteAuth\Default\File System\Origins/MANIFEST-000001: Could not rename file: File currently in use. (ChromeMethodBFE: 14::RenameFile::2)

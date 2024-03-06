@@ -221,10 +221,10 @@ export default function EditBoard(props) {
                                 </button>
                             </div>
                             <div>
-                                <Button onClick={() => {sendWhatsaap(refsImages.current[index], valuesProvide[index].invoices_customer_id,valuesProvide[index].invoices_customer_name);}} color="success" variant="bordered" className="text-sm"><FaWhatsapp className="text-2xl" /> ارسال رسالة</Button>
+                                <Button isDisabled onClick={() => {sendWhatsaap(refsImages.current[index], valuesProvide[index].invoices_customer_id,valuesProvide[index].invoices_customer_name);}} color="success" variant="bordered" className="text-sm"><FaWhatsapp className="text-2xl" /> ارسال رسالة</Button>
                             </div>
                             {/* <div >
-                                <QRCode value="2@u7dvkiFyEX54Km2qE95tw1qnASt0YX4dghMjQid8qb6wYRVjPWyxe82MaEq9/9ZSnuU5pWSMVRAc7w==,fd8Rf1JkfoRj7XJ5VdJn1rSrbuLTHmEIi184ARKElk0=,eMOLN5/HgX/JVcap2O7NGzaWoaAWfHcvLZG/bUPEB3c=,t4vwbEupEo/VoY5dGELhFWmO+06t88XJYQZXzmio4I0=,1"/>
+                                <QRCode value="QR RECEVED 2@C3aP6X46+WBbePW1YZnJUuwe2vX5iE1qlJ1XrKuYj5v7DEJof/Il9X960Xh85K4Rjg3UUV/NPtgpIQ==,bCjAPoJ16k+NmSIBsjoaTB06bHr7ayl+LZOpq3XaVWA=,fQbCRriGXW/gJXD+E2DJt+nhBRcz59RzgDe0PLCJnEk=,naBRoAskHMtTara2vuYwZz6a/y5ZjZIRPtBp2XVXNyI=,1"/>
                             </div> */}
                         </div>
                     </div>

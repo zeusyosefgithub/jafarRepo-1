@@ -1,0 +1,95 @@
+[0306/223650.015:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Feature xr-spatial-tracking's parameters are ignored.", source:  (0)
+[0306/223650.015:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'ambient-light-sensor'.", source:  (0)
+[0306/223650.016:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'bluetooth'.", source:  (0)
+[0306/223650.016:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'gamepad'.", source:  (0)
+[0306/223650.017:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'local-fonts'.", source:  (0)
+[0306/223650.017:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'window-management'.", source:  (0)
+[0306/223650.017:INFO:CONSOLE(0)] "Error with Permissions-Policy-Report-Only header: Feature picture-in-picture's parameters are ignored.", source:  (0)
+[0306/223702.789:ERROR:cache_util_win.cc(20)] Unable to move the cache: Access is denied. (0x5)
+[0306/223702.789:ERROR:cache_util.cc(146)] Unable to move cache folder C:\Users\Yosef\Desktop\jafar-projet-main\jafar-projet-main\.wwebjs_auth\RemoteAuth\Default\GPUCache to C:\Users\Yosef\Desktop\jafar-projet-main\jafar-projet-main\.wwebjs_auth\RemoteAuth\Default\old_GPUCache_000
+[0306/223702.789:ERROR:disk_cache.cc(192)] Unable to create cache
+[0306/223702.789:ERROR:shader_disk_cache.cc(612)] Shader Cache Creation failed: -2
+[0306/223702.960:ERROR:cache_util_win.cc(20)] Unable to move the cache: Access is denied. (0x5)
+[0306/223702.960:ERROR:cache_util.cc(146)] Unable to move cache folder C:\Users\Yosef\Desktop\jafar-projet-main\jafar-projet-main\.wwebjs_auth\RemoteAuth\Default\Cache\Cache_Data to C:\Users\Yosef\Desktop\jafar-projet-main\jafar-projet-main\.wwebjs_auth\RemoteAuth\Default\Cache\old_Cache_Data_000
+[0306/223702.960:ERROR:disk_cache.cc(192)] Unable to create cache
+[0306/223703.168:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Feature xr-spatial-tracking's parameters are ignored.", source:  (0)
+[0306/223703.168:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'ambient-light-sensor'.", source:  (0)
+[0306/223703.168:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'bluetooth'.", source:  (0)
+[0306/223703.169:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'gamepad'.", source:  (0)
+[0306/223703.169:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'local-fonts'.", source:  (0)
+[0306/223703.169:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'window-management'.", source:  (0)
+[0306/223703.169:INFO:CONSOLE(0)] "Error with Permissions-Policy-Report-Only header: Feature picture-in-picture's parameters are ignored.", source:  (0)
+[0306/223711.025:ERROR:quota_database.cc(823)] Could not open the quota database, resetting.
+[0306/223713.962:ERROR:quota_database.cc(825)] Failed to reset the quota database.
+[0306/223715.979:ERROR:sandbox_origin_database.cc(190)] SandboxOriginDatabase failed at: Init@storage/browser/file_system/sandbox_origin_database.cc:94 with error: IO error: C:\Users\Yosef\Desktop\jafar-projet-main\jafar-projet-main\.wwebjs_auth\RemoteAuth\Default\File System\Origins/LOCK: File currently in use. (ChromeMethodBFE: 15::LockFile::2)
+[0306/223715.979:WARNING:sandbox_origin_database.cc(106)] Attempting to repair SandboxOriginDatabase.
+[0306/223720.034:WARNING:sandbox_origin_database.cc(140)] Failed to repair SandboxOriginDatabase.
+[0306/223722.058:ERROR:sandbox_origin_database.cc(190)] SandboxOriginDatabase failed at: Init@storage/browser/file_system/sandbox_origin_database.cc:94 with error: IO error: C:\Users\Yosef\Desktop\jafar-projet-main\jafar-projet-main\.wwebjs_auth\RemoteAuth\Default\File System\Origins/LOCK: File currently in use. (ChromeMethodBFE: 15::LockFile::2)
+[0306/223722.058:WARNING:sandbox_origin_database.cc(106)] Attempting to repair SandboxOriginDatabase.
+[0306/223726.107:WARNING:sandbox_origin_database.cc(140)] Failed to repair SandboxOriginDatabase.
+[0306/223846.096:ERROR:cache_util_win.cc(20)] Unable to move the cache: Access is denied. (0x5)
+[0306/223846.096:ERROR:cache_util.cc(146)] Unable to move cache folder C:\Users\Yosef\Desktop\jafar-projet-main\jafar-projet-main\.wwebjs_auth\RemoteAuth\Default\GPUCache to C:\Users\Yosef\Desktop\jafar-projet-main\jafar-projet-main\.wwebjs_auth\RemoteAuth\Default\old_GPUCache_000
+[0306/223846.096:ERROR:disk_cache.cc(192)] Unable to create cache
+[0306/223846.096:ERROR:shader_disk_cache.cc(612)] Shader Cache Creation failed: -2
+[0306/223846.279:ERROR:cache_util_win.cc(20)] Unable to move the cache: Access is denied. (0x5)
+[0306/223846.279:ERROR:cache_util.cc(146)] Unable to move cache folder C:\Users\Yosef\Desktop\jafar-projet-main\jafar-projet-main\.wwebjs_auth\RemoteAuth\Default\Cache\Cache_Data to C:\Users\Yosef\Desktop\jafar-projet-main\jafar-projet-main\.wwebjs_auth\RemoteAuth\Default\Cache\old_Cache_Data_000
+[0306/223846.279:ERROR:disk_cache.cc(192)] Unable to create cache
+[0306/223846.536:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Feature xr-spatial-tracking's parameters are ignored.", source:  (0)
+[0306/223846.536:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'ambient-light-sensor'.", source:  (0)
+[0306/223846.536:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'bluetooth'.", source:  (0)
+[0306/223846.536:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'gamepad'.", source:  (0)
+[0306/223846.537:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'local-fonts'.", source:  (0)
+[0306/223846.537:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'window-management'.", source:  (0)
+[0306/223846.537:INFO:CONSOLE(0)] "Error with Permissions-Policy-Report-Only header: Feature picture-in-picture's parameters are ignored.", source:  (0)
+[0306/223854.395:ERROR:quota_database.cc(823)] Could not open the quota database, resetting.
+[0306/223857.326:ERROR:quota_database.cc(825)] Failed to reset the quota database.
+[0306/223859.350:ERROR:sandbox_origin_database.cc(190)] SandboxOriginDatabase failed at: Init@storage/browser/file_system/sandbox_origin_database.cc:94 with error: IO error: C:\Users\Yosef\Desktop\jafar-projet-main\jafar-projet-main\.wwebjs_auth\RemoteAuth\Default\File System\Origins/LOCK: File currently in use. (ChromeMethodBFE: 15::LockFile::2)
+[0306/223859.350:WARNING:sandbox_origin_database.cc(106)] Attempting to repair SandboxOriginDatabase.
+[0306/223903.402:WARNING:sandbox_origin_database.cc(140)] Failed to repair SandboxOriginDatabase.
+[0306/223905.415:ERROR:sandbox_origin_database.cc(190)] SandboxOriginDatabase failed at: Init@storage/browser/file_system/sandbox_origin_database.cc:94 with error: IO error: C:\Users\Yosef\Desktop\jafar-projet-main\jafar-projet-main\.wwebjs_auth\RemoteAuth\Default\File System\Origins/LOCK: File currently in use. (ChromeMethodBFE: 15::LockFile::2)
+[0306/223905.415:WARNING:sandbox_origin_database.cc(106)] Attempting to repair SandboxOriginDatabase.
+[0306/223909.474:WARNING:sandbox_origin_database.cc(140)] Failed to repair SandboxOriginDatabase.
+[0306/223921.750:ERROR:cache_util_win.cc(20)] Unable to move the cache: Access is denied. (0x5)
+[0306/223921.751:ERROR:cache_util.cc(146)] Unable to move cache folder C:\Users\Yosef\Desktop\jafar-projet-main\jafar-projet-main\.wwebjs_auth\RemoteAuth\Default\GPUCache to C:\Users\Yosef\Desktop\jafar-projet-main\jafar-projet-main\.wwebjs_auth\RemoteAuth\Default\old_GPUCache_000
+[0306/223921.751:ERROR:disk_cache.cc(192)] Unable to create cache
+[0306/223921.751:ERROR:shader_disk_cache.cc(612)] Shader Cache Creation failed: -2
+[0306/223921.919:ERROR:cache_util_win.cc(20)] Unable to move the cache: Access is denied. (0x5)
+[0306/223921.920:ERROR:cache_util.cc(146)] Unable to move cache folder C:\Users\Yosef\Desktop\jafar-projet-main\jafar-projet-main\.wwebjs_auth\RemoteAuth\Default\Cache\Cache_Data to C:\Users\Yosef\Desktop\jafar-projet-main\jafar-projet-main\.wwebjs_auth\RemoteAuth\Default\Cache\old_Cache_Data_000
+[0306/223921.920:ERROR:disk_cache.cc(192)] Unable to create cache
+[0306/223922.127:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Feature xr-spatial-tracking's parameters are ignored.", source:  (0)
+[0306/223922.128:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'ambient-light-sensor'.", source:  (0)
+[0306/223922.128:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'bluetooth'.", source:  (0)
+[0306/223922.128:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'gamepad'.", source:  (0)
+[0306/223922.128:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'local-fonts'.", source:  (0)
+[0306/223922.128:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'window-management'.", source:  (0)
+[0306/223922.129:INFO:CONSOLE(0)] "Error with Permissions-Policy-Report-Only header: Feature picture-in-picture's parameters are ignored.", source:  (0)
+[0306/223929.947:ERROR:quota_database.cc(823)] Could not open the quota database, resetting.
+[0306/223932.849:ERROR:quota_database.cc(825)] Failed to reset the quota database.
+[0306/223934.866:ERROR:sandbox_origin_database.cc(190)] SandboxOriginDatabase failed at: Init@storage/browser/file_system/sandbox_origin_database.cc:94 with error: IO error: C:\Users\Yosef\Desktop\jafar-projet-main\jafar-projet-main\.wwebjs_auth\RemoteAuth\Default\File System\Origins/LOCK: File currently in use. (ChromeMethodBFE: 15::LockFile::2)
+[0306/223934.866:WARNING:sandbox_origin_database.cc(106)] Attempting to repair SandboxOriginDatabase.
+[0306/223938.902:WARNING:sandbox_origin_database.cc(140)] Failed to repair SandboxOriginDatabase.
+[0306/223940.927:ERROR:sandbox_origin_database.cc(190)] SandboxOriginDatabase failed at: Init@storage/browser/file_system/sandbox_origin_database.cc:94 with error: IO error: C:\Users\Yosef\Desktop\jafar-projet-main\jafar-projet-main\.wwebjs_auth\RemoteAuth\Default\File System\Origins/LOCK: File currently in use. (ChromeMethodBFE: 15::LockFile::2)
+[0306/223940.927:WARNING:sandbox_origin_database.cc(106)] Attempting to repair SandboxOriginDatabase.
+[0306/223944.959:WARNING:sandbox_origin_database.cc(140)] Failed to repair SandboxOriginDatabase.
+[0306/224009.299:ERROR:cache_util_win.cc(20)] Unable to move the cache: Access is denied. (0x5)
+[0306/224009.300:ERROR:cache_util.cc(146)] Unable to move cache folder C:\Users\Yosef\Desktop\jafar-projet-main\jafar-projet-main\.wwebjs_auth\RemoteAuth\Default\GPUCache to C:\Users\Yosef\Desktop\jafar-projet-main\jafar-projet-main\.wwebjs_auth\RemoteAuth\Default\old_GPUCache_000
+[0306/224009.300:ERROR:disk_cache.cc(192)] Unable to create cache
+[0306/224009.300:ERROR:shader_disk_cache.cc(612)] Shader Cache Creation failed: -2
+[0306/224009.483:ERROR:cache_util_win.cc(20)] Unable to move the cache: Access is denied. (0x5)
+[0306/224009.483:ERROR:cache_util.cc(146)] Unable to move cache folder C:\Users\Yosef\Desktop\jafar-projet-main\jafar-projet-main\.wwebjs_auth\RemoteAuth\Default\Cache\Cache_Data to C:\Users\Yosef\Desktop\jafar-projet-main\jafar-projet-main\.wwebjs_auth\RemoteAuth\Default\Cache\old_Cache_Data_000
+[0306/224009.483:ERROR:disk_cache.cc(192)] Unable to create cache
+[0306/224009.833:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Feature xr-spatial-tracking's parameters are ignored.", source:  (0)
+[0306/224009.833:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'ambient-light-sensor'.", source:  (0)
+[0306/224009.833:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'bluetooth'.", source:  (0)
+[0306/224009.834:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'gamepad'.", source:  (0)
+[0306/224009.834:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'local-fonts'.", source:  (0)
+[0306/224009.834:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'window-management'.", source:  (0)
+[0306/224009.834:INFO:CONSOLE(0)] "Error with Permissions-Policy-Report-Only header: Feature picture-in-picture's parameters are ignored.", source:  (0)
+[0306/224017.706:ERROR:quota_database.cc(823)] Could not open the quota database, resetting.
+[0306/224020.643:ERROR:quota_database.cc(825)] Failed to reset the quota database.
+[0306/224022.666:ERROR:sandbox_origin_database.cc(190)] SandboxOriginDatabase failed at: Init@storage/browser/file_system/sandbox_origin_database.cc:94 with error: IO error: C:\Users\Yosef\Desktop\jafar-projet-main\jafar-projet-main\.wwebjs_auth\RemoteAuth\Default\File System\Origins/LOCK: File currently in use. (ChromeMethodBFE: 15::LockFile::2)
+[0306/224022.666:WARNING:sandbox_origin_database.cc(106)] Attempting to repair SandboxOriginDatabase.
+[0306/224026.701:WARNING:sandbox_origin_database.cc(140)] Failed to repair SandboxOriginDatabase.
+[0306/224028.727:ERROR:sandbox_origin_database.cc(190)] SandboxOriginDatabase failed at: Init@storage/browser/file_system/sandbox_origin_database.cc:94 with error: IO error: C:\Users\Yosef\Desktop\jafar-projet-main\jafar-projet-main\.wwebjs_auth\RemoteAuth\Default\File System\Origins/LOCK: File currently in use. (ChromeMethodBFE: 15::LockFile::2)
+[0306/224028.727:WARNING:sandbox_origin_database.cc(106)] Attempting to repair SandboxOriginDatabase.
+[0306/224032.775:WARNING:sandbox_origin_database.cc(140)] Failed to repair SandboxOriginDatabase.
