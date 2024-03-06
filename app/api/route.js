@@ -26,7 +26,6 @@ export async function POST(request) {
                 backupSyncIntervalMs: 300000,
             }),
             puppeteer: {
-                
                 headless: true,
             }
         });
@@ -45,6 +44,8 @@ export async function POST(request) {
         client.on('remote_session_saved', () => {
             console.log("remote_session_saved");
         });
+        store.extract()
+        store.save({session : 'yosef'})
         client.initialize();
     })
 
