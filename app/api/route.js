@@ -23,8 +23,7 @@ export async function POST(request) {
         const client = new Client({
             authStrategy: new RemoteAuth({
                 store: store,
-                backupSyncIntervalMs: 600000,
-                clientId:'yosef'
+                backupSyncIntervalMs: 300000,
             }),
             puppeteer: {
                 
@@ -34,14 +33,55 @@ export async function POST(request) {
         client.on('qr', (qr) => {
             console.log("QR RECEVED", qr);
         })
+        client.on("authenticated", () => {
+            console.log("AUTHENTICATED");
+        });
         client.on("ready", async () => {
             const number = "+972506742582";
             const image = await new MessageMedia("image/jpeg", data.url, "image.jpg");
             const chatId = number.substring(1) + "@c.us";
             await client.sendMessage(chatId, image, { caption: "فاتورة " + data.name });
         })
+        client.on('remote_session_saved', () => {
+            console.log("remote_session_saved");
+        });
         client.initialize();
     })
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     // const client = new Client({
     //     puppeteer: {
