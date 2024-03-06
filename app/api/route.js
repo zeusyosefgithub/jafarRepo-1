@@ -27,13 +27,20 @@ export async function POST(request) {
             }),
             puppeteer: {
                 headless: true,
+                args: [
+                    '--no-sandbox',
+                    '--disable-setuid-sandbox'
+                ]
             }
+        });
+        client.on("authenticated", () => {
+            console.log("AUTHENTICATED");
         });
         client.on('qr', (qr) => {
             console.log("QR RECEVED", qr);
         })
-        client.on("authenticated", () => {
-            console.log("AUTHENTICATED");
+        client.on('remote_session_saved', () => {
+            console.log("remote_session_saved");
         });
         client.on("ready", async () => {
             const number = "+972506742582";
@@ -41,9 +48,6 @@ export async function POST(request) {
             const chatId = number.substring(1) + "@c.us";
             await client.sendMessage(chatId, image, { caption: "فاتورة " + data.name });
         })
-        client.on('remote_session_saved', () => {
-            console.log("remote_session_saved");
-        });
         store.extract()
         store.save({session : 'yosef'})
         client.initialize();
