@@ -11,6 +11,7 @@ import SortLists from "./sortLists";
 import { ComponentToPrintInvoList } from "./toPrintListInvo";
 import { useReactToPrint } from "react-to-print";
 import { useDisclosure } from "@nextui-org/react";
+import ModalEditCustomer from "./ModalEditCustomer";
 
 export default function AllLists(props) {
 

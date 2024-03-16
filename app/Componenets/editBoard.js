@@ -220,12 +220,6 @@ export default function EditBoard(props) {
                                     {props.setButtonName ? props.setButtonName : "طباعة"}
                                 </button>
                             </div>
-                            <div>
-                                <Button isDisabled onClick={() => {sendWhatsaap(refsImages.current[index], valuesProvide[index].invoices_customer_id,valuesProvide[index].invoices_customer_name);}} color="success" variant="bordered" className="text-sm"><FaWhatsapp className="text-2xl" /> ارسال رسالة</Button>
-                            </div>
-                            {/* <div >
-                                <QRCode value="QR RECEVED 2@C3aP6X46+WBbePW1YZnJUuwe2vX5iE1qlJ1XrKuYj5v7DEJof/Il9X960Xh85K4Rjg3UUV/NPtgpIQ==,bCjAPoJ16k+NmSIBsjoaTB06bHr7ayl+LZOpq3XaVWA=,fQbCRriGXW/gJXD+E2DJt+nhBRcz59RzgDe0PLCJnEk=,naBRoAskHMtTara2vuYwZz6a/y5ZjZIRPtBp2XVXNyI=,1"/>
-                            </div> */}
                         </div>
                     </div>
                 </div>
