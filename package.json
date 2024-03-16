@@ -34,6 +34,7 @@
     "firebase-admin": "^12.0.0",
     "fortawesome": "^0.0.1-security",
     "framer-motion": "^10.18.0",
+    "generate-password": "^1.7.1",
     "html-to-image": "^1.11.11",
     "html-to-text": "^9.0.5",
     "html2canvas": "^1.4.1",
