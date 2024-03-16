@@ -170,9 +170,9 @@ export default function NavBar() {
                             <IoListSharp className='mr-2' />القوائم
                         </Link>
                     </NavbarItem>
-                    <NavbarItem>
+                    {/* <NavbarItem>
                         <Button onClick={adddd}>22</Button>
-                    </NavbarItem>
+                    </NavbarItem> */}
                 </NavbarContent>
                 <NavbarContent justify="end">
                     <LogOut />
