@@ -99,6 +99,9 @@ export default function AllLists(props) {
 
     const componentRef = useRef();
 
+    const [modalEditCus,setModlaEditCus] = useState(false);
+    const [customerEdit,setCustomerEdit] = useState(null);
+
     var date = new Date();
     let month = date.getMonth() + 1;
     let year = date.getFullYear();
@@ -766,7 +769,7 @@ export default function AllLists(props) {
             {
                 showInvoEdit && <EditBoard data={invData} showInvoEdit={showInvoEdit} disable={() => setShowInvoEdit(false)}/>
             }
-            //232
+            {modalEditCus && <ModalEditCustomer customer={customerEdit} show={modalEditCus} disable={() => setModlaEditCus(false)}/>}
             {
                 props.wichList == "invoices" ?
                     <div>
@@ -983,7 +986,7 @@ export default function AllLists(props) {
                                                             </tr>
                                                             {
                                                                 theList4.map(list => {
-                                                                    return <tr className="pointer_line">
+                                                                    return <tr onClick={() => {setModlaEditCus(true);setCustomerEdit(list)}} className="cursor-pointer hover:bg-[#334155] hover:text-white">
                                                                         <th className="text-base">{list.customer_city}</th>
                                                                         <th className="text-base">{list.customer_street}</th>
                                                                         <th className="text-base">{list.customer_name}</th>

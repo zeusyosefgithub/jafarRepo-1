@@ -50,7 +50,7 @@ export default function CheckAuth(props) {
                                 <div>
                                     <NavBar />
                                 </div>
-                                <div className='mt-40'>
+                                <div className='mt-10'>
                                     {props.children}
                                 </div>
                             </NextUIProvider>

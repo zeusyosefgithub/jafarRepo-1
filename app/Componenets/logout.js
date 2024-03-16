@@ -1,4 +1,5 @@
 'use client';
+import { Button } from "@nextui-org/button";
 import { UserAuth } from "../FireBase/authContext";
 import { CiLogout } from "react-icons/ci";
 
@@ -18,7 +19,9 @@ export default function LogOut() {
     return (
         <div>
             {
-                user && <button onClick={logout} className="test-fontt text-2xl bg-gray-400 p-3 rounded-3xl hover:bg-black hover:text-white flex items-center"><CiLogout className="mr-3 text-3xl"/> تسجيل خروج</button> 
+                user && <Button dir="ltr" onClick={logout} color="danger" className="" variant="flat">
+                <CiLogout className="mr-3 text-3xl"/>تسجيل خروج 
+            </Button>
             }
         </div>
     )
