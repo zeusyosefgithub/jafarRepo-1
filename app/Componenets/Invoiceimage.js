@@ -62,6 +62,7 @@ export const Invoiceimage = React.forwardRef((props, ref) => {
                 return typesRocks[index]?.arbic;
             }
         }
+        return "---";
     }
     const GetRockTypeHebrow = () => {
         for (let index = 0; index < typesRocks?.length; index++) {
@@ -69,6 +70,7 @@ export const Invoiceimage = React.forwardRef((props, ref) => {
                 return typesRocks[index]?.hebrow;
             }
         }
+        return "---";
     }
 
     const GetDriverNameArbic = () => {

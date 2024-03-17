@@ -65,27 +65,64 @@ export default function NavBar() {
         return invoo;
     }
 
+    function GetConGrade(val) {
+        for (let index = 0; index < Invoices.length; index++) {
+            if (Invoices[index].invoices_id === val) {
+                return Invoices[index].invoices_concretd_grade;
+            }
+        }
+    }
+
+    function GetConTypeCon(val){
+        for (let index = 0; index < Invoices.length; index++) {
+            if (Invoices[index].invoices_id === val) {
+                return Invoices[index].invoices_kind_type_of_concrete;
+            }
+        }
+    }
+
 
     const adddd = async () => {
-        for (let index = 0; index < Customers?.length; index++) {
-            // await updateDoc(doc(firestore, 'customers', Customers[index]?.id), {
-            //     password: generate({
-            //         length: 6,
-            //         numbers: true,
-            //         symbols: false,
-            //         uppercase: false,
-            //         lowercase: true,
-            //     })
-            // })
-            let NewcustomersList = {
-                customer_id: Customers[index]?.customer_id,
-                customer_name: Customers[index]?.customer_name,
-                customer_city: Customers[index]?.customer_city,
-                customer_street: Customers[index]?.customer_street,
-                Invoices: GetMyInvoices(Customers[index]?.customer_id)
-            }
-            await setDoc(doc(firestore, "CustomerDetails", `${Customers[index]?.password}`), NewcustomersList);
-        }
+        // for (let index = 0; index < Customers?.length; index++) {
+        //     // await updateDoc(doc(firestore, 'customers', Customers[index]?.id), {
+        //     //     password: generate({
+        //     //         length: 6,
+        //     //         numbers: true,
+        //     //         symbols: false,
+        //     //         uppercase: false,
+        //     //         lowercase: true,
+        //     //     })
+        //     // })
+        //     let NewcustomersList = {
+        //         customer_id: Customers[index]?.customer_id,
+        //         customer_name: Customers[index]?.customer_name,
+        //         customer_city: Customers[index]?.customer_city,
+        //         customer_street: Customers[index]?.customer_street,
+        //         Invoices: GetMyInvoices(Customers[index]?.customer_id)
+        //     }
+        //     await setDoc(doc(firestore, "CustomerDetails", `${Customers[index]?.password}`), NewcustomersList);
+        // }
+        // let NewInvoice = [];
+        // for (let index = 0; index < CustomersDeatils.length; index++) {
+        //     let Invoicess = CustomersDeatils[index].Invoices;
+        //     console.log(Invoicess);
+        //     for (let index1 = 0; index1 < Invoicess.length; index1++) {
+        //         NewInvoice.push({
+        //             invoices_concretd_grade: GetConGrade(Invoicess[index1].invoices_id),
+        //             invoices_data: Invoicess[index1].invoices_data,
+        //             invoices_id: Invoicess[index1].invoices_id,
+        //             invoices_kind_egree_of_Exposure: Invoicess[index1].invoices_kind_egree_of_Exposure,
+        //             invoices_kind_material: Invoicess[index1].invoices_kind_material,
+        //             invoices_pump: Invoicess[index1].invoices_pump,
+        //             invoices_quantity: Invoicess[index1].invoices_quantity,
+        //             invoices_kind_type_of_concrete :  GetConTypeCon(Invoicess[index1].invoices_id),
+        //             shippings: Invoicess[index1].shippings
+        //         })
+
+        //     }
+        //     await updateDoc(doc(firestore, 'CustomerDetails', CustomersDeatils[index].id), { Invoices: NewInvoice });
+        //     NewInvoice = [];
+        // }
     }
 
     return (
@@ -157,7 +194,7 @@ export default function NavBar() {
                     </NavbarItem>
                     <NavbarItem isActive>
                         <Link className='flex items-center text-white mr-4' dir='ltr' href="/" aria-current="page">
-                            <FaHome className='mr-2' />الصفحة الرئيسية 
+                            <FaHome className='mr-2' />الصفحة الرئيسية
                         </Link>
                     </NavbarItem>
                     <NavbarItem>

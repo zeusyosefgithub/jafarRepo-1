@@ -1,4 +1,4 @@
-import { Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, Button } from "@nextui-org/react";
+import { Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, Button, Switch } from "@nextui-org/react";
 import { useRef, useState } from "react";
 import rep6 from "../../images/rep6.png";
 import Link from "next/link";
@@ -14,6 +14,7 @@ import { ComponentToPrint } from "./toPrint";
 import html2canvas from "html2canvas";
 import { Invoiceimage } from "./Invoiceimage";
 import { CiLogout } from "react-icons/ci";
+import { useReactToPrint } from "react-to-print";
 
 
 export default function CustomerLogin(props) {
@@ -116,6 +117,19 @@ export default function CustomerLogin(props) {
     };
 
     const reff = useRef([]);
+    const componentRef = useRef();
+
+    const handlePrint = useReactToPrint({
+        pageStyle: `@page {
+            size: A5 landscape;
+            margin: 0;
+        }`,
+        content: () => reff.current[componentRef.current],
+    });
+
+    const [toggel,setToggel] = useState(null);
+
+
 
     let provide = 0;
 
@@ -139,6 +153,11 @@ export default function CustomerLogin(props) {
                                 <Button onClick={() => { setInvoice(null); setShowInvoice(null); }}>الصفحة السابقة<FiArrowRight /></Button>
                             </div>
                             <div className="mt-10">
+                                <div className="flex justify-end m-2">
+                                    <Switch value={toggel} onValueChange={(val) => setToggel(val)}>
+                                        تحويل الى عبري
+                                    </Switch>
+                                </div>
                                 <table>
                                     <tbody>
                                         <tr>
@@ -152,10 +171,10 @@ export default function CustomerLogin(props) {
                                                 provide += parseFloat(ship?.current_quantity);
                                                 return <>
                                                     <div className={`w-max absolute clipped`}>
-                                                        <Invoiceimage customer={customerProps} provide={provide} ref={el => reff.current[index] = el} isLocated={ship?.location ? true : false} languge={false} currentTruck={index + 1} currentQuan={ship?.current_quantity} shippingList={ship} inewInv={invoice} />
+                                                        <Invoiceimage customer={customerProps} provide={provide} ref={el => reff.current[index] = el} isLocated={ship?.location ? true : false} languge={toggel ? false : true} currentTruck={index + 1} currentQuan={ship?.current_quantity} shippingList={ship} inewInv={invoice} />
                                                     </div>
                                                     <tr>
-                                                        <th><Button size="sm" onClick={() => downloadImageInvoice(`${invoice.invoices_id}-${ship.shipp_id}.png`,reff.current[index])}>تنزيل</Button></th>
+                                                        <th><div className="flex"><Button size="sm" onClick={() => downloadImageInvoice(`${invoice.invoices_id}-${ship.shipp_id}.png`,reff.current[index])}>تنزيل</Button><Button onClick={() => {componentRef.current = index,handlePrint();}} className="ml-2" size="sm">طباعة</Button></div></th>
                                                         <th className="w-fit">{ship.shipping_date.replace("/", ' - ')}</th>
                                                         <th>{ship.current_quantity}</th>
                                                     </tr>

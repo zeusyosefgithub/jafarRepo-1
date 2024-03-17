@@ -160,6 +160,10 @@ export default function EditBoard(props) {
 
 
     const handlePrint = useReactToPrint({
+        pageStyle: `@page {
+            size: A5 landscape;
+            margin: 0;
+        }`,
         content: () => AllComponentsRefs.current[componentRef.current],
     });
 
