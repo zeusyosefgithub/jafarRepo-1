@@ -123,16 +123,16 @@ export const Invoiceimage = React.forwardRef((props, ref) => {
                                             <td className="pb-3 text-base flex items-center"> رقم الفاتورة : {props.inewInv.invoices_id}</td>
                                         </tr>
                                         <tr >
-                                            <td className="p-1 text-xs flex items-center"> <FaUser className="ml-1" /> الزبون : {props.inewInv.invoices_customer_name}</td>
+                                            <td className="p-1 text-xs flex items-center"> <FaUser className="ml-1" /> الزبون : {props.customer.customer_name}</td>
                                         </tr>
                                         <tr>
-                                            <td className="p-1 text-xs flex items-center"> <FaHouseChimney className="ml-1" /> العنوان : {props.inewInv.invoices_customer_city}</td>
+                                            <td className="p-1 text-xs flex items-center"> <FaHouseChimney className="ml-1" /> العنوان : {props.customer.customer_city}</td>
                                         </tr>
                                         <tr>
-                                            <td className="p-1 text-xs flex items-center"> <svg className="ml-1" xmlns="http://www.w3.org/2000/svg" height="16" width="15" viewBox="0 0 576 512"><path d="M256 32H181.2c-27.1 0-51.3 17.1-60.3 42.6L3.1 407.2C1.1 413 0 419.2 0 425.4C0 455.5 24.5 480 54.6 480H256V416c0-17.7 14.3-32 32-32s32 14.3 32 32v64H521.4c30.2 0 54.6-24.5 54.6-54.6c0-6.2-1.1-12.4-3.1-18.2L455.1 74.6C446 49.1 421.9 32 394.8 32H320V96c0 17.7-14.3 32-32 32s-32-14.3-32-32V32zm64 192v64c0 17.7-14.3 32-32 32s-32-14.3-32-32V224c0-17.7 14.3-32 32-32s32 14.3 32 32z" /></svg> الشارع : {props.inewInv.invoices_customer_street}</td>
+                                            <td className="p-1 text-xs flex items-center"> <svg className="ml-1" xmlns="http://www.w3.org/2000/svg" height="16" width="15" viewBox="0 0 576 512"><path d="M256 32H181.2c-27.1 0-51.3 17.1-60.3 42.6L3.1 407.2C1.1 413 0 419.2 0 425.4C0 455.5 24.5 480 54.6 480H256V416c0-17.7 14.3-32 32-32s32 14.3 32 32v64H521.4c30.2 0 54.6-24.5 54.6-54.6c0-6.2-1.1-12.4-3.1-18.2L455.1 74.6C446 49.1 421.9 32 394.8 32H320V96c0 17.7-14.3 32-32 32s-32-14.3-32-32V32zm64 192v64c0 17.7-14.3 32-32 32s-32-14.3-32-32V224c0-17.7 14.3-32 32-32s32 14.3 32 32z" /></svg> الشارع : {props.customer.customer_street}</td>
                                         </tr>
                                         <tr>
-                                            <td className="p-1 text-xs flex items-center"> <FaPhone className="ml-1" /> الهاتف : {props.inewInv.invoices_customer_id}</td>
+                                            <td className="p-1 text-xs flex items-center"> <FaPhone className="ml-1" /> الهاتف : {props.customer.customer_id}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -177,7 +177,7 @@ export const Invoiceimage = React.forwardRef((props, ref) => {
                                         <tr>
                                             <td>{props.currentTruck ? props.currentTruck : getNumberShipp()}</td>
                                             <td>{props.inewInv.invoices_quantity}</td>
-                                            <td>{props.inewInv.provide}</td>
+                                            <td>{props.provide}</td>
                                             <td>{props.currentQuan}</td>
                                         </tr>
                                     </tbody>
@@ -355,16 +355,16 @@ export const Invoiceimage = React.forwardRef((props, ref) => {
                                             <td className="pb-3 text-base flex items-center"> הזמנה מספר : {props.inewInv.invoices_id}</td>
                                         </tr>
                                         <tr >
-                                            <td className="p-1 text-xs flex items-center"> <FaUser className="ml-1" /> לקוח : {props.inewInv.invoices_customer_name}</td>
+                                            <td className="p-1 text-xs flex items-center"> <FaUser className="ml-1" /> לקוח : {props.customer.customer_name}</td>
                                         </tr>
                                         <tr>
-                                            <td className="p-1 text-xs flex items-center"> <FaHouseChimney className="ml-1" /> כתובת : {props.inewInv.invoices_customer_city}</td>
+                                            <td className="p-1 text-xs flex items-center"> <FaHouseChimney className="ml-1" /> כתובת : {props.customer.customer_city}</td>
                                         </tr>
                                         <tr>
-                                            <td className="p-1 text-xs flex items-center"> <svg className="ml-1" xmlns="http://www.w3.org/2000/svg" height="16" width="15" viewBox="0 0 576 512"><path d="M256 32H181.2c-27.1 0-51.3 17.1-60.3 42.6L3.1 407.2C1.1 413 0 419.2 0 425.4C0 455.5 24.5 480 54.6 480H256V416c0-17.7 14.3-32 32-32s32 14.3 32 32v64H521.4c30.2 0 54.6-24.5 54.6-54.6c0-6.2-1.1-12.4-3.1-18.2L455.1 74.6C446 49.1 421.9 32 394.8 32H320V96c0 17.7-14.3 32-32 32s-32-14.3-32-32V32zm64 192v64c0 17.7-14.3 32-32 32s-32-14.3-32-32V224c0-17.7 14.3-32 32-32s32 14.3 32 32z" /></svg> רחוב : {props.inewInv.invoices_customer_street}</td>
+                                            <td className="p-1 text-xs flex items-center"> <svg className="ml-1" xmlns="http://www.w3.org/2000/svg" height="16" width="15" viewBox="0 0 576 512"><path d="M256 32H181.2c-27.1 0-51.3 17.1-60.3 42.6L3.1 407.2C1.1 413 0 419.2 0 425.4C0 455.5 24.5 480 54.6 480H256V416c0-17.7 14.3-32 32-32s32 14.3 32 32v64H521.4c30.2 0 54.6-24.5 54.6-54.6c0-6.2-1.1-12.4-3.1-18.2L455.1 74.6C446 49.1 421.9 32 394.8 32H320V96c0 17.7-14.3 32-32 32s-32-14.3-32-32V32zm64 192v64c0 17.7-14.3 32-32 32s-32-14.3-32-32V224c0-17.7 14.3-32 32-32s32 14.3 32 32z" /></svg> רחוב : {props.customer.customer_street}</td>
                                         </tr>
                                         <tr>
-                                            <td className="p-1 text-xs flex items-center"> <FaPhone className="ml-1" /> טלפון : {props.inewInv.invoices_customer_id}</td>
+                                            <td className="p-1 text-xs flex items-center"> <FaPhone className="ml-1" /> טלפון : {props.customer.customer_id}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -413,7 +413,7 @@ export const Invoiceimage = React.forwardRef((props, ref) => {
                                     <td>{props.inewInv.invoices_kind_supplier_number}</td> */}
                                             <td>{props.currentTruck ? props.currentTruck : getNumberShipp()}</td>
                                             <td>{props.inewInv.invoices_quantity}</td>
-                                            <td>{props.inewInv.provide}</td>
+                                            <td>{props.provide}</td>
                                             <td>{props.currentQuan}</td>
                                         </tr>
                                     </tbody>

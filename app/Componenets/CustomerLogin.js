@@ -73,11 +73,19 @@ export default function CustomerLogin(props) {
 
     const CustomersDetails = GetTrucks('CustomerDetails');
 
+    let customerProps = {};
+
     function GetCustomerInvoices(pass) {
         let iinvoices = null;
         for (let index = 0; index < CustomersDetails.length; index++) {
             if (CustomersDetails[index].id === pass) {
                 iinvoices = CustomersDetails[index].Invoices.sort(sortDateInvoice);
+                customerProps = {
+                    customer_city : CustomersDetails[index].customer_city,
+                    customer_id : CustomersDetails[index].customer_id,
+                    customer_name : CustomersDetails[index].customer_name,
+                    customer_street : CustomersDetails[index].customer_street,
+                }
             }
         }
         return iinvoices;
@@ -89,8 +97,8 @@ export default function CustomerLogin(props) {
     const [invoice, setInvoice] = useState(null);
     const [showInvoice, setShowInvoice] = useState(false);
 
-    const downloadImageInvoice = async (imageFileName) => {
-        const canvasss = await html2canvas(reff.current,{ scale: 2 }).then(function (canvas){
+    const downloadImageInvoice = async (imageFileName,ref) => {
+        const canvasss = await html2canvas(ref,{ scale: 2 }).then(function (canvas){
             const image = canvas.toDataURL("image/png", 1.0);
             downloadImage(image, imageFileName);
         });
@@ -107,7 +115,9 @@ export default function CustomerLogin(props) {
         fakeLink.remove();
     };
 
-    const reff = useRef();
+    const reff = useRef([]);
+
+    let provide = 0;
 
     return (
         <div className="">
@@ -138,12 +148,14 @@ export default function CustomerLogin(props) {
                                         </tr>
                                         {
                                             invoice.shippings.map((ship, index) => {
+                                                console.log(invoice);
+                                                provide += parseFloat(ship?.current_quantity);
                                                 return <>
                                                     <div className={`w-max absolute clipped`}>
-                                                        <Invoiceimage ref={reff} isLocated={ship?.location ? true : false} languge={true} currentTruck={index + 1} currentQuan={ship?.current_quantity} shippingList={ship} inewInv={invoice} />
+                                                        <Invoiceimage customer={customerProps} provide={provide} ref={el => reff.current[index] = el} isLocated={ship?.location ? true : false} languge={false} currentTruck={index + 1} currentQuan={ship?.current_quantity} shippingList={ship} inewInv={invoice} />
                                                     </div>
                                                     <tr>
-                                                        <th><Button size="sm" onClick={() => downloadImageInvoice(`${invoice.invoices_id}-${ship.shipp_id}.png`)}>تنزيل</Button></th>
+                                                        <th><Button size="sm" onClick={() => downloadImageInvoice(`${invoice.invoices_id}-${ship.shipp_id}.png`,reff.current[index])}>تنزيل</Button></th>
                                                         <th className="w-fit">{ship.shipping_date.replace("/", ' - ')}</th>
                                                         <th>{ship.current_quantity}</th>
                                                     </tr>

@@ -92,7 +92,7 @@ export default function LogIn() {
                                             typeLogIn === 'admin' ?
                                                 <div className='text-2xl text-center'>تسجيل دخول مسؤل</div>
                                                 :
-                                                <div className='text-2xl text-center'>تسجيل دخول </div>
+                                                <div className='text-2xl text-center'>تسجيل دخول زبون</div>
 
                                         }
                                         <div className='flex justify-center'>
