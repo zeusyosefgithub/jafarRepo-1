@@ -81,7 +81,7 @@ export default function LogIn() {
         <>
             {
                 isCustomer ?
-                    <CustomerLogin Data={GetCustomer(cusVal)} />
+                    <CustomerLogin Data={GetCustomer(cusVal)} disable={() => {setCusVal('');setIsCustomer(false);}} />
                     :
                     <div className='absolute top-1/4 w-full'>
                         <div className='flex justify-center'>

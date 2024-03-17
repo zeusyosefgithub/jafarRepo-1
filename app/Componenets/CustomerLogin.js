@@ -13,6 +13,7 @@ import { FiArrowRight } from "react-icons/fi";
 import { ComponentToPrint } from "./toPrint";
 import html2canvas from "html2canvas";
 import { Invoiceimage } from "./Invoiceimage";
+import { CiLogout } from "react-icons/ci";
 
 
 export default function CustomerLogin(props) {
@@ -109,26 +110,49 @@ export default function CustomerLogin(props) {
     const reff = useRef();
 
     return (
-        <div className="flex justify-center">
-            <div className="mt-20">
+        <div className="">
+            <div className="flex justify-end m-5">
+            <Button dir="ltr" onClick={() => props.disable()} color="danger" size="sm" variant="flat">
+                <CiLogout className="mr-3 text-xl" />تسجيل خروج
+            </Button>
+
+            </div>
+            <div className="flex justify-center mt-10">
+                <div>
+
+                </div>
 
                 {
                     showInvoice ?
                         <div>
-                            <div className="flex">
+                            <div className="flex justify-center">
                                 <Button onClick={() => { setInvoice(null); setShowInvoice(null); }}>الصفحة السابقة<FiArrowRight /></Button>
                             </div>
-                            <div>
-                                {
-                                    invoice.shippings.map((ship, index) => {
-                                        return <div>
-                                            <div className={`w-max absolute clipped`}>
-                                                <Invoiceimage ref={reff} isLocated={ship?.location ? true : false} languge={true} currentTruck={index + 1} currentQuan={ship?.current_quantity} shippingList={ship} inewInv={invoice} />
-                                            </div>
-                                            <Button onClick={() => downloadImageInvoice('test')}>تنزيل</Button>
-                                        </div>
-                                    })
-                                }
+                            <div className="mt-10">
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <th>تنزيل</th>
+                                            <th className="w-fit">تاريخ الطلب</th>
+                                            <th>الكمية المطلوبة</th>
+                                        </tr>
+                                        {
+                                            invoice.shippings.map((ship, index) => {
+                                                return <>
+                                                    <div className={`w-max absolute clipped`}>
+                                                        <Invoiceimage ref={reff} isLocated={ship?.location ? true : false} languge={true} currentTruck={index + 1} currentQuan={ship?.current_quantity} shippingList={ship} inewInv={invoice} />
+                                                    </div>
+                                                    <tr>
+                                                        <th><Button size="sm" onClick={() => downloadImageInvoice(`${invoice.invoices_id}-${ship.shipp_id}.png`)}>تنزيل</Button></th>
+                                                        <th className="w-fit">{ship.shipping_date.replace("/", ' - ')}</th>
+                                                        <th>{ship.current_quantity}</th>
+                                                    </tr>
+                                                </>
+                                            })
+                                        }
+                                    </tbody>
+                                </table>
+
                             </div>
                         </div>
                         :
