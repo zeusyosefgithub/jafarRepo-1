@@ -152,6 +152,7 @@ export default function NavBar() {
             uppercase: false,
             lowercase: true,
         });
+        //213
         
         for (let index = 0; index < Customers.length; index++) {
             if (Customers[index]?.customer_name === 'yyyyyyyyyyyyyy') {
@@ -258,9 +259,9 @@ export default function NavBar() {
                             <IoListSharp className='mr-2' />القوائم
                         </Link>
                     </NavbarItem>
-                    <NavbarItem>
+                    {/* <NavbarItem>
                         <Button onClick={adddd}>22</Button>
-                    </NavbarItem>
+                    </NavbarItem> */}
                 </NavbarContent>
                 <NavbarContent justify="end">
                     <LogOut />
