@@ -81,6 +81,27 @@ export default function NavBar() {
         }
     }
 
+    const GetCustomerId = () => {
+        let maxValue = 0;
+        if (!Customers.length) {
+            return 1;
+        }
+        for (let index = 0; index < Customers.length; index++) {
+            if(Customers[index]?.cus_id){
+                maxValue = Math.max(maxValue, Customers[index]?.cus_id)
+            }
+        }
+        return maxValue + 1;
+    }
+
+    function checkIfInvoices (id){
+        for (let index = 0; index < Invoices.length; index++) {
+            if(Invoices[index].invoices_id === id){
+                return false;
+            }
+        }
+        return true;
+    }
 
     const adddd = async () => {
         // for (let index = 0; index < Customers?.length; index++) {
@@ -123,6 +144,36 @@ export default function NavBar() {
         //     await updateDoc(doc(firestore, 'CustomerDetails', CustomersDeatils[index].id), { Invoices: NewInvoice });
         //     NewInvoice = [];
         // }
+
+        let pwd = generate({
+            length: 6,
+            numbers: true,
+            symbols: false,
+            uppercase: false,
+            lowercase: true,
+        });
+        
+        // for (let index = 0; index < Customers.length; index++) {
+        //     if (Customers[index]?.customer_name === 'yyyyyyyyyyyyyyyyyyyyyy') {
+        //         console.log(Customers[index]);
+        //     }
+
+        // }
+        // for (let index = 0; index < CustomersDeatils.length; index++) {
+        //     if(CustomersDeatils[index].id === "vf6htj"){
+        //         console.log(CustomersDeatils[index]);
+        //     }
+        // }
+
+        for (let index = 0; index < CustomersDeatils.length; index++) {
+            let INvooo = CustomersDeatils[index].Invoices;
+            for (let index1 = 0; index1 < INvooo.length; index1++) {
+                if(checkIfInvoices(INvooo[index1].invoices_id)){
+                    console.log(INvooo[index1]);
+                    console.log(CustomersDeatils[index]);
+                }
+            }
+        }
     }
 
     return (
@@ -207,9 +258,9 @@ export default function NavBar() {
                             <IoListSharp className='mr-2' />القوائم
                         </Link>
                     </NavbarItem>
-                    {/* <NavbarItem>
+                    <NavbarItem>
                         <Button onClick={adddd}>22</Button>
-                    </NavbarItem> */}
+                    </NavbarItem>
                 </NavbarContent>
                 <NavbarContent justify="end">
                     <LogOut />

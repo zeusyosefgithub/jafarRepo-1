@@ -10,8 +10,10 @@ import { firestore } from "../FireBase/firebase";
 import SortLists from "./sortLists";
 import { ComponentToPrintInvoList } from "./toPrintListInvo";
 import { useReactToPrint } from "react-to-print";
-import { useDisclosure } from "@nextui-org/react";
+import { Input, useDisclosure } from "@nextui-org/react";
 import ModalEditCustomer from "./ModalEditCustomer";
+import { FaSearch } from "react-icons/fa";
+
 
 export default function AllLists(props) {
 
@@ -765,12 +767,68 @@ export default function AllLists(props) {
         return false;
     }
 
+    const searchCustomer = useRef();
+    const [listCus, setListCus] = useState(theList4);
+
+    const getLineCus = (customers, index) => {
+        return <tr onClick={() => { setModlaEditCus(true); setCustomerEdit(customers[index]) }} className="cursor-pointer hover:bg-[#334155] hover:text-white">
+            <th className="text-base">{customers[index].customer_city}</th>
+            <th className="text-base">{customers[index].customer_street}</th>
+            <th className="text-base">{customers[index].customer_name}</th>
+            <th className="text-base">{customers[index].customer_id}</th>
+            <th className="text-base"><div className="flex justify-around items-center">{count++}</div></th>
+        </tr>
+    }
+
+    const getDefaultCus = () => {
+        let listCus = [];
+        for (let index = 0; index < theList4?.length; index++) {
+            listCus.push(getLineCus(theList4, index));
+        }
+        return listCus;
+    }
+
+    const checkIfEqualCus = (list, cus2) => {
+        for (let index = 0; index < list.length; index++) {
+            if (list[index].customer_city === cus2.customer_city &&
+                list[index].customer_id === cus2.customer_id &&
+                list[index].customer_name === cus2.customer_name &&
+                list[index].customer_street === cus2.customer_street) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    const GetSearchVal = () => {
+        let getAll = [];
+        setListCus([]);
+        for (let index = 0; index < theList4?.length; index++) {
+            var StringName = theList4[index]?.customer_name.toString();
+            var StringInput = searchCustomer.current?.value.toString();
+            if (StringName.startsWith(StringInput)) {
+                setListCus(listCus => [...listCus, getLineCus(theList4, index)]);
+                getAll.push(theList4[index]);
+            }
+        }
+        for (let index = 0; index < theList4?.length; index++) {
+            var StringName = theList4[index]?.customer_name.toString();
+            var StringInput = searchCustomer.current?.value.toString();
+            if (!getAll.length || !checkIfEqualCus(getAll, theList4[index])) {
+                if (StringName.includes(StringInput)) {
+                    setListCus(listCus => [...listCus, getLineCus(theList4, index)]);
+                    getAll.push(theList4[index]);
+                }
+            }
+        }
+    }
+
     return (
         <div className="rounded-3xl bg-gray-100 p-10 w-full shadow-2xl">
             {
                 showInvoEdit && <EditBoard data={invData} showInvoEdit={showInvoEdit} disable={() => setShowInvoEdit(false)}/>
             }
-            {modalEditCus && <ModalEditCustomer customer={customerEdit} show={modalEditCus} disable={() => setModlaEditCus(false)}/>}
+            {modalEditCus && <ModalEditCustomer deleteCus={(cus) => deleteCus(cus)} customer={customerEdit} show={modalEditCus} disable={() => setModlaEditCus(false)}/>}
             {
                 props.wichList == "invoices" ?
                     <div>
@@ -976,6 +1034,9 @@ export default function AllLists(props) {
                                             :
                                             <div>
                                                 <div className="text-end text-2xl mb-7">جميع الزبائن الذين تمت اضافتهم</div>
+                                                <div dir="rtl" className="m-8">
+                                                    <Input ref={searchCustomer} onChange={GetSearchVal} className="bg-white w-fit rounded-xl pl-4" color="primary" variant="underlined" labelPlacement="outside-left" label={<FaSearch/>}/>
+                                                </div>
                                                 <div className="w-full overflow-auto hight_for_table_list">
                                                     <table className="w-full">
                                                         <tbody>
@@ -986,15 +1047,11 @@ export default function AllLists(props) {
                                                                 <th className="text-xl">رقم الزبون</th>
                                                             </tr>
                                                             {
-                                                                theList4.map(list => {
-                                                                    return <tr onClick={() => {setModlaEditCus(true);setCustomerEdit(list)}} className="cursor-pointer hover:bg-[#334155] hover:text-white">
-                                                                        <th className="text-base">{list.customer_city}</th>
-                                                                        <th className="text-base">{list.customer_street}</th>
-                                                                        <th className="text-base">{list.customer_name}</th>
-                                                                        <th className="text-base">{list.customer_id}</th>
-                                                                        <th className="text-base"><div className="flex justify-around items-center">{count++}<FaTrash onClick={() => deleteCus(list.id)} className="hover:text-[#dc2626] cursor-pointer" /></div></th>
-                                                                    </tr>
-                                                                })
+                                                                searchCustomer.current?.value
+                                                                    ?
+                                                                    listCus
+                                                                    :
+                                                                    getDefaultCus()
                                                             }
                                                         </tbody>
                                                     </table>

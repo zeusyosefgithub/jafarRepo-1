@@ -22,9 +22,11 @@ export default function Home() {
 
   const [loading,setLoading] = useState(false);
 
+  const CustomersDeatils = GetTrucks('CustomerDetails');
   const listInvoices = GetTrucks('invoices').sort(compareByAge);
   const listShippings = GetTrucks("shipping");
   const listRaws = GetTrucks("RawMaterials");
+  const Customers = GetTrucks('customers');
 
   const [showInvoEdit, setShowInvoEdit] = useState(false);
   const [invData, setInvData] = useState();
@@ -176,6 +178,15 @@ export default function Home() {
     return maxValue + 1;
   }
 
+  function GetCustomerPassword (){
+    for (let index = 0; index < Customers.length; index++) {
+      if(Customers[index].customer_id === invData.invoices_customer_id){
+        return Customers[index].password;
+      }
+    }
+    return;
+  }
+
   const handelAddShpping = async () => {
     let counterShipps = currectShippId();
     setErrorMessageDriverTruck("");
@@ -198,6 +209,7 @@ export default function Home() {
         truck_number: truck,
         location: isLocated ? locationVal : null
       };
+      GetShippingInCustomerDitails(shippingData);
       setCurrentQuantity(currentQuantityRef.current?.value);
       setShippingToPrint(shippingData);
       try {
@@ -221,6 +233,28 @@ export default function Home() {
       + "*Name :* " + "mahmod" + "%0a";
 
     window.open(url, '_blank').focus();
+  }
+
+  function GetDocCustomerDitails(){
+    for (let index = 0; index < Customers.length; index++) {
+      if(Customers[index].customer_id === invData.invoices_customer_id){
+        return Customers[index].password;
+      } 
+    }
+  }
+
+  async function GetShippingInCustomerDitails(shippingData) {
+    for (let index = 0; index < CustomersDeatils.length; index++) {
+      if (CustomersDeatils[index].id === GetDocCustomerDitails()) {
+        let InvoicesCustomerD = CustomersDeatils[index].Invoices;
+        for (let index = 0; index < InvoicesCustomerD.length; index++) {
+          if (InvoicesCustomerD[index].invoices_id === invData?.invoices_id) {
+            InvoicesCustomerD[index].shippings.push(shippingData);
+          }
+        }
+        return await updateDoc(doc(firestore,'CustomerDetails',CustomersDeatils[index].id),{Invoices : InvoicesCustomerD});
+      }
+    }
   }
 
   return (

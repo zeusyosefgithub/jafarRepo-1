@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useRef, useState } from "react";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, doc, setDoc, updateDoc } from "firebase/firestore";
 import { firestore } from "../FireBase/firebase";
 import FormBoxConcertPump from "./formBoxConcertPump";
 import FormBoxNewCus from "./formBoxNewCus";
@@ -11,6 +11,7 @@ import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Input, Spinner }
 import { CiCircleMinus } from "react-icons/ci";
 import { CiCirclePlus } from "react-icons/ci";
 import { AiOutlinePlus } from "react-icons/ai";
+import { generate } from "generate-password";
 
 
 
@@ -102,6 +103,21 @@ export default function AddInvoice() {
         }
         return false;
     }
+
+    const GetCustomerId = () => {
+        let maxValue = 0;
+        if (!AllCustomers.length) {
+            return 1;
+        }
+        for (let index = 0; index < AllCustomers.length; index++) {
+            maxValue = Math.max(maxValue, AllCustomers[index]?.cus_id)
+        }
+        return maxValue + 1;
+    }
+
+    const CustomerDetails = GetTrucks('CustomerDetails');
+
+
     const handelAddInfo = async () => { 
 
         let counterInvoices = currectInvoiceId();
@@ -213,15 +229,83 @@ export default function AddInvoice() {
         PreventMultipleClickAddInfo.current.disabled = true;
         setInvData(newData);
         setLoading(true);
+        let pwd = generate({
+            length: 6,
+            numbers: true,
+            symbols: false,
+            uppercase: false,
+            lowercase: true,
+        });
         let NewcustomersList = {
             customer_id: customerId,
             customer_name: customerName,
             customer_street: customerStreet,
-            customer_city: customerCity
+            customer_city: customerCity,
+            cus_id : GetCustomerId(),
+            password : pwd
         }
         try {
             await addDoc(collec, newData);
-            !newCus && await addDoc(collection(firestore, "customers"), NewcustomersList)
+            !newCus && await addDoc(collection(firestore, "customers"), NewcustomersList);
+            let newData1 = {};
+            if (isNewCus) {
+                newData1 = {
+                    invoices_id: counterInvoices,
+                    invoices_customer_id: customer.customer_id,
+                    invoices_customer_name: customer.customer_name,
+                    invoices_customer_street: customer.customer_street,
+                    invoices_customer_city: customer.customer_city,
+                    invoices_quantity: quantity,
+                    invoices_concretd_grade: concretdGrade,
+                    invoices_kind_material: disableByTypeCon ? '---' : dropValue1.kinds_rocks_name,
+                    invoices_kind_type_of_concrete: dropValue2.kinds_concrete_name,
+                    invoices_kind_egree_of_Exposure: degreeOfExposure,
+                    invoices_pump: disableJustPump ? '---' : pump,
+                    provide: 0,
+                    stayed: quantity - 0,
+                    invoices_data: isAutoDate ? autoDateVal.replace(/\b0/g, '') : currentdate,
+                    shippings : []
+                };
+            }
+            else {
+                newData1 = {
+                    invoices_id: counterInvoices,
+                    invoices_customer_id: customerId,
+                    invoices_customer_name: customerName,
+                    invoices_customer_street: customerStreet,
+                    invoices_customer_city: customerCity,
+                    invoices_quantity: quantity,
+                    invoices_concretd_grade: concretdGrade,
+                    invoices_kind_material: disableByTypeCon ? '---' : dropValue1.kinds_rocks_name,
+                    invoices_kind_type_of_concrete: dropValue2.kinds_concrete_name,
+                    invoices_kind_egree_of_Exposure: degreeOfExposure,
+                    invoices_pump: disableJustPump ? '---' : pump,
+                    provide: 0,
+                    stayed: quantity - 0,
+                    invoices_data: isAutoDate ? autoDateVal.replace(/\b0/g, '') : currentdate,
+                    shippings : []
+                };
+            }
+            if(!newCus){
+                const newCustomerDetails = {
+                    Invoices : [newData1],
+                    customer_city : customerCity,
+                    customer_id : customerId,
+                    customer_name : customerName,
+                    customer_street : customerStreet
+                }
+                await setDoc(doc(firestore, "CustomerDetails", `${pwd}`), newCustomerDetails);
+            }
+            else{
+                let InvoicesCustomerr = [];
+                for (let index = 0; index < CustomerDetails.length; index++) {
+                    if(CustomerDetails[index].id === customer.password){
+                        InvoicesCustomerr = CustomerDetails[index].Invoices;
+                    }
+                }
+                InvoicesCustomerr.push(newData1);
+                await updateDoc(doc(firestore,'CustomerDetails',customer.password),{Invoices : InvoicesCustomerr})
+            }
         }
         catch (e) {
             console.log(e);

@@ -49,7 +49,6 @@ export default function EditBoard(props) {
 
 
     const deleteInvo = async () => {
-        alert(1);
         setLoading(true);
         try {
             await deleteDoc(doc(firestore, "invoices", props.data?.id));
@@ -62,9 +61,36 @@ export default function EditBoard(props) {
         catch (e) {
             console.log(e);
         }
+        DeleteInvoInCustomerDitails();
         //props.showInv();
         setLoading(false);
         props.disable();
+    }
+
+    const Customers = GetTrucks('customers');
+    const CustomersDeatils = GetTrucks('CustomerDetails');
+
+    function GetDocCustomerDitails(){
+        for (let index = 0; index < Customers.length; index++) {
+          if(Customers[index].customer_id === props.data?.invoices_customer_id){
+            return Customers[index].password;
+          } 
+        }
+      }
+
+    function DeleteInvoInCustomerDitails (){
+        for (let index = 0; index < CustomersDeatils.length; index++) {
+            if(CustomersDeatils[index].id === GetDocCustomerDitails()){
+                let InvoiceCustomerDitails = CustomersDeatils[index].Invoices;
+                let NewInvoiceCustomerDitails = [];
+                for (let index = 0; index < InvoiceCustomerDitails.length; index++) {
+                    if(InvoiceCustomerDitails[index].invoices_id !==  props.data?.id){
+                        NewInvoiceCustomerDitails.push(InvoiceCustomerDitails[index]);
+                    }
+                }
+                return updateDoc(doc(firestore,'CustomerDetails',CustomersDeatils[index].id),{Invoices : NewInvoiceCustomerDitails});
+            }      
+        }
     }
 
     function compareByAge(a, b) {
