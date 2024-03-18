@@ -167,6 +167,10 @@ export default function Home() {
     PreventMultipleClickPrint.current.disabled = false;
   }
   const handlePrint = useReactToPrint({
+    pageStyle: `@page {
+      size: A5 landscape;
+      margin: 0;
+  }`,
     content: () => componentRef.current,
   });
 
@@ -178,9 +182,9 @@ export default function Home() {
     return maxValue + 1;
   }
 
-  function GetCustomerPassword (){
+  function GetCustomerPassword() {
     for (let index = 0; index < Customers.length; index++) {
-      if(Customers[index].customer_id === invData.invoices_customer_id){
+      if (Customers[index].customer_id === invData.invoices_customer_id){
         return Customers[index].password;
       }
     }

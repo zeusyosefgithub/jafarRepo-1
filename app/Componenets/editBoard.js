@@ -83,11 +83,16 @@ export default function EditBoard(props) {
             if(CustomersDeatils[index].id === GetDocCustomerDitails()){
                 let InvoiceCustomerDitails = CustomersDeatils[index].Invoices;
                 let NewInvoiceCustomerDitails = [];
-                for (let index = 0; index < InvoiceCustomerDitails.length; index++) {
-                    if(InvoiceCustomerDitails[index].invoices_id !==  props.data?.id){
-                        NewInvoiceCustomerDitails.push(InvoiceCustomerDitails[index]);
+                console.log(NewInvoiceCustomerDitails);
+                for (let index1 = 0; index1 < InvoiceCustomerDitails.length; index1++) {
+                    console.log("InvoiceCustomerDitails[index1].invoices_id ------ " + InvoiceCustomerDitails[index1].invoices_id);
+                    console.log("props.data?.id ------ " + props.data?.id);
+                    console.log("InvoiceCustomerDitails[index1].invoices_id != props.data?.id ------ " + InvoiceCustomerDitails[index1].invoices_id != props.data?.id);
+                    if(InvoiceCustomerDitails[index1].invoices_id !== props.data?.invoices_id){
+                        NewInvoiceCustomerDitails.push(InvoiceCustomerDitails[index1]);
                     }
                 }
+                console.log(NewInvoiceCustomerDitails);
                 return updateDoc(doc(firestore,'CustomerDetails',CustomersDeatils[index].id),{Invoices : NewInvoiceCustomerDitails});
             }      
         }

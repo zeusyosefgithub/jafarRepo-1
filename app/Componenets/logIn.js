@@ -11,8 +11,8 @@ import { useState } from 'react';
 
 export default function LogIn() {
 
-    const { user, googleSignIn, logOut } = UserAuth();
-    const [typeLogIn,setTypeLogIn] = useState('admin');
+    const { user, googleSignIn, logOut , error } = UserAuth();
+    const [typeLogIn, setTypeLogIn] = useState('admin');
 
     const handelSignIn = async () => {
         try {
@@ -48,7 +48,7 @@ export default function LogIn() {
     const handelSignInCustomer = () => {
         setErrorMessage('');
         if (!checkCustomer(cusVal)) {
-            return setErrorMessage('12312312');
+            return setErrorMessage('الكود الذي ادخلته غير صحيح حاول مرة اخرى!!');
         }
         setErrorMessage('');
         setIsCustomer(true);
@@ -81,7 +81,7 @@ export default function LogIn() {
         <>
             {
                 isCustomer ?
-                    <CustomerLogin Data={GetCustomer(cusVal)} disable={() => {setCusVal('');setIsCustomer(false);}} />
+                    <CustomerLogin Data={GetCustomer(cusVal)} disable={() => { setCusVal(''); setIsCustomer(false); }} />
                     :
                     <div className='absolute top-1/4 w-full'>
                         <div className='flex justify-center'>
@@ -106,6 +106,11 @@ export default function LogIn() {
                                 {
                                     typeLogIn === 'admin' ?
                                         <>
+                                            {
+                                                error && <div>
+                                                    <div dir='rtl' className='mt-2 mb-2 text-right text-danger text-sm'>{error}</div>
+                                                </div>
+                                            }
                                             <Divider />
                                             <div onClick={() => setTypeLogIn('customer')} className='mt-3 mb-3 text-sm hover:text-primary cursor-pointer flex items-center justify-end'>لتسجيل دخول زبون<FiArrowRight className='ml-1' /></div>
                                             <CardFooter>
@@ -114,13 +119,11 @@ export default function LogIn() {
                                         </>
                                         :
                                         <>
-                                            <CardBody>
-                                                <div className='space-y-4'>
-                                                    <div>
-                                                        <Input errorMessage={errorMessage} value={cusVal} onValueChange={(value) => setCusVal(value)} className='mb-4' dir='rtl' placeholder="ادخل الكود الخاص بك.." type="text" />
-                                                    </div>
+                                            <div className='space-y-4'>
+                                                <div dir='rtl'>
+                                                    <Input errorMessage={errorMessage} value={cusVal} onValueChange={(value) => setCusVal(value)} className='mb-4' placeholder="ادخل الكود الخاص بك.." type="text" />
                                                 </div>
-                                            </CardBody>
+                                            </div>
                                             <Divider />
                                             <div onClick={() => setTypeLogIn('admin')} className='mt-3 mb-3 text-sm hover:text-primary cursor-pointer flex items-center justify-end'>لتسجيل دخول مسؤل<FiArrowRight className='ml-1' /></div>
                                             <CardFooter>

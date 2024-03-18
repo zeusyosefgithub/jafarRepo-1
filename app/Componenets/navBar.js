@@ -153,27 +153,27 @@ export default function NavBar() {
             lowercase: true,
         });
         
-        // for (let index = 0; index < Customers.length; index++) {
-        //     if (Customers[index]?.customer_name === 'yyyyyyyyyyyyyyyyyyyyyy') {
-        //         console.log(Customers[index]);
-        //     }
+        for (let index = 0; index < Customers.length; index++) {
+            if (Customers[index]?.customer_name === 'yyyyyyyyyyyyyy') {
+                console.log(Customers[index]);
+            }
 
-        // }
+        }
         // for (let index = 0; index < CustomersDeatils.length; index++) {
-        //     if(CustomersDeatils[index].id === "vf6htj"){
+        //     if(CustomersDeatils[index].id === "q84g1d"){
         //         console.log(CustomersDeatils[index]);
         //     }
         // }
 
-        for (let index = 0; index < CustomersDeatils.length; index++) {
-            let INvooo = CustomersDeatils[index].Invoices;
-            for (let index1 = 0; index1 < INvooo.length; index1++) {
-                if(checkIfInvoices(INvooo[index1].invoices_id)){
-                    console.log(INvooo[index1]);
-                    console.log(CustomersDeatils[index]);
-                }
-            }
-        }
+        // for (let index = 0; index < CustomersDeatils.length; index++) {
+        //     let INvooo = CustomersDeatils[index].Invoices;
+        //     for (let index1 = 0; index1 < INvooo.length; index1++) {
+        //         if(checkIfInvoices(INvooo[index1].invoices_id)){
+        //             console.log(INvooo[index1]);
+        //             console.log(CustomersDeatils[index]);
+        //         }
+        //     }
+        // }
     }
 
     return (
