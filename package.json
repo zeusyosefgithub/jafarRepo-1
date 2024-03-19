@@ -56,7 +56,7 @@
     "react-share": "^5.1.0",
     "react-to-print": "^2.14.15",
     "replace-in-files-cli": "^2.2.0",
-    "sharp": "^0.33.1",
+    "sharp": "^0.33.2",
     "tw-elements": "^1.1.0",
     "twilio": "^4.21.0",
     "uuid": "^9.0.1",
