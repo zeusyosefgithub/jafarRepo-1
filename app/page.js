@@ -167,10 +167,10 @@ export default function Home() {
     PreventMultipleClickPrint.current.disabled = false;
   }
   const handlePrint = useReactToPrint({
-    pageStyle: `@page {
-      size: A5 landscape;
-      margin: 0;
-  }`,
+  //   pageStyle: `@page {
+  //     size: A5 landscape;
+  //     margin: 0;
+  // }`,
     content: () => componentRef.current,
   });
 
