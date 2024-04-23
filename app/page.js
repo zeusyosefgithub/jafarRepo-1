@@ -1,31 +1,27 @@
 'use client';
-import { TbReportSearch } from "react-icons/tb";
 import GetTrucks from "./Componenets/getDocs";
 import EditBoard from "./Componenets/editBoard";
 import { useEffect, useRef, useState } from "react";
-import { MdEditDocument } from "react-icons/md";
 import Reports from "./Componenets/reports";
-import Charts from "./Componenets/charts";
 import FormBoxDriver from "./Componenets/formBoxDriver";
 import FormBox from "./Componenets/formBox";
 import { firestore } from "./FireBase/firebase";
-import { addDoc, collection, updateDoc, doc, deleteDoc } from "firebase/firestore";
+import { addDoc, collection, updateDoc, doc } from "firebase/firestore";
 import { ComponentToPrint } from "./Componenets/toPrint";
 import { useReactToPrint } from "react-to-print";
 import Report from "./Componenets/report";
 import { Button } from "@nextui-org/button";
 import { Input, Spinner } from "@nextui-org/react";
-import { data } from "autoprefixer";
 import { AiOutlinePlus } from "react-icons/ai";
+import { useDataByCondition } from "./Componenets/getDocsWithCodition";
 
 export default function Home() {
 
   const [loading,setLoading] = useState(false);
 
   const CustomersDeatils = GetTrucks('CustomerDetails');
-  const listInvoices = GetTrucks('invoices').sort(compareByAge);
+  const listInvoices = useDataByCondition('invoices','stayed','>',0).sort(compareByAge);
   const listShippings = GetTrucks("shipping");
-  const listRaws = GetTrucks("RawMaterials");
   const Customers = GetTrucks('customers');
 
   const [showInvoEdit, setShowInvoEdit] = useState(false);
@@ -58,6 +54,25 @@ export default function Home() {
 
   const [isLocated, setIsLocated] = useState(false);
   const [locationVal, setLocationVal] = useState('');
+
+
+
+
+
+
+  
+
+
+  // useEffect(() => {
+  //   const result = GetDataByConditionNotInBody('customers', 'customer_id', '==',searchValue);
+  //   setConditionValue(result);
+  // }, [searchValue]);
+
+
+
+
+
+
 
   var date = new Date();
   let year = date.getFullYear();
@@ -141,7 +156,7 @@ export default function Home() {
       invoices_kind_egree_of_Exposure: invData.invoices_kind_egree_of_Exposure,
       invoices_pump: invData.invoices_pump,
       provide: sumAllCurrentQuant2,
-      stayed: invData.stayed,
+      stayed: invData.invoices_quantity - sumAllCurrentQuant2,
       invoices_data: invData.invoices_data
     };
     setInvData(newData);
@@ -182,14 +197,16 @@ export default function Home() {
     return maxValue + 1;
   }
 
-  function GetCustomerPassword() {
-    for (let index = 0; index < Customers.length; index++) {
-      if (Customers[index].customer_id === invData.invoices_customer_id){
-        return Customers[index].password;
-      }
-    }
-    return;
-  }
+  
+  const [conditionValue, setConditionValue] = useState('0');
+  const list = useDataByCondition('customers', 'customer_id', '==', conditionValue);
+
+  const [conditionValue1, setConditionValue1] = useState('0');
+  const list1 = useDataByCondition('CustomerDetails', 'id', '==', conditionValue1);
+
+  useEffect(() => {
+  }, [list,list1]);
+
 
   const handelAddShpping = async () => {
     let counterShipps = currectShippId();
@@ -213,7 +230,9 @@ export default function Home() {
         truck_number: truck,
         location: isLocated ? locationVal : null
       };
-      GetShippingInCustomerDitails(shippingData);
+      setConditionValue(invData.invoices_customer_id);
+      
+      // GetShippingInCustomerDitails(shippingData);
       setCurrentQuantity(currentQuantityRef.current?.value);
       setShippingToPrint(shippingData);
       try {
@@ -230,35 +249,18 @@ export default function Home() {
   }
 
 
-  const sendWhatsaap = () => {
-    var phoneNumber = "+972506742582";
 
-    var url = "https://wa.me/" + phoneNumber + "?text="
-      + "*Name :* " + "mahmod" + "%0a";
-
-    window.open(url, '_blank').focus();
-  }
-
-  function GetDocCustomerDitails(){
-    for (let index = 0; index < Customers.length; index++) {
-      if(Customers[index].customer_id === invData.invoices_customer_id){
-        return Customers[index].password;
-      } 
-    }
-  }
 
   async function GetShippingInCustomerDitails(shippingData) {
-    for (let index = 0; index < CustomersDeatils.length; index++) {
-      if (CustomersDeatils[index].id === GetDocCustomerDitails()) {
-        let InvoicesCustomerD = CustomersDeatils[index].Invoices;
-        for (let index = 0; index < InvoicesCustomerD.length; index++) {
-          if (InvoicesCustomerD[index].invoices_id === invData?.invoices_id) {
-            InvoicesCustomerD[index].shippings.push(shippingData);
-          }
-        }
-        return await updateDoc(doc(firestore,'CustomerDetails',CustomersDeatils[index].id),{Invoices : InvoicesCustomerD});
-      }
-    }
+    // console.log(list)
+    // setConditionValue1(list.password);
+    // let InvoicesCustomerD = list1.Invoices;
+    // for (let index = 0; index < InvoicesCustomerD.length; index++) {
+    //   if (InvoicesCustomerD[index].invoices_id === invData?.invoices_id) {
+    //     InvoicesCustomerD[index].shippings.push(shippingData);
+    //   }
+    // }
+    // return await updateDoc(doc(firestore, 'CustomerDetails', CustomersDeatils[index].id), { Invoices: InvoicesCustomerD });
   }
 
   return (
@@ -472,7 +474,7 @@ export default function Home() {
                     </tr>
                     {
                       listInvoices.map((invo, i) => {
-                        return invo.invoices_quantity - invo.provide > 0 && <tr onClick={() => { setClickedData(invo, i); }} className={`hover:bg-[#334155] hover:text-white cursor-pointer ${styleTabelLinsRefs.current[i]}`}>{/*bordering_list*/}
+                        return <tr onClick={() => { setClickedData(invo, i); }} className={`hover:bg-[#334155] hover:text-white cursor-pointer ${styleTabelLinsRefs.current[i]}`}>{/*bordering_list*/}
                           <th className="text-base">{invo.invoices_quantity - invo.provide}</th>
                           <th className="text-base">{invo.invoices_quantity}</th>
                           <th className="text-base">{invo.invoices_customer_name}</th>

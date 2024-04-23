@@ -1,5 +1,5 @@
 'use client';
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, onSnapshot,query,where } from "firebase/firestore";
 import { firestore } from "../FireBase/firebase";
 import { useEffect, useState } from "react";
 import LoadingSpinner from "./loadingSpin";

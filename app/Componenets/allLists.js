@@ -949,9 +949,9 @@ export default function AllLists(props) {
                                                 {
                                                     theList3.map(list => {
                                                         return <tr className="pointer_line">
-                                                            <th className="text-base">{list.truck_disc}</th>
-                                                            <th className="text-base">{list.truck_driver}</th>
-                                                            <th className="text-base">{list.truck_id}</th>
+                                                            <th className="text-base">{list.truckDisc}</th>
+                                                            <th className="text-base">{list.truckDriver}</th>
+                                                            <th className="text-base">{list.truckId}</th>
                                                             <th className="text-base"><div className="flex justify-around items-center">{count++}<FaTrash onClick={() => deleteTruck(list.id)} className="hover:text-[#dc2626] cursor-pointer" /></div></th>
                                                         </tr>
                                                     })

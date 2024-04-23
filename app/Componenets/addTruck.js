@@ -40,9 +40,9 @@ export default function AddTruck() {
         setErrorTruckDriver("");
         PreventMultipleClick.current.disabled = true;
         let newData = {
-            truckId,
-            truckDriver,
-            truckDisc
+            truckId:truckId,
+            truckDriver:truckDriver,
+            truckDisc:truckDisc
         };
 
         try{

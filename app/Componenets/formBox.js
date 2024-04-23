@@ -29,10 +29,10 @@ export default function FormBox(props) {
                                         </tr>
                                         {
                                             trucks.map(doc => {
-                                                return <tr onClick={() => { props.getTruck(doc.truck_id);props.disable();}} className="border-b-2 border-black text-lg margining_table">
-                                                    <th className="text-lg">{doc.truck_disc}</th>
-                                                    <th className="text-lg">{doc.truck_driver}</th>
-                                                    <th className="text-lg">{doc.truck_id}</th>
+                                                return <tr onClick={() => { props.getTruck(doc.truckId);props.disable();}} className="border-b-2 border-black text-lg margining_table">
+                                                    <th className="text-lg">{doc.truckDisc}</th>
+                                                    <th className="text-lg">{doc.truckDriver}</th>
+                                                    <th className="text-lg">{doc.truckId}</th>
                                                     <th className="text-lg">{count++}</th>
                                                 </tr>
                                             })
