@@ -14,6 +14,8 @@ import { Button } from "@nextui-org/button";
 import { Input, Spinner } from "@nextui-org/react";
 import { AiOutlinePlus } from "react-icons/ai";
 import { useDataByCondition } from "./Componenets/getDocsWithCodition";
+import ModalKblatMas from "./Componenets/ModalKblatMas";
+import { KblatMasToPrint } from "./Componenets/KblatMasPrint";
 
 export default function Home() {
 
@@ -251,6 +253,7 @@ export default function Home() {
 
 
 
+
   async function GetShippingInCustomerDitails(shippingData) {
     // console.log(list)
     // setConditionValue1(list.password);
@@ -263,6 +266,8 @@ export default function Home() {
     // return await updateDoc(doc(firestore, 'CustomerDetails', CustomersDeatils[index].id), { Invoices: InvoicesCustomerD });
   }
 
+  const [hdbsatKblatMas,setHdbsatKblatMas] = useState(false);
+
   return (
     <div>
       {
@@ -274,6 +279,9 @@ export default function Home() {
       {
         showInvoEdit && <EditBoard data={invData} showInvoEdit={showInvoEdit} disable={() => setShowInvoEdit(false)} />
       }
+      {
+        hdbsatKblatMas && <ModalKblatMas show={hdbsatKblatMas} disable={() => setHdbsatKblatMas(false)}/>
+      }
 
       {loading && <Spinner className="fixed left-1/2 top-1/2 z-50" size="lg" />}
       {/* {
@@ -282,10 +290,9 @@ export default function Home() {
       {
         showDriver && <FormBoxDriver getDriver={(driver) => setDriver(driver)} showDisableDriver={() => setShowDriver(false)} />
       } */}
-
+      
       <div className="flex pr-14 pl-14 pb-14">
-
-
+        
         {/* <div>
           <Button onClick={sendWhatsaap}>Send</Button>
         </div> */}
@@ -342,6 +349,9 @@ export default function Home() {
         </div>
         <div className="m-10"></div>
         <div className="w-1/2">
+          <div className="flex justify-center m-5">
+            <Button onClick={() => setHdbsatKblatMas(true)}>طباعة استلام الضرائب</Button>
+          </div>
           <div className="bg-slate-100 shadow-xl p-7 rounded-xl">
             <div className="bg-gray-400 p-3 text-center rounded-lg text-xl">الطلبيات المفتوحة</div>
             <div className="">
