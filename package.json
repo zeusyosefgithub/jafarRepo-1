@@ -62,7 +62,7 @@
     "twilio": "^4.21.0",
     "uuid": "^9.0.1",
     "wait-on": "^7.2.0",
-    "whatsapp-web.js": "^1.23.0",
+    "whatsapp-web.js": "^1.24.0",
     "wwebjs-aws-s3": "^1.0.2",
     "wwebjs-mongo": "^1.1.0"
   },
