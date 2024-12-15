@@ -58,7 +58,7 @@
     "react-to-print": "^2.14.15",
     "replace-in-files-cli": "^2.2.0",
     "sharp": "^0.33.1",
-    "tw-elements": "^1.1.0",
+    "tw-elements": "^2.0.0",
     "twilio": "^4.21.0",
     "uuid": "^9.0.1",
     "wait-on": "^7.2.0",
